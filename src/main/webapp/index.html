@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <script src="script/jquery-1.11.1.min.js"></script>
+        <script src="script/angular/1.2.26/angular.min.js"></script>
+        <script src="script/angular/1.2.26/angular-route.min.js"></script>
+
+        <script src="script/dashboard/app.js"></script>
+        <script src="script/dashboard/controller.js"></script>
+        <link rel="stylesheet" href = "style/bootstrap/3.2.0/bootstrap.min.css"/>
+
+        <style>
+            #main {
+                width:100%;
+                overflow: auto;
+
+
+            }
+
+            #accountTransactionList {
+                width:100%;
+
+                overflow-y: scroll;
+            }
+            #accountList {
+                width:100%;
+                height: 300px;
+                overflow-y: scroll;
+            }
+            #accountDetailsForm {
+                display:none;
+            }
+            #transactionDetailsForm {
+                display:none;
+            }
+            #appMenu{
+                width:100%;
+                background-color: #269abc;
+            }
+            #appSidebar{
+                width:20%;
+                float:left;
+
+            }
+            #appMain{
+                width:80%;
+                float:right;
+            }
+            .accountEntry {
+                list-style-type: none;
+            }
+            .registryTransaction {
+                list-style-type: none;
+            }
+            .menuItem {
+                list-style-type: none;
+                display:inline;
+            }
+            #appMainTabs {
+                width:100%;
+            }
+            .tabItem {
+                list-style-type: none;
+                display:inline;
+            }
+            
+            div{
+
+            }
+        </style>
+    </head>
+
+    <body ng-app="HFWApp" ng-controller="dashboardController">
+
+        <div id="main">
+            <div id="appMenu">
+                <ul>
+                    <li class="menuItem" id="menuItemNewAccount" ng-click="showNewAccount()">New Account</li>
+                    <li class="menuItem" id="menuItemRegister" ng-click="showNewTransaction()">New Transaction</li>
+                </ul>
+            </div>
+            <div id="appSidebar">
+                <div id="accountList">
+                    <ul>
+                        <li ng-repeat="x in accounts" ng-click="clickGoButton(x)" class="accountEntry">
+
+                            <span>{{ x.name}}</span>
+                            <span>{{ x.currentBalance | currency }}</span>
+                   
+                        </li> 
+                    </ul>
+                   
+                </div>
+            </div>
+            <div id="appMain">
+                <div id="appMainTabs">
+                    <ul>
+                    <li class="tabItem" id="accountMenuItemRegister">Register</li>
+                    <li class="tabItem" id="accountMenuItemReport">Report</li>
+                    </ul>
+                </div>
+                <div id="accountTransactionList">
+                    <ul>
+                        <li ng-repeat="x in registryTransactions" class="registryTransaction">
+                            <span>{{ x.txnDate }}</span>
+                            <span>{{ x.payee}}</span>
+                            <span>{{ x.txnAmount | currency }}</span>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+
+            <modal title="Account Details" visible="showAccountModal" >
+                <div>
+                Account Name:<input typ="text" ng-model="accountFormData.name"><br>
+                Account Number:<input typ="text" ng-model="accountFormData.accountNumber"><br>
+                Opening Balance:<input typ="text" ng-model="accountFormData.startingBalance"><br>
+                <button ng-click="addAccount()">Add the Account!</button>
+                <button ng-click="clickNewAccountCancel()">Cancel</button>
+                </div>
+            </modal>
+            <modal title="Transaction Details" visible="showTransactionModal" >
+                
+                <input type="hidden" ng-model="registryTransactionFormData.primaryAccount">
+                Payee Name:<input typ="text" ng-model="registryTransactionFormData.payee"><br>
+                Transaction Amount:<input typ="text" ng-model="registryTransactionFormData.txnAmount"><br>
+
+                <button ng-click="addRegistryTransaction()">Add the Transaction!</button>
+                <button ng-click="clickNewTransactionCancel()">Cancel</button>
+            </modal>
+
+        </div>
+
+    </body>
+</html>
