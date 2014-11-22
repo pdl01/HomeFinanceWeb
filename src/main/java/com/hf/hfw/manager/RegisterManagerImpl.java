@@ -60,7 +60,7 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
     }
     
     /*
-    * This is a change
+    * This is a change new change
     */
     protected RegisterTransaction saveTransaction(RegisterTransaction _txn) {
         _txn.setLastModifiedDate(new Date());
