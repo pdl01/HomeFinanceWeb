@@ -5,9 +5,9 @@
         <script src="script/jquery-1.11.1.min.js"></script>
         <script src="script/angular/1.2.26/angular.min.js"></script>
         <script src="script/angular/1.2.26/angular-route.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
         <script src="script/dashboard/app.js"></script>
-        <script src="script/dashboard/controller.js"></script>
         <link rel="stylesheet" href = "style/bootstrap/3.2.0/bootstrap.min.css"/>
 
         <style>
@@ -68,11 +68,55 @@
             div{
 
             }
+ .ng-modal-overlay {
+  /* A dark translucent div that covers the whole screen */
+  position:absolute;
+  z-index:9999;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color:#000000;
+  opacity: 0.8;
+}
+.ng-modal-dialog {
+  /* A centered div above the overlay with a box shadow. */
+  z-index:10000;
+  position: absolute;
+  width: 50%; /* Default */
+
+  /* Center the dialog */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+
+  background-color: #fff;
+  box-shadow: 4px 4px 80px #000;
+}
+.ng-modal-dialog-content {
+  padding:10px;
+  text-align: left;
+}
+.ng-modal-close {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 120%;
+  display: inline-block;
+  font-weight: bold;
+  font-family: 'arial', 'sans-serif';
+}           
+            
+            
         </style>
     </head>
 
     <body ng-app="HFWApp" ng-controller="dashboardController">
-
+            
         <div id="main">
             <div id="appMenu">
                 <ul>
@@ -113,8 +157,7 @@
 
             </div>
 
-
-            <modal title="Account Details" visible="showAccountModal" >
+<modal title="Account Details" visible="showAccountModal" >
                 <div>
                 Account Name:<input typ="text" ng-model="accountFormData.name"><br>
                 Account Number:<input typ="text" ng-model="accountFormData.accountNumber"><br>
@@ -123,6 +166,8 @@
                 <button ng-click="clickNewAccountCancel()">Cancel</button>
                 </div>
             </modal>
+            
+            
             <modal title="Transaction Details" visible="showTransactionModal" >
                 
                 <input type="hidden" ng-model="registryTransactionFormData.primaryAccount">
@@ -132,7 +177,7 @@
                 <button ng-click="addRegistryTransaction()">Add the Transaction!</button>
                 <button ng-click="clickNewTransactionCancel()">Cancel</button>
             </modal>
-
+            
         </div>
 
     </body>
