@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task-3.2.xsd
+"
+            
+       default-init-method="init" default-destroy-method="destroy">
+  <!--
+  <bean id="issueService" class="com.eoci.service.IssueServiceImpl">    
+  	<property name="issueDAO" ref="issueDAO"/>
+  	  	<property name="cacheManager" ref="cacheManager"/>
+  	
+  </bean>
+
+  <bean id="electedOfficialService" class="com.eoci.service.ElectedOfficialServiceImpl">    
+  	<property name="electedOfficialDAO" ref="electedOfficialDAO"/>
+  	<property name="districtService" ref="districtService"/>
+  	<property name="cacheManager" ref="cacheManager"/>
+  </bean>
+
+  <bean id="officialBillService" class="com.eoci.service.OfficialBillServiceImpl">    
+   	<property name="officialBillDAO" ref="officialBillDAO"/>
+   	<property name="cacheManager" ref="cacheManager"/>
+  </bean>
+  
+  
+    
+ <bean id="cacheManager" class="com.eoci.cache.service.MemcacheCacheManagerServiceImpl">    
+  	
+  </bean>
+  
+  
+  <bean id="districtService" class="com.eoci.service.DistrictServiceImpl">    
+  	<property name="districtDAO" ref="districtDAO"/>
+  	<property name="cacheManager" ref="cacheManager"/>
+  </bean>
+  -->
+  
+  <bean id="registerManager" class="com.hf.hfw.manager.RegisterManagerImpl">    
+  	<property name="registerDAO" ref="registerDAO"/>
+  </bean>
+    <bean id="accountManager" class="com.hf.hfw.manager.AccountManagerImpl">    
+  	<property name="accountDAO" ref="accountDAO"/>
+       
+  </bean>
+  <!--
+  <bean id="frameManager" class="com.keystone.manager.FrameManagerImpl">    
+  	<property name="frameDAO" ref="frameDAO"/>
+        <property name="componentManager" ref="componentManager"/>
+        <property name="layoutManager" ref="layoutManager"/>
+
+  </bean>
+  <bean id="componentManager" class="com.keystone.manager.ComponentManagerImpl">
+      
+  </bean>
+  
+<bean id="announcementComponent" class="com.keystone.display.components.AnnouncementComponent"/>
+<bean id="dailyCalendarComponent" class="com.keystone.display.components.DailyCalendarComponent"/>
+<bean id="eventCountdownComponent" class="com.keystone.display.components.EventCountdownComponent"/>
+<bean id="todaysdateComponent" class="com.keystone.display.components.TodaysDateComponent"/>
+<bean id="imageComponent" class="com.keystone.display.components.ImageComponent"/>
+
+<bean id="threeColumnLayout" class="com.keystone.display.layouts.ThreeColumnLayout">
+    <property name="name" value="ThreeColumnLayout"/>
+</bean>
+<bean id="twoColumnLayout" class="com.keystone.display.layouts.TwoColumnLayout">
+    <property name="name" value="TwoColumnLayout"/>
+</bean>
+<bean id="coreLayouts" class="java.util.ArrayList">
+    <constructor-arg>
+        <list>
+            <ref bean="threeColumnLayout" />
+            <ref bean="twoColumnLayout" />
+        </list>
+    </constructor-arg>
+</bean>
+
+<bean id="coreLayoutRegisterer" class="com.keystone.manager.CoreLayoutRegisterer">
+      <property name="layoutManager" ref="layoutManager"/>
+      <property name="coreLayouts" ref="coreLayouts"/>
+</bean>
+<bean id="layoutManager" class="com.keystone.manager.LayoutManagerImpl">
+</bean>
+
+<bean id="coreComponents" class="java.util.ArrayList">
+    <constructor-arg>
+        <list>
+            <ref bean="announcementComponent" />
+            <ref bean="dailyCalendarComponent" />
+            <ref bean="eventCountdownComponent" />
+            <ref bean="todaysdateComponent" />
+            <ref bean="imageComponent" />
+        </list>
+    </constructor-arg>
+</bean>
+
+
+<bean id="coreComponentRegisterer" class="com.keystone.manager.CoreComponentRegisterer">
+      <property name="componentManager" ref="componentManager"/>
+      <property name="coreComponents" ref="coreComponents"/>
+</bean>
+<bean id="imageGeneratorManager" class="com.keystone.manager.ImageGeneratorManagerImpl">
+      <property name="userManager" ref="userManager"/>
+      <property name="frameManager" ref="frameManager"/>
+</bean>
+-->
+  <!-- 
+  <bean id="electedOfficialRatingService" class="com.eoci.service.ElectedOfficialRatingServiceImpl">    
+  	<property name="userService" ref="userService"/>
+	<property name="districtService" ref="districtService"/>
+  	<property name="issueService" ref="issueService"/>  
+  	<property name="electedOfficialService" ref="electedOfficialService"/> 
+  	<property name="officialBillService" ref="officialBillService"/>
+  	<property name="electedOfficialRatingDAO" ref="electedOfficialRatingDAO"/> 	
+  </bean> 
+  
+  
+  <bean id="ratingSystemTransmissionEventListener" class="com.eoci.events.RatingSystemTransmissionEventListener">    
+  </bean>
+    -->
+<!-- more bean definitions go here -->
+<bean id="applicationState" class="com.hf.hfw.application.ApplicationState" init-method="init">
+</bean>
+  
+  <bean id="accountBalanceListener" class="com.hf.hfw.accounts.listeners.AccountBalanceListener">    
+    <property name="accountManager" ref="accountManager"/>
+    <property name="registerManager" ref="registerManager"/>
+</bean>
+  <bean id="transactionTriggerBalanceListener" class="com.hf.hfw.accounts.listeners.TransactionAccountBalanceListener">    
+    <property name="accountManager" ref="accountManager"/>
+    <property name="registerManager" ref="registerManager"/>
+</bean>
+</beans>

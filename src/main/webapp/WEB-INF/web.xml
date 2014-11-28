@@ -3,10 +3,10 @@
 	      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	      http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	      version="2.5">  
-    <display-name>Archetype Created Web Application</display-name>
+    <display-name>Home Finance Web</display-name>
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/classes/spring.xml</param-value>
+    <param-value>/WEB-INF/config/spring.xml</param-value>
   </context-param>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
