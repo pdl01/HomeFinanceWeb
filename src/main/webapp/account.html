@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <script src="script/jquery-1.11.1.min.js"></script>
+        <script src="script/angular/1.2.26/angular.min.js"></script>
+        <script src="script/angular/1.2.26/angular-route.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="script/account/app.js"></script>
+        <link rel="stylesheet" href = "style/bootstrap/3.2.0/bootstrap.min.css"/>
+
+        <style>
+        </style>
+    </head>
+
+    <body ng-app="HFWAccountApp" ng-controller="accountController">
+            
+        <div id="main">
+            <div>
+                <input type="hidden" ng-model="registryTransactionFormData.primaryAccount">
+                Payee Name:<input typ="text" ng-model="registryTransactionFormData.payee"><br>
+                Transaction Amount:<input typ="text" ng-model="registryTransactionFormData.txnAmount"><br>
+
+                <button ng-click="addRegistryTransaction()">Add the Transaction!</button>
+                <button ng-click="clickNewTransactionCancel()">Cancel</button>
+            </div>
+            
+        </div>
+
+    </body>
+</html>

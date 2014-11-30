@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <script src="script/jquery-1.11.1.min.js"></script>
+        <script src="script/angular/1.2.26/angular.min.js"></script>
+        <script src="script/angular/1.2.26/angular-route.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+        <script src="script/app/accounts/app.js"></script>
+        <script src="script/app/services.js"></script>
+
+        <link rel="stylesheet" href = "style/bootstrap/3.2.0/bootstrap.min.css"/>
+
+        <style>
+            
+            
+        </style>
+    </head>
+
+    <body ng-app="HFWApp" ng-controller="accountController">
+            
+        <div id="main">
+                <div id="accountList">
+                    
+                        <div ng-repeat="x in accounts" ng-click="clickGoButton(x)" class="list-group-item accountEntry">
+
+                            <span>{{ x.name}}</span>
+                            <span>{{ x.currentBalance | currency }}</span>
+                   <i class="fa fa-chevron-right pull-right"></i>
+                        </div> 
+                    
+                   
+                </div>
+            </div>
+    </body>
+</html>
