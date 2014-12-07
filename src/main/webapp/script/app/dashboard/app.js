@@ -6,7 +6,9 @@ var hfwApp = angular.module('HFWApp', []);
 hfwApp.controller('dashboardController', function ($scope,$http,AccountService,RegistryService) {
     $scope.accountFormData = {};
     $scope.registryTransactions={}; 
-    $scope.registryTransactionFormData={}; 
+    $scope.registryTransactionFormData={};
+    $scope.registryTransactionFormCategorySplits=[];
+    
     $scope.selectedAccount = null;
     $scope.showAccountModal = false;
     $scope.showTransactionModal = false;
@@ -84,6 +86,22 @@ hfwApp.controller('dashboardController', function ($scope,$http,AccountService,R
         };
     
     $scope.addRegistryTransaction = function() {
+        //get the splits and turn it into a better list
+        var newCategories = [];
+        for (var i=0;i<10;i++) {
+            if ($scope.registryTransactionFormCategorySplits[i] != undefined) {
+                var categorySplit = new Object();
+                var categoryEntered = $scope.registryTransactionFormCategorySplits[i].category;
+                var txnAmountEntered = $scope.registryTransactionFormCategorySplits[i].txnAmount;
+                categorySplit.category = categoryEntered;
+                categorySplit.txnAmount = txnAmountEntered;
+                newCategories.push(categorySplit);
+                //console.log(categoryEntered + ":"+txnAmountEntered);    
+            }
+        }
+            console.log(newCategories);
+        $scope.registryTransactionFormData.categorySplits = newCategories;
+        
         RegistryService.saveTransaction($scope.registryTransactionFormData).success(function(response) {
         $scope.registryTransactions.push(response);
             
@@ -150,4 +168,4 @@ hfwApp.directive('modal', function () {
     };
   });
 
-
+    

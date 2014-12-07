@@ -127,14 +127,14 @@
             </div>
             <div id="appSidebar">
                 <div id="accountList">
-                    <ul>
-                        <li ng-repeat="x in accounts" ng-click="clickGoButton(x)" class="accountEntry">
+                    
+                        <div ng-repeat="x in accounts" ng-click="clickGoButton(x)" class="list-group-item accountEntry">
 
                             <span>{{ x.name}}</span>
                             <span>{{ x.currentBalance | currency }}</span>
                    
-                        </li> 
-                    </ul>
+                        </div> 
+                    
                    
                 </div>
             </div>
@@ -146,13 +146,13 @@
                     </ul>
                 </div>
                 <div id="accountTransactionList">
-                    <ul>
-                        <li ng-repeat="x in registryTransactions" class="registryTransaction">
+                    
+                        <div ng-repeat="x in registryTransactions" class="list-group-item registryTransaction">
                             <span>{{ x.txnDate }}</span>
                             <span>{{ x.payee}}</span>
                             <span>{{ x.txnAmount | currency }}</span>
-                        </li>
-                    </ul>
+                        </div>
+                    
 
                 </div>
 
@@ -173,8 +173,14 @@
                 
                 <input type="hidden" ng-model="registryTransactionFormData.primaryAccount">
                 Payee Name:<input typ="text" ng-model="registryTransactionFormData.payee"><br>
-                Transaction Amount:<input typ="text" ng-model="registryTransactionFormData.txnAmount"><br>
-
+                Transaction Amount:<input typ="text" size="5" ng-model="registryTransactionFormData.txnAmount"><br>
+              
+                
+                <div id="categorySplits">
+                    <div>Category:<input type="text" ng-model="registryTransactionFormCategorySplits[0].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[0].txnAmount"><br>
+                    <div>Category:<input type="text" ng-model="registryTransactionFormCategorySplits[1].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[1].txnAmount"><br>
+                    <div>Category:<input type="text" ng-model="registryTransactionFormCategorySplits[2].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[2].txnAmount"><br>
+                </div>
                 <button ng-click="addRegistryTransaction()">Add the Transaction!</button>
                 <button ng-click="clickNewTransactionCancel()">Cancel</button>
             </modal>
