@@ -22,7 +22,7 @@ hfwApp.controller('dashboardController', function ($scope,$http,AccountService,R
   
     $scope.clickGoButton = function(x) {
         console.log(x.id);
-        this.selectedAccount = x;
+        $scope.selectedAccount = x;
         $scope.registryTransactionFormData.primaryAccount=x.id;
         $scope.$emit('showRegisterTransactions', x);
         this.getTransactionsForAccount(x.id);
@@ -39,9 +39,28 @@ hfwApp.controller('dashboardController', function ($scope,$http,AccountService,R
     };
     
     $scope.showNewTransaction = function(x) {
+        $scope.registryTransactionFormData = {};
+        $scope.registryTransactionFormCategorySplits = [];
         $scope.showTransactionModal=true;
         //$("#transactionDetailsForm").show();
     };
+    
+    $scope.showTransactionForm = function(x) {
+        console.log(x);
+        $scope.registryTransactionFormData = x;
+        $scope.registryTransactionFormCategorySplits = [];
+        angular.forEach(x.categorySplits, function(value, key) {
+            //this.push(key + ': ' + value);
+            if (value.category != '') {
+                $scope.registryTransactionFormCategorySplits.push(value);    
+            }
+
+        });
+        
+        
+        $scope.showTransactionModal=true;
+    };
+    
     $scope.clickNewTransactionCancel=function(x) {
         $scope.showTransactionModal=false;
         //$("#transactionDetailsForm").hide();
@@ -88,9 +107,11 @@ hfwApp.controller('dashboardController', function ($scope,$http,AccountService,R
     $scope.addRegistryTransaction = function() {
         //get the splits and turn it into a better list
         var newCategories = [];
+       $scope.registryTransactionFormData.primaryAccount = $scope.selectedAccount.id;
         for (var i=0;i<10;i++) {
             if ($scope.registryTransactionFormCategorySplits[i] != undefined) {
                 var categorySplit = new Object();
+                
                 var categoryEntered = $scope.registryTransactionFormCategorySplits[i].category;
                 var txnAmountEntered = $scope.registryTransactionFormCategorySplits[i].txnAmount;
                 categorySplit.category = categoryEntered;
@@ -99,14 +120,26 @@ hfwApp.controller('dashboardController', function ($scope,$http,AccountService,R
                 //console.log(categoryEntered + ":"+txnAmountEntered);    
             }
         }
-            console.log(newCategories);
-        $scope.registryTransactionFormData.categorySplits = newCategories;
+            //console.log(newCategories);
         
-        RegistryService.saveTransaction($scope.registryTransactionFormData).success(function(response) {
-        $scope.registryTransactions.push(response);
+        $scope.registryTransactionFormData.categorySplits = newCategories;
+       
+        console.log($scope.registryTransactionFormData); 
+        if ($scope.registryTransactionFormData.id == undefined){
+            RegistryService.saveTransaction($scope.registryTransactionFormData).success(function(response) {
+                $scope.registryTransactions.push(response);
+            $scope.showTransactionModal=false;
+                console.log(response);
+            });
+        } else {
+            RegistryService.saveTransaction($scope.registryTransactionFormData).success(function(response) {
+               $scope.showTransactionModal=false;
+                console.log(response);
+            });
             
-            console.log(response);
-   });
+        } 
+        
+       
  /*
 	$http({
         method  : 'POST',

@@ -3,6 +3,7 @@ package com.hf.hfw.api.v1;
 import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.hfw.manager.RegisterManager;
 import com.hf.homefinanceshared.Account;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Path;
 
@@ -41,8 +42,13 @@ public class RegisterServiceImpl implements RegisterService{
     public RegisterTransaction saveTransaction(RegisterTransaction transaction) throws Exception {
         if (transaction.getId() != null) {
             RegisterTransaction retrievedtxn = this.registerManager.getTransactionById(transaction.getId());
-            transaction.setCreatedDate(retrievedtxn.getCreatedDate());
-            transaction.setLastModifiedDate(retrievedtxn.getLastModifiedDate());
+            
+            //transaction.setCreatedDate(retrievedtxn.getCreatedDate());
+            //transaction.setLastModifiedDate(retrievedtxn.getLastModifiedDate());
+            retrievedtxn.setPayee(transaction.getPayee());
+            retrievedtxn.setCategorySplits(transaction.getCategorySplits());
+            retrievedtxn.setTxnAmount(transaction.getTxnAmount());
+            retrievedtxn.setPrimaryAccount(transaction.getPrimaryAccount());
             return this.registerManager.updateTransaction(retrievedtxn);
         } else {
             return this.registerManager.createTransaction(transaction);

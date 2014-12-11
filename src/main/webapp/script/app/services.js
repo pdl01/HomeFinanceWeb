@@ -38,7 +38,8 @@ hfwApp.factory("RegistryService", function($http) {
       });
   };
  RegistryService.saveTransaction = function(transaction) {
-      return $http({
+     delete transaction.$$hashKey;
+     return $http({
         method  : 'POST',
         url     : '/HFW/services/api/v1/register/save',
         data    : JSON.stringify(transaction),  // pass in data as strings

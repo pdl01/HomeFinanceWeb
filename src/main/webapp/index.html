@@ -5,7 +5,7 @@
         <script src="script/jquery-1.11.1.min.js"></script>
         <script src="script/angular/1.2.26/angular.min.js"></script>
         <script src="script/angular/1.2.26/angular-route.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="script/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
         <script src="script/app/dashboard/app.js"></script>
         <script src="script/app/services.js"></script>
@@ -147,7 +147,7 @@
                 </div>
                 <div id="accountTransactionList">
                     
-                        <div ng-repeat="x in registryTransactions" class="list-group-item registryTransaction">
+                        <div ng-repeat="x in registryTransactions" ng-click="showTransactionForm(x)" class="list-group-item registryTransaction">
                             <span>{{ x.txnDate }}</span>
                             <span>{{ x.payee}}</span>
                             <span>{{ x.txnAmount | currency }}</span>
@@ -172,6 +172,7 @@
             <modal title="Transaction Details" visible="showTransactionModal" >
                 
                 <input type="hidden" ng-model="registryTransactionFormData.primaryAccount">
+                <input type="hidden" ng-model="registryTransactionFormData.id">
                 Payee Name:<input typ="text" ng-model="registryTransactionFormData.payee"><br>
                 Transaction Amount:<input typ="text" size="5" ng-model="registryTransactionFormData.txnAmount"><br>
               
@@ -181,7 +182,7 @@
                     <div>Category:<input type="text" ng-model="registryTransactionFormCategorySplits[1].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[1].txnAmount"><br>
                     <div>Category:<input type="text" ng-model="registryTransactionFormCategorySplits[2].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[2].txnAmount"><br>
                 </div>
-                <button ng-click="addRegistryTransaction()">Add the Transaction!</button>
+                <button ng-click="addRegistryTransaction()">Save</button>
                 <button ng-click="clickNewTransactionCancel()">Cancel</button>
             </modal>
             
