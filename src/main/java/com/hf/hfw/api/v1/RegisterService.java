@@ -20,6 +20,13 @@ public interface RegisterService {
     @Consumes({"application/json"})
     @Path("/get/all/{accountId}")    
     public List<RegisterTransaction> getTransactions(@PathParam("accountId") String accountId);
+  
+    @GET
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
+    @Path("/get/{accountId}/{number}/{start}")    
+    public List<RegisterTransaction> getTransactions(@PathParam("accountId") String accountId,@PathParam("number") String number,@PathParam("start") String start);
+  
     
     @GET
     @Produces({"application/json"})
@@ -40,5 +47,10 @@ public interface RegisterService {
     @Path("/delete/{transactionId}")
     public void deleteTransaction(@PathParam("transactionId") String transactionId); 
     
+    @POST
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
+    @Path("/validate")    
+    public ValidationResponse validateTransaction(RegisterTransaction transaction) throws Exception;
       
 }

@@ -24,4 +24,5 @@ public interface AccountManager {
     public Account updateAccount(Account account,AccountEvent.AccountEventType _type);
 
     public List<Account> getAccounts();
+    public List<Account> getAccountsByType(String type);
 }

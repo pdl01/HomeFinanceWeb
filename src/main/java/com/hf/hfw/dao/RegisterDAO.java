@@ -9,6 +9,7 @@ package com.hf.hfw.dao;
 import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.RegisterTransaction;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -16,8 +17,14 @@ import java.util.List;
  */
 public interface RegisterDAO {
     public List<RegisterTransaction> getTransactions(Account account);
+    public List<RegisterTransaction> getTransactionsByCategories(Account account,List<String> categories);
+
     public RegisterTransaction getTransactionById(String _id);
     public RegisterTransaction createTransaction(RegisterTransaction txn);
     public void deleteTransaction(RegisterTransaction txn);
     public RegisterTransaction updateTransaction(RegisterTransaction txn);
+    public List<RegisterTransaction> getTransactionsByCategoriesStartsWithForDateStartWith(Account account, String category, String date);
+    public Set<String> getAllCategories();
+    public List<RegisterTransaction> getTransactionsForDateStartWith(Account account, String date, boolean getCredit);
+
 }

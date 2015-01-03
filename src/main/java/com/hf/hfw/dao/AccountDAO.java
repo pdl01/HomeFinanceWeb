@@ -21,4 +21,5 @@ public interface AccountDAO {
     public void deleteAccount(Account account);
     public Account updateAccount(Account account);
     public List<Account> getAccounts();
+    public List<Account> getAccountsByType(String type);
 }

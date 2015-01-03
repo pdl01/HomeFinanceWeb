@@ -84,4 +84,10 @@ public class AccountManagerImpl implements AccountManager {
         this.fireAccountEvent(account, _type);
         return account;
     }
+
+    @Override
+    public List<Account> getAccountsByType(String type) {
+        //TODO use the cache for this
+        return this.accountDAO.getAccountsByType(type);
+    }
 }

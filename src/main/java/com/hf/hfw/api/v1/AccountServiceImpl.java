@@ -88,5 +88,10 @@ public class AccountServiceImpl implements AccountService {
            this.accountManager.deleteAccount(account);
         }
     }
+
+    @Override
+    public List<Account> getAccountsByType(String type) {
+return this.accountManager.getAccountsByType(type);
+    }
     
 }

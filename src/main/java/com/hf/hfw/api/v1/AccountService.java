@@ -24,6 +24,13 @@ public interface AccountService {
     @GET
     @Produces({"application/json"})
     @Consumes({"application/json"})
+    @Path("/search/type/{type}")    
+    public List<Account> getAccountsByType(@PathParam("type") String type);
+    
+    
+    @GET
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
     @Path("/getbyId/{accountId}")    
     public Account getById(@PathParam("accountId") String accountId);
     
