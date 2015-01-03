@@ -46,6 +46,13 @@
   	<property name="accountDAO" ref="accountDAO"/>
        
   </bean>
+  <bean id="reportManager" class="com.hf.hfw.manager.ReportManagerImpl">    
+  	<property name="reportDataGeneratorFactory" ref="reportDataGeneratorFactory"/>
+       
+  </bean>
+  <bean id="categoryCacheManagerImpl" class="com.hf.hfw.manager.CategoryCacheManagerImpl">    
+  	<property name="registerDAO" ref="registerDAO"/>
+  </bean>
   <!--
   <bean id="frameManager" class="com.keystone.manager.FrameManagerImpl">    
   	<property name="frameDAO" ref="frameDAO"/>
@@ -133,4 +140,16 @@
     <property name="accountManager" ref="accountManager"/>
     <property name="registerManager" ref="registerManager"/>
 </bean>
+<bean id="transactionCategoryListener" class="com.hf.hfw.accounts.listeners.TransactionCategoryListener">
+    <property name="categoryCacheManager" ref="categoryCacheManagerImpl"/>
+</bean>
+
+<bean id="reportDataGeneratorFactory" class="com.hf.hfw.reports.ReportDataGeneratorFactory"/>
+
+
+<bean id="incomeReportGenerator" class="com.hf.hfw.reports.IncomeReportGenerator">
+    <property name="accountManager" ref="accountManager"/>
+    <property name="registerManager" ref="registerManager"/>
+</bean>
+
 </beans>

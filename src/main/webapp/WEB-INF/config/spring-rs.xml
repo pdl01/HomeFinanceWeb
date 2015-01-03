@@ -11,7 +11,8 @@
               
                <ref bean="registerRestServicev1" />
                 <ref bean="accountRestServicev1" />
-
+                <ref bean="reportRestServicev1"/>
+                <ref bean="categoryLookupServicev1"/>
                <!--
               <ref bean="officialBillRestServicev1" />
               <ref bean="electedOfficialRestServicev1" />
@@ -32,5 +33,11 @@
       </bean>
       <bean id="accountRestServicev1" class="com.hf.hfw.api.v1.AccountServiceImpl" >
             <property name="accountManager" ref="accountManager"/> 
+      </bean>
+      <bean id="reportRestServicev1" class="com.hf.hfw.api.v1.ReportServiceImpl" >
+            <property name="reportManager" ref="reportManager"/> 
+      </bean>
+      <bean id="categoryLookupServicev1" class="com.hf.hfw.api.v1.CategoryLookupServiceImpl" >
+          <property name="categoryCacheManagerImpl" ref="categoryCacheManagerImpl"/>
       </bean>
 </beans>
