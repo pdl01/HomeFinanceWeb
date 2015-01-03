@@ -3,10 +3,12 @@ var hfwApp = angular.module('HFWApp', []);
 
 
 
-hfwApp.controller('dashboardController', function ($scope,$http,AccountService,RegistryService) {
+hfwApp.controller('dashboardController', function ($scope,$http,AccountService,RegistryService,ReportService) {
     $scope.accountFormData = {};
     $scope.registryTransactions={}; 
     $scope.registryTransactionFormData={};
+    $scope.reportControl = {};
+    $scope.pieChart=null;
     $scope.registryTransactionFormCategorySplits=[];
     
     $scope.selectedAccount = null;
@@ -14,8 +16,32 @@ hfwApp.controller('dashboardController', function ($scope,$http,AccountService,R
     $scope.showTransactionModal = false;
     //$http.get("/HFW/services/api/v1/accounts/search/all")
     //.success(function(response) {$scope.accounts = response;});    
-   $scope.accounts = {};
+   $scope.checking_accounts = [];
+   $scope.savings_accounts = [];
+   $scope.creditcard_accounts = [];
+   $scope.investment_accounts = [];
+   $scope.retirement_accounts = [];
+   $scope.debt_accounts = [];
+   $scope.asset_accounts = [];
+   $scope.other_accounts=[];
+
+
    AccountService.getAccounts().success(function(response) {
+       angular.forEach(response, function(value, key) {
+           console.log(value); 
+           if (value.accountType == 'Checking') {
+               $scope.checking_accounts.push(value);
+           } else if (value.accountType == 'Savings') {
+               $scope.savings_accounts.push(value);
+           } else {
+               $scope.other_accounts.push(value);
+           }
+           //this.push(key + ': ' + value);
+            //if (value.category != '') {
+            //    $scope.registryTransactionFormCategorySplits.push(value);    
+            //}
+
+        });
        $scope.accounts=response;
    });
         
@@ -26,6 +52,17 @@ hfwApp.controller('dashboardController', function ($scope,$http,AccountService,R
         $scope.registryTransactionFormData.primaryAccount=x.id;
         $scope.$emit('showRegisterTransactions', x);
         this.getTransactionsForAccount(x.id);
+        this.showRegistryTab();
+    };
+
+    $scope.clickEditAccount = function(x) {
+        console.log(x.id);
+        //$scope.selectedAccount = x;
+        $scope.accountFormData = x;
+        $scope.showAccountModal=true;
+        //$scope.registryTransactionFormData.primaryAccount=x.id;
+        //$scope.$emit('showRegisterTransactions', x);
+        //this.getTransactionsForAccount(x.id);
     };
 
     $scope.showNewAccount = function(x) {
@@ -66,7 +103,89 @@ hfwApp.controller('dashboardController', function ($scope,$http,AccountService,R
         //$("#transactionDetailsForm").hide();
     }
     
+    $scope.showRegistryTab=function() {
+        $("#accountTransactionList").show();
+        $("#accountReports").hide();
+        $("#accountOnlineFunctions").hide();
+        //$scope.showTransactionModal=false;
+        //$("#transactionDetailsForm").hide();
+    }
+    
+    $scope.addSplit=function() {
+        console.log("clicked add");
+        
+    }
+    
+    $scope.showReportTab=function() {
+        if ($scope.pieChart) {
+            $scope.pieChart.destroy();
+        }
+        $scope.reportControl = {};
+        $("#accountTransactionList").hide();
+        $("#accountReports").show();
+        $("#accountOnlineFunctions").hide();
+        plot1=null;
+        $("#pie1").html();
+        //$scope.showTransactionModal=false;
+        //$("#transactionDetailsForm").hide();
+    }
+    $scope.showOnlineTab=function(x) {
+        $("#accountTransactionList").hide();   
+        $("#accountReports").hide();
+        $("#accountOnlineFunctions").show();
+        //$scope.showTransactionModal=false;
+        //$("#transactionDetailsForm").hide();
+    }
+    
+    $scope.renderReport = function(plotData) {
+        if ($scope.pieChart) {
+            $scope.pieChart.destroy();
+        }
+        $scope.pieChart=$.jqplot('pie1', [plotData], {
+        gridPadding: {top:0, bottom:38, left:0, right:0},
+        seriesDefaults:{
+            renderer:$.jqplot.PieRenderer, 
+            trendline:{ show:false }, 
+            rendererOptions: { padding: 8, showDataLabels: true }
+        },
+        legend:{
+            show:true, 
+            placement: 'inside', 
+            rendererOptions: {
+                
+            }, 
+            location:'e',
+            marginTop: '15px'
+        }       
+    });
+    }
+    $scope.doReport=function (x) {
+        console.log($scope.selectedAccount.id+":"+$scope.reportControl.reportType + ":" + $scope.reportControl.reportPeriod);
+        //var plotData = [[['Income:Other',25],['Income:Net Pay',14],['c',7]]]
+        
+        if ($scope.reportControl.reportType == undefined) {
+            $scope.reportControl.reportType = "INCOME";
+        }
+        if ($scope.reportControl.reportPeriod== undefined) {
+            $scope.reportControl.reportPeriod = "currentMonth";
+        }
+        ReportService.getReportForPeriodForAccount($scope.selectedAccount.id,$scope.reportControl.reportType,$scope.reportControl.reportPeriod).success(function(response) {
+            //parse the data into jqplot data format
+            var plotData = [];
+            //call the renderReport with the data
+            angular.forEach(response.dataPoints, function(value, key) {
+                var x = [];
+                x.push(value.name);
+                x.push(value.value);
+                plotData.push(x);
+                
 
+            });
+            $scope.renderReport(plotData);
+        });
+        
+        
+    }
     
     $scope.addAccount = function() {
 	
