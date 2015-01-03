@@ -10,110 +10,11 @@
         <script src="script/app/dashboard/app.js"></script>
         <script src="script/app/services.js"></script>
         <link rel="stylesheet" href = "style/bootstrap/3.2.0/bootstrap.min.css"/>
+        <link rel="stylesheet" href = "style/dashboard.css"/>
 
-        <style>
-            #main {
-                width:100%;
-                overflow: auto;
-
-
-            }
-
-            #accountTransactionList {
-                width:100%;
-
-                overflow-y: scroll;
-            }
-            #accountList {
-                width:100%;
-                height: 300px;
-                overflow-y: scroll;
-            }
-            #accountDetailsForm {
-                display:none;
-            }
-            #transactionDetailsForm {
-                display:none;
-            }
-            #appMenu{
-                width:100%;
-                background-color: #269abc;
-            }
-            #appSidebar{
-                width:20%;
-                float:left;
-
-            }
-            #appMain{
-                width:80%;
-                float:right;
-            }
-            .accountEntry {
-                list-style-type: none;
-            }
-            .registryTransaction {
-                list-style-type: none;
-            }
-            .menuItem {
-                list-style-type: none;
-                display:inline;
-            }
-            #appMainTabs {
-                width:100%;
-            }
-            .tabItem {
-                list-style-type: none;
-                display:inline;
-            }
-            
-            div{
-
-            }
- .ng-modal-overlay {
-  /* A dark translucent div that covers the whole screen */
-  position:absolute;
-  z-index:9999;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background-color:#000000;
-  opacity: 0.8;
-}
-.ng-modal-dialog {
-  /* A centered div above the overlay with a box shadow. */
-  z-index:10000;
-  position: absolute;
-  width: 50%; /* Default */
-
-  /* Center the dialog */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-
-  background-color: #fff;
-  box-shadow: 4px 4px 80px #000;
-}
-.ng-modal-dialog-content {
-  padding:10px;
-  text-align: left;
-}
-.ng-modal-close {
-  position: absolute;
-  top: 3px;
-  right: 5px;
-  padding: 5px;
-  cursor: pointer;
-  font-size: 120%;
-  display: inline-block;
-  font-weight: bold;
-  font-family: 'arial', 'sans-serif';
-}           
-            
-            
-        </style>
+        <script class="include" type="text/javascript" src="jqplot.1.0.8r1250.dist/jquery.jqplot.min.js"></script>
+        <link class="include" rel="stylesheet" type="text/css" href="jqplot.1.0.8r1250.dist/jquery.jqplot.min.css" />
+        <script type="text/javascript" src="jqplot.1.0.8r1250.dist/plugins/jqplot.pieRenderer.min.js"></script>
     </head>
 
     <body ng-app="HFWApp" ng-controller="dashboardController">
@@ -127,22 +28,42 @@
             </div>
             <div id="appSidebar">
                 <div id="accountList">
-                    
-                        <div ng-repeat="x in accounts" ng-click="clickGoButton(x)" class="list-group-item accountEntry">
-
-                            <span>{{ x.name}}</span>
-                            <span>{{ x.currentBalance | currency }}</span>
-                   
+                    <div>Checking</div>
+                        <div ng-repeat="x in checking_accounts"  class="list-group-item accountEntry">
+                            <div ng-click="clickGoButton(x)">
+                                <span>{{ x.name}}</span>
+                                <span>{{ x.currentBalance | currency }}</span>
+                            </div>
+                            
+                            <div ><a href="#" ng-click="clickEditAccount(x)">Edit</a></div>
                         </div> 
-                    
+                    <div>Savings</div>
+                        <div ng-repeat="x in savings_accounts"  class="list-group-item accountEntry">
+                            <div ng-click="clickGoButton(x)">
+                                <span>{{ x.name}}</span>
+                                <span>{{ x.currentBalance | currency }}</span>
+                            </div>
+                            
+                            <div ><a href="#" ng-click="clickEditAccount(x)">Edit</a></div>
+                        </div>
+                     <div>Other</div>
+                        <div ng-repeat="x in other_accounts"  class="list-group-item accountEntry">
+                            <div ng-click="clickGoButton(x)">
+                                <span>{{ x.name}}</span>
+                                <span>{{ x.currentBalance | currency }}</span>
+                            </div>
+                            
+                            <div ><a href="#" ng-click="clickEditAccount(x)">Edit</a></div>
+                        </div>
                    
                 </div>
             </div>
             <div id="appMain">
                 <div id="appMainTabs">
                     <ul>
-                    <li class="tabItem" id="accountMenuItemRegister">Register</li>
-                    <li class="tabItem" id="accountMenuItemReport">Report</li>
+                    <li class="tabItem" id="accountMenuItemRegister" ng-click="showRegistryTab()">Register</li>
+                    <li class="tabItem" id="accountMenuItemReport" ng-click="showReportTab()" >Report</li>
+                    <li class="tabItem" id="accountMenuItemOnline" ng-click="showOnlineTab()">Online</li>
                     </ul>
                 </div>
                 <div id="accountTransactionList">
@@ -152,10 +73,52 @@
                             <span>{{ x.payee}}</span>
                             <span>{{ x.txnAmount | currency }}</span>
                         </div>
-                    
-
                 </div>
 
+                <div id="accountReports">
+                    <div id="reportControl">
+                    <select name="reportType" id="reportType" ng-model="reportControl.reportType">
+                        
+                        <option value="INCOME">Income</option>
+                        <option value="expensesPayee">Expenses By Payee</option>
+                        <option value="expensesCategory">Expenses By Category</option>
+                    </select>
+                    <select name="reportPeriod" id="reportPeriod" ng-model="reportControl.reportPeriod">
+                        
+                        <option value="currentMonth">Current Month</option>
+                        <option value="previousMonth">Previous Month</option>
+                        <option value="currentYear">Current Year</option>
+                        <option value="previousYear">Previous Year</option>
+                        <option value="customeDates">Custom</option>
+                    </select>
+                    
+                    
+                    <button ng-click="doReport(x)">Show Report</button>
+                    <a href="/HFW/reports.html">Advanced</a>
+                    </div>
+                    <div id="reportData">
+                            <div id="pie1" style="margin-top:20px; margin-left:20px; width:70%;"></div>
+
+
+
+  
+<script class="code" type="text/javascript">
+
+    var plot1 = "";
+
+
+</script>
+
+                        
+                    </div>
+                </div>
+                <div id="accountOnlineFunctions">
+                    online
+                    <form name="" enctype="multipart/form-data">
+                        <input type="file" name="uploadFile">
+                    </form>
+                </div>
+                
             </div>
 
 <modal title="Account Details" visible="showAccountModal" >
@@ -163,6 +126,7 @@
                 Account Name:<input typ="text" ng-model="accountFormData.name"><br>
                 Account Number:<input typ="text" ng-model="accountFormData.accountNumber"><br>
                 Opening Balance:<input typ="text" ng-model="accountFormData.startingBalance"><br>
+                Account Type:<input type="text" ng-model="accountFormData.accountType"><br>
                 <button ng-click="addAccount()">Add the Account!</button>
                 <button ng-click="clickNewAccountCancel()">Cancel</button>
                 </div>
@@ -173,15 +137,25 @@
                 
                 <input type="hidden" ng-model="registryTransactionFormData.primaryAccount">
                 <input type="hidden" ng-model="registryTransactionFormData.id">
+                Date:<input type="text" ng-model="registryTransactionFormData.txnDate"><br>
                 Payee Name:<input typ="text" ng-model="registryTransactionFormData.payee"><br>
-                Transaction Amount:<input typ="text" size="5" ng-model="registryTransactionFormData.txnAmount"><br>
-              
+                Transaction Amount:<input typ="text" size="5" ng-model="registryTransactionFormData.txnAmount"><input type="checkbox" value="true" ng-model="registryTransactionFormData.credit">Is Credit?<br>
                 
+                Category <a ng-click="addSplit()">Add Split</a><br/>
                 <div id="categorySplits">
-                    <div>Category:<input type="text" ng-model="registryTransactionFormCategorySplits[0].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[0].txnAmount"><br>
-                    <div>Category:<input type="text" ng-model="registryTransactionFormCategorySplits[1].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[1].txnAmount"><br>
-                    <div>Category:<input type="text" ng-model="registryTransactionFormCategorySplits[2].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[2].txnAmount"><br>
+                    <div class="categorySplit">Category:<input type="text" ng-model="registryTransactionFormCategorySplits[0].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[0].txnAmount"><br></div>
+                    <div class="categorySplit">Category:<input type="text" ng-model="registryTransactionFormCategorySplits[1].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[1].txnAmount"><br></div>
+                    <div class="categorySplit">Category:<input type="text" ng-model="registryTransactionFormCategorySplits[2].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[2].txnAmount"><br></div>
+                    <div class="categorySplit">Category:<input type="text" ng-model="registryTransactionFormCategorySplits[3].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[3].txnAmount"><br></div>
+                    <div class="categorySplit hidden">Category:<input type="text" ng-model="registryTransactionFormCategorySplits[4].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[4].txnAmount"><br></div>
+                    <div class="categorySplit hidden">Category:<input type="text" ng-model="registryTransactionFormCategorySplits[5].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[5].txnAmount"><br></div>
+                    <div class="categorySplit hidden">Category:<input type="text" ng-model="registryTransactionFormCategorySplits[6].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[6].txnAmount"><br></div>
+                    <div class="categorySplit hidden">Category:<input type="text" ng-model="registryTransactionFormCategorySplits[7].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[7].txnAmount"><br></div>
+                    <div class="categorySplit hidden">Category:<input type="text" ng-model="registryTransactionFormCategorySplits[8].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[8].txnAmount"><br></div>
+                    <div class="categorySplit hidden">Category:<input type="text" ng-model="registryTransactionFormCategorySplits[9].category"> Amount:<input type="text" size="5" ng-model="registryTransactionFormCategorySplits[9].txnAmount"><br></div>
+ 
                 </div>
+                        Status:<input typ="text" ng-model="registryTransactionFormData.statusTxt"><br>
                 <button ng-click="addRegistryTransaction()">Save</button>
                 <button ng-click="clickNewTransactionCancel()">Cancel</button>
             </modal>
