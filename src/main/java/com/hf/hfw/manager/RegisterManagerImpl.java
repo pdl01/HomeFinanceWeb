@@ -66,13 +66,19 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
         _txn.setLastModifiedDate(new Date());
         if (_txn.getId() == null) {
             _txn.setCreatedDate(new Date());
-            if (_txn.getTxnDate() == null) {
+            if (_txn.getTxnDate() == null || "".equals(_txn.getTxnDate())) {
                 _txn.setTxnDate(transactionDateFormatter.format(new Date()));
+            }
+            if (_txn.getStatusTxt() == null || "".equals(_txn.getStatusTxt())) {
+                _txn.setStatusTxt("p");
             }
             RegisterTransaction txn = this.registerDAO.createTransaction(_txn);
             this.fireTransactionEvent(txn, TransactionEvent.TransactionEventType.ADDED);
             return txn;
         } else {
+            if (_txn.getTxnDate() == null || "".equals(_txn.getTxnDate())) {
+                _txn.setTxnDate(transactionDateFormatter.format(new Date()));
+            }
             RegisterTransaction txn = this.registerDAO.updateTransaction(_txn);
             this.fireTransactionEvent(txn, TransactionEvent.TransactionEventType.MODIFIED);
             return txn;
@@ -85,5 +91,22 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
         appContext.publishEvent(event);
 
     }
+
+    @Override
+    public List<RegisterTransaction> getTransactionsByCategories(Account account, List<String> categories) {
+        return this.registerDAO.getTransactionsByCategories(account, categories);
+    }
+    
+    @Override
+    public List<RegisterTransaction> getTransactionsByCategoriesStartsWithForDateStartWith(Account account, String category,String date){
+        return this.registerDAO.getTransactionsByCategoriesStartsWithForDateStartWith(account, category,date);
+
+    }
+
+    @Override
+    public List<RegisterTransaction> getTransactionsForDateStartWith(Account account, String date, boolean getCredit) {
+        return this.registerDAO.getTransactionsForDateStartWith(account, date, getCredit);
+        }
+            
 
 }
