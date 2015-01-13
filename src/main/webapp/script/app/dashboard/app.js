@@ -5,6 +5,7 @@ var hfwApp = angular.module('HFWApp', []);
 
 hfwApp.controller('dashboardController', function ($scope,$http,AccountService,RegistryService,ReportService) {
     $scope.accountFormData = {};
+   
     $scope.registryTransactions={}; 
     $scope.registryTransactionFormData={};
     $scope.reportControl = {};
