@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <script src="script/jquery-1.11.1.min.js"></script>
+        <script src="script/angular/1.2.26/angular.min.js"></script>
+        <script src="script/angular/1.2.26/angular-route.min.js"></script>
+        <script src="script/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+        <script src="script/app/settings/app.js"></script>
+        <script src="script/app/settings/services.js"></script>
+        <link rel="stylesheet" href = "style/bootstrap/3.2.0/bootstrap.min.css"/>
+        <link rel="stylesheet" href = "style/dashboard.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        
+    </head>
+
+    <body ng-app="HFWSettingsApp" ng-controller="settingsController">
+        <div id="header">
+            <ul>
+                <li class="headerItem"><a href="/HFW">Account Dashboard</a></li>
+                <li class="headerItem"><a href="/HFW/budget.html">Budget</a></li>
+                <li class="headerItem"><a href="/HFW/settings.html">Settings</a></li>
+            </ul>
+        </div>
+        <div id="main">
+        <div id="application_repository">
+            <select id="type">
+                <option value="mongo">Mongo</option>
+            </select><br>
+            Host: <input type="text" ng-model="repositoryFormData.host"><br>
+            Port: <input type="text" ng-model="repositoryFormData.port"><br>
+            Database:<input type="text" ng-model="repositoryFormData.database"><br>
+            User:<input type="text" ng-model="repositoryFormData.username"><br>
+            Password:<input type="text" ng-model="repositoryFormData.password"><br>
+            <button ng-click="saveRepositoryInformation()">Save</button>
+        </div>
+</div>
+
+    </body>
+</html>
