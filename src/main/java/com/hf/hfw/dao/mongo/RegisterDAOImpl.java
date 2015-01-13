@@ -26,29 +26,29 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
     public List<RegisterTransaction> getTransactions(Account account) {
         Query searchTransactionsQuery = new Query(Criteria.where("primaryAccount").is(account.getId()));
         searchTransactionsQuery.with(new Sort(Sort.Direction.ASC,"txnDate"));
-        return this.mongoTemplate.find(searchTransactionsQuery, RegisterTransaction.class);
+        return this.getMongoTemplate().find(searchTransactionsQuery, RegisterTransaction.class);
     }
 
     @Override
     public RegisterTransaction getTransactionById(String _id) {
         Query searchTransactionQuery = new Query(Criteria.where("id").is(_id));
-        return this.mongoTemplate.findOne(searchTransactionQuery, RegisterTransaction.class);
+        return this.getMongoTemplate().findOne(searchTransactionQuery, RegisterTransaction.class);
     }
 
     @Override
     public RegisterTransaction createTransaction(RegisterTransaction txn) {
-        this.mongoTemplate.save(txn);
+        this.getMongoTemplate().save(txn);
         return txn;
     }
 
     @Override
     public void deleteTransaction(RegisterTransaction txn) {
-        this.mongoTemplate.remove(txn);
+        this.getMongoTemplate().remove(txn);
     }
 
     @Override
     public RegisterTransaction updateTransaction(RegisterTransaction txn) {
-        this.mongoTemplate.save(txn);
+        this.getMongoTemplate().save(txn);
         return txn;
     }
 
@@ -58,7 +58,7 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
         searchTransactionsQuery.with(new Sort(Sort.Direction.ASC,"txnDate"));
 
         searchTransactionsQuery.addCriteria(Criteria.where("categorySplits.category").in(categories));
-        return this.mongoTemplate.find(searchTransactionsQuery, RegisterTransaction.class);
+        return this.getMongoTemplate().find(searchTransactionsQuery, RegisterTransaction.class);
     }
 
     @Override
@@ -72,14 +72,14 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
         }
         //searchTransactionsQuery.addCriteria(Criteria.where("{\"categorySplits.category\": {$regex : '^" + category + "'} }"));
         //"{\"categorySplits.category\": {$regex : '^" + category + "'} }"
-        return this.mongoTemplate.find(searchTransactionsQuery, RegisterTransaction.class);
+        return this.getMongoTemplate().find(searchTransactionsQuery, RegisterTransaction.class);
     }
 
     
     
     @Override
     public Set<String> getAllCategories() {
-        List<RegisterTransaction> txns = this.mongoTemplate.findAll(RegisterTransaction.class);
+        List<RegisterTransaction> txns = this.getMongoTemplate().findAll(RegisterTransaction.class);
         TreeSet<String> categories = new TreeSet<String>();
         for (RegisterTransaction txn : txns) {
             for (CategorySplit split : txn.getCategorySplits()) {
@@ -104,6 +104,6 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
         }
         //searchTransactionsQuery.addCriteria(Criteria.where("{\"categorySplits.category\": {$regex : '^" + category + "'} }"));
         //"{\"categorySplits.category\": {$regex : '^" + category + "'} }"
-        return this.mongoTemplate.find(searchTransactionsQuery, RegisterTransaction.class);    }
+        return this.getMongoTemplate().find(searchTransactionsQuery, RegisterTransaction.class);    }
 
 }

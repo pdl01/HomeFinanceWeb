@@ -17,6 +17,11 @@ public class ReportDataGeneratorFactory {
             return null;
         } else if (reportType.toLowerCase().equals("income")) {
             return (ReportGenerator)ApplicationState.getApplicationState().getCtx().getBean("incomeReportGenerator");
+        } else if (reportType.toLowerCase().equals("expensebypayee")){
+            return (ReportGenerator)ApplicationState.getApplicationState().getCtx().getBean("expenseByPayeeReportGenerator");
+
+        } else if (reportType.toLowerCase().equals("expensebycategory")) {
+            return (ReportGenerator)ApplicationState.getApplicationState().getCtx().getBean("expenseByCategoryReportGenerator");
         } else {
             return null;
         }

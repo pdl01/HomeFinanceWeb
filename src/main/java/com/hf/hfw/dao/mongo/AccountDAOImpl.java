@@ -14,47 +14,47 @@ public class AccountDAOImpl extends AbstractMongoDAO implements AccountDAO {
 
     @Override
     public Account createAccount(Account account) {
-        this.mongoTemplate.save(account);
+        this.getMongoTemplate().save(account);
         return account;
     }
 
     @Override
     public void deleteAccount(Account account) {
-        this.mongoTemplate.remove(account);
+        this.getMongoTemplate().remove(account);
     }
 
     @Override
     public Account updateAccount(Account account) {
-        this.mongoTemplate.save(account);
+        this.getMongoTemplate().save(account);
         return account;
     }
 
     @Override
     public Account getAccountById(String _id) {
         Query searchAccountQuery = new Query(Criteria.where("id").is(_id));
-        return this.mongoTemplate.findOne(searchAccountQuery, Account.class);
+        return this.getMongoTemplate().findOne(searchAccountQuery, Account.class);
     }
 
     @Override
     public Account getAccountByName(String _name) {
         Query searchAccountQuery = new Query(Criteria.where("name").is(_name));
-        return this.mongoTemplate.findOne(searchAccountQuery, Account.class);
+        return this.getMongoTemplate().findOne(searchAccountQuery, Account.class);
     }
 
     @Override
     public Account getAccountByExternalId(String _id) {
         Query searchAccountQuery = new Query(Criteria.where("externalId").is(_id));
-        return this.mongoTemplate.findOne(searchAccountQuery, Account.class);
+        return this.getMongoTemplate().findOne(searchAccountQuery, Account.class);
     }
 
     @Override
     public List<Account> getAccounts() {
-        return this.mongoTemplate.findAll(Account.class);
+        return this.getMongoTemplate().findAll(Account.class);
     }
 
     @Override
     public List<Account> getAccountsByType(String _type) {
         Query searchAccountQuery = new Query(Criteria.where("accountType").is(_type));
-        return this.mongoTemplate.find(searchAccountQuery, Account.class);
+        return this.getMongoTemplate().find(searchAccountQuery, Account.class);
     }
 }

@@ -46,15 +46,6 @@ public class IncomeReportGenerator implements ReportGenerator {
 
     @Override
     public ReportData generateReportData(ReportOptions reportOptions) {
-        //build a list of income categories
-        //List<String> categories = new ArrayList<String>();
-        //categories.add("Income");
-        //categories.add("Income:Net Salary");
-        //categories.add("Income:Other");
-
-        //Set<String> allCatSet = new TreeSet<String>();
-        //allCatSet.addAll(categories);
-
         //load all accounts
         List<Account> accounts = new ArrayList<Account>();
         if (reportOptions.getAccountId() != null) {
