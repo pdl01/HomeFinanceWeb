@@ -6,9 +6,12 @@
 
 
  <bean id="accountDAO" class="com.hf.hfw.dao.mongo.AccountDAOImpl">    
-    	<property name="mongoTemplate" ref="mongoTemplate"/>
+    	<property name="dbFactory" ref="dbFactory"/>
     </bean>
      <bean id="registerDAO" class="com.hf.hfw.dao.mongo.RegisterDAOImpl">    
-    	<property name="mongoTemplate" ref="mongoTemplate"/>
+    	<property name="dbFactory" ref="dbFactory"/>
+    </bean>
+    <bean id="budgetDAO" class="com.hf.hfw.dao.mongo.BudgetDAOImpl">    
+    	<property name="dbFactory" ref="dbFactory"/>
     </bean>
 </beans>

@@ -46,6 +46,10 @@
   	<property name="accountDAO" ref="accountDAO"/>
        
   </bean>
+  <bean id="budgetManager" class="com.hf.hfw.manager.BudgetManagerImpl">    
+  	<property name="budgetDAO" ref="budgetDAO"/>
+       
+  </bean>
   <bean id="reportManager" class="com.hf.hfw.manager.ReportManagerImpl">    
   	<property name="reportDataGeneratorFactory" ref="reportDataGeneratorFactory"/>
        
@@ -130,8 +134,16 @@
     -->
 <!-- more bean definitions go here -->
 <bean id="applicationState" class="com.hf.hfw.application.ApplicationState" init-method="init">
+        <property name="configurationDirectoryService" ref="configurationDirectoryService"/>
+        <property name="dbFactory" ref="dbFactory"/>
+
 </bean>
-  
+  <bean id="configurationDirectoryService" class="com.hf.hfw.application.ConfigurationDirectoryService">
+      
+  </bean>
+  <bean id="dbFactory" class="com.hf.hfw.application.DBFactory">
+      
+  </bean>
   <bean id="accountBalanceListener" class="com.hf.hfw.accounts.listeners.AccountBalanceListener">    
     <property name="accountManager" ref="accountManager"/>
     <property name="registerManager" ref="registerManager"/>
@@ -151,5 +163,12 @@
     <property name="accountManager" ref="accountManager"/>
     <property name="registerManager" ref="registerManager"/>
 </bean>
-
+<bean id="expenseByCategoryReportGenerator" class="com.hf.hfw.reports.ExpenseByCategoryReportGenerator">
+    <property name="accountManager" ref="accountManager"/>
+    <property name="registerManager" ref="registerManager"/>
+</bean>
+<bean id="expenseByPayeeReportGenerator" class="com.hf.hfw.reports.ExpenseByPayeeReportGenerator">
+    <property name="accountManager" ref="accountManager"/>
+    <property name="registerManager" ref="registerManager"/>
+</bean>
 </beans>

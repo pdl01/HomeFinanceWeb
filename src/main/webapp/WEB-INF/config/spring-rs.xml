@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                 http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
     <!-- do not use import statements if CXFServlet init parameters link to this beans.xml --> 
 
-      <jaxrs:server id="coreServicesV1" address="/api/v1">
-            <jaxrs:serviceBeans>
+    <jaxrs:server id="coreServicesV1" address="/api/v1">
+        <jaxrs:serviceBeans>
               
-               <ref bean="registerRestServicev1" />
-                <ref bean="accountRestServicev1" />
-                <ref bean="reportRestServicev1"/>
-                <ref bean="categoryLookupServicev1"/>
-               <!--
-              <ref bean="officialBillRestServicev1" />
-              <ref bean="electedOfficialRestServicev1" />
-              -->
+            <ref bean="registerRestServicev1" />
+            <ref bean="accountRestServicev1" />
+            <ref bean="reportRestServicev1"/>
+            <ref bean="categoryLookupServicev1"/>
+            <ref bean="budgetRestServicev1"/>
+            <ref bean="settingsRestServicev1"/>
+            <!--
+            <ref bean="officialBillRestServicev1" />
+            <ref bean="electedOfficialRestServicev1" />
+            -->
         </jaxrs:serviceBeans>
         <jaxrs:providers>
             <ref bean="jsonProvider"/>
@@ -24,20 +26,26 @@
             <ref bean="securityInteceptor"/>
             -->
         </jaxrs:providers>
-      </jaxrs:server>
-        <bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+    </jaxrs:server>
+    <bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
       
         
-      <bean id="registerRestServicev1" class="com.hf.hfw.api.v1.RegisterServiceImpl" >
-            <property name="registerManager" ref="registerManager"/> 
-      </bean>
-      <bean id="accountRestServicev1" class="com.hf.hfw.api.v1.AccountServiceImpl" >
-            <property name="accountManager" ref="accountManager"/> 
-      </bean>
-      <bean id="reportRestServicev1" class="com.hf.hfw.api.v1.ReportServiceImpl" >
-            <property name="reportManager" ref="reportManager"/> 
-      </bean>
-      <bean id="categoryLookupServicev1" class="com.hf.hfw.api.v1.CategoryLookupServiceImpl" >
-          <property name="categoryCacheManagerImpl" ref="categoryCacheManagerImpl"/>
-      </bean>
+    <bean id="registerRestServicev1" class="com.hf.hfw.api.v1.RegisterServiceImpl" >
+        <property name="registerManager" ref="registerManager"/> 
+    </bean>
+    <bean id="accountRestServicev1" class="com.hf.hfw.api.v1.AccountServiceImpl" >
+        <property name="accountManager" ref="accountManager"/> 
+    </bean>
+    <bean id="reportRestServicev1" class="com.hf.hfw.api.v1.ReportServiceImpl" >
+        <property name="reportManager" ref="reportManager"/> 
+    </bean>
+    <bean id="budgetRestServicev1" class="com.hf.hfw.api.v1.BudgetServiceImpl" >
+        <property name="budgetManager" ref="budgetManager"/> 
+    </bean>
+    <bean id="categoryLookupServicev1" class="com.hf.hfw.api.v1.CategoryLookupServiceImpl" >
+        <property name="categoryCacheManagerImpl" ref="categoryCacheManagerImpl"/>
+    </bean>
+    <bean id="settingsRestServicev1" class="com.hf.hfw.api.v1.settings.SettingsServiceImpl" >
+        <property name="configurationDirectoryService" ref="configurationDirectoryService"/>
+    </bean>
 </beans>

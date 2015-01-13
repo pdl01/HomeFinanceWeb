@@ -17,15 +17,23 @@
     <property name="password" value="eoci_sys"/>
 </bean>
 -->
-	<mongo:mongo host="127.0.0.1" port="27017" />
-	<mongo:db-factory dbname="hfw-web" />
+	<!--<mongo:mongo host="127.0.0.1" port="27017" />-->
+	<!--<mongo:db-factory dbname="hfw-web" />-->
  
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+		<constructor-arg name="mongo" ref="mongoConfigBean" />
+                <constructor-arg name="databaseName" value="hfw-web"/>
+                <constructor-arg name="userCredentials" ref="mongoCredentials"/>
 	</bean>
-	  <bean id="mongoConfigBean" class="org.springframework.data.mongodb.core.MongoFactoryBean">
-    	<property name="host" value="localhost"/>
+
+        <bean id="mongoConfigBean" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+            <property name="host" value="127.0.0.1"/>
+            <property name="port" value="27017"/>
   	</bean>
-	 <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-	
+
+        <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	<bean id="mongoCredentials"  class="org.springframework.data.authentication.UserCredentials">
+            <constructor-arg name="username" value="hfw-web" />
+            <constructor-arg name="password" value="hfw-web20140111" />
+        </bean>
 </beans>
