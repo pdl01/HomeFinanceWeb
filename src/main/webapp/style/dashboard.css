@@ -4,7 +4,16 @@
 
 
 }
+#header {
+    width:100%;
+    overflow: auto;
+}
 
+.headerItem {
+     list-style-type: none;
+    display:inline;
+        cursor: pointer;
+}
 #accountTransactionList {
     width:100%;
     overflow-y: scroll;
