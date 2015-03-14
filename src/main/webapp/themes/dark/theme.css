@@ -1,0 +1,17 @@
+#appMenu{
+    background-color: darkslategray;
+    color:white;
+    
+}
+.headerItem {
+    color:white;
+}
+#header {
+   background-color: darkslategray;
+   color: white;
+}
+
+.accountListHeader {
+   background-color: darkslategray;
+   color: white;    
+}

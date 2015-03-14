@@ -3,121 +3,319 @@ var hfwApp = angular.module('HFWApp', []);
 
 
 
-hfwApp.controller('dashboardController', function ($scope,$http,AccountService,RegistryService,ReportService) {
+hfwApp.controller('dashboardController', function ($scope, $http, AccountService, RegistryService, ReportService, CategoryLookupService,DateService) {
     $scope.accountFormData = {};
-   
-    $scope.registryTransactions={}; 
-    $scope.registryTransactionFormData={};
+
+    $scope.onlineData = {};
+
+    //$scope.onlineData.src="";
+    $scope.uploadProgress = "";
+    $scope.pendingRegistryTransactions = {};
+    $scope.showOnlineMatchingModal = false;
+    $scope.onlineTxnMatches = {};
+
+    $scope.registryTransactions = {};
+    $scope.registryTransactionFormData = {};
+    $scope.hideTxnRetrievedCategories = true;
+    $scope.retrievedCategories = {};
+    $scope.categoryTypingIndex = -1;
+
+    $scope.pendingMatchedTransactions = [];
+
     $scope.reportControl = {};
-    $scope.pieChart=null;
-    $scope.registryTransactionFormCategorySplits=[];
-    
+    $scope.pieChart = null;
+    $scope.registryTransactionFormCategorySplits = [];
+
+
     $scope.selectedAccount = null;
     $scope.showAccountModal = false;
     $scope.showTransactionModal = false;
     //$http.get("/HFW/services/api/v1/accounts/search/all")
     //.success(function(response) {$scope.accounts = response;});    
-   $scope.checking_accounts = [];
-   $scope.savings_accounts = [];
-   $scope.creditcard_accounts = [];
-   $scope.investment_accounts = [];
-   $scope.retirement_accounts = [];
-   $scope.debt_accounts = [];
-   $scope.asset_accounts = [];
-   $scope.other_accounts=[];
+    $scope.checking_accounts = [];
+    $scope.savings_accounts = [];
+    $scope.creditcard_accounts = [];
+    $scope.investment_accounts = [];
+    $scope.retirement_accounts = [];
+    $scope.debt_accounts = [];
+    $scope.asset_accounts = [];
+    $scope.other_accounts = [];
+    
+    $scope.hideAccounts=[];
+    $scope.hideAccounts['checking']=false;
+    $scope.hideAccounts['savings']=false;
+    $scope.hideAccounts['retirement']=false;
+    $scope.hideAccounts['investment']=false;
+
+    $scope.hideAccounts['creditcard']=false;
+    $scope.hideAccounts['other']=false;
 
 
-   AccountService.getAccounts().success(function(response) {
-       angular.forEach(response, function(value, key) {
-           console.log(value); 
-           if (value.accountType == 'Checking') {
-               $scope.checking_accounts.push(value);
-           } else if (value.accountType == 'Savings') {
-               $scope.savings_accounts.push(value);
-           } else {
-               $scope.other_accounts.push(value);
-           }
-           //this.push(key + ': ' + value);
-            //if (value.category != '') {
-            //    $scope.registryTransactionFormCategorySplits.push(value);    
-            //}
+    $scope.txnIndex = 0;  //this is the start index of txns to retrieve 
+    $scope.numberTxnsToRetrieve = 25;
+
+    $scope.txnDateControl = {};
+    $scope.txnDateControl.year = "";
+    $scope.txnDateControl.month = "";
+
+    $scope.$watch('registryTransactionFormCategorySplits[0].category', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        if (newValue != undefined && newValue.length > 3) {
+            $scope.categoryTypingIndex = 0;
+            $scope.getCategories(newValue);
+        } else {
+            $scope.categoryTypingIndex = -1;
+            $scope.retrievedCategories = [];
+
+        }
+    })
+    $scope.$watch('registryTransactionFormCategorySplits[1].category', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        if (newValue != undefined && newValue.length > 3) {
+            $scope.categoryTypingIndex = 1;
+            $scope.getCategories(newValue);
+        } else {
+            $scope.categoryTypingIndex = -1;
+            $scope.retrievedCategories = [];
+
+        }
+
+    })
+    $scope.$watch('registryTransactionFormCategorySplits[2].category', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        if (newValue != undefined && newValue.length > 3) {
+            $scope.categoryTypingIndex = 1;
+            $scope.getCategories(newValue);
+        } else {
+            $scope.categoryTypingIndex = -1;
+            $scope.retrievedCategories = [];
+
+        }
+
+    })
+    $scope.$watch('registryTransactionFormCategorySplits[3].category', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        if (newValue != undefined && newValue.length > 3) {
+            $scope.categoryTypingIndex = 1;
+            $scope.getCategories(newValue);
+        } else {
+            $scope.categoryTypingIndex = -1;
+            $scope.retrievedCategories = [];
+
+        }
+
+    })
+    $scope.$watch('registryTransactionFormCategorySplits[4].category', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        if (newValue != undefined && newValue.length > 3) {
+            $scope.categoryTypingIndex = 1;
+            $scope.getCategories(newValue);
+        } else {
+            $scope.categoryTypingIndex = -1;
+            $scope.retrievedCategories = [];
+
+        }
+
+    })
+
+
+    $scope.toggleAccountGroupHide = function(accountType) {
+        console.log(accountType);
+        
+        $scope.hideAccounts[accountType] = !$scope.hideAccounts[accountType];
+    }
+
+    $scope.getAccounts = function () {
+        AccountService.getAccounts().success(function (response) {
+            angular.forEach(response, function (value, key) {
+                console.log(value);
+                if (value.accountType == 'Checking') {
+                    $scope.checking_accounts.push(value);
+                } else if (value.accountType == 'Savings') {
+                    $scope.savings_accounts.push(value);
+                } else if (value.accountType == 'Retirement') {
+                    $scope.retirement_accounts.push(value);
+                } else if (value.accountType == 'Investment') {
+                    $scope.investment_accounts.push(value);
+                } else if (value.accountType == 'Credit Card') {
+                    $scope.creditcard_accounts.push(value);
+
+                } else {
+                    $scope.other_accounts.push(value);
+                }
+                //this.push(key + ': ' + value);
+                //if (value.category != '') {
+                //    $scope.registryTransactionFormCategorySplits.push(value);    
+                //}
+
+            });
+            $scope.accounts = response;
+        });
+    }
+    $scope.init = function() {
+        $scope.getCurrentDate();
+        $scope.getAccounts();    
+    }
+    $scope.getCurrentDate = function () {
+        DateService.lookupCurrent().success(function (response) {
+
+            if (response.length > 0) {
+                
+                //parse out the date and get the year and month out; format should be YYYY-MM-DD
+                var retrievedDate = response.split("-");
+                $scope.currentDate = response;    
+                $scope.txnDateControl.year = retrievedDate[0];
+                $scope.txnDateControl.month = retrievedDate[1];
+            } else {
+                $scope.txnDateControl.year = "2015";
+                $scope.txnDateControl.month = "01";
+                $scope.currentDate = "2015-01-01";    
+
+            }
+
+        });        
+    }
+    $scope.init();
+
+    $scope.refreshAccounts = function () {
+        $scope.checking_accounts = [];
+        $scope.savings_accounts = [];
+        $scope.retirement_accounts=[];
+        $scope.investment_accounts=[];
+        $scope.creditcard_accounts = [];
+        $scope.other_accounts = [];
+        $scope.accounts = {};
+        $scope.getAccounts();
+    }
+    $scope.selectFile = function ()
+    {
+        $("#file").click();
+    }
+
+    $scope.getCategories = function (val) {
+        CategoryLookupService.lookup(val).success(function (response) {
+
+            if (response.length > 0) {
+                $scope.hideTxnRetrievedCategories = false;
+                $scope.retrievedCategories = response;
+            } else {
+                $scope.hideTxnRetrievedCategories = true;
+                $scope.retrievedCategories = [];
+            }
 
         });
-       $scope.accounts=response;
-   });
-        
-  
-    $scope.clickGoButton = function(x) {
+    };
+
+    $scope.selectRetrievedCategory = function (val, element) {
+        console.log(val);
+        console.log($scope.categoryTypingIndex);
+        if ($scope.categoryTypingIndex != "-1") {
+            //$scope.budgetItemFormData.category = val;
+            $scope.registryTransactionFormCategorySplits[$scope.categoryTypingIndex].category = val;
+            $scope.retrievedCategories = [];
+            $scope.hideTxnRetrievedCategories = true;
+            $scope.categoryTypingIndex = -1
+        }
+        console.log($scope.categoryTypingIndex);
+
+    };
+
+
+    $scope.fileNameChanged = function () {
+        console.log($('#file'));
+    }
+    $scope.addOnlineData = function () {
+        console.log($scope.onlineData);
+        console.log($('#file'));
+        RegistryService.uploadData($scope.selectedAccount.id, $('#file'));
+        /*RegistryService.uploadData($scope.selectedAccount.id,$('#file')).success(function(response) {
+         $scope.onlineData = "";
+         console.log("Successful");
+         });
+         */
+    };
+    //TODO:rename this to click account
+    $scope.clickGoButton = function (x) {
         console.log(x.id);
         $scope.selectedAccount = x;
-        $scope.registryTransactionFormData.primaryAccount=x.id;
+        $scope.txnIndex = 0;
+        $scope.registryTransactions = [];
+        $scope.registryTransactionFormData.primaryAccount = x.id;
         $scope.$emit('showRegisterTransactions', x);
-        this.getTransactionsForAccount(x.id);
+        //this.getTransactionsForAccount(x.id);
+        this.getTransactionsForMonth(x.id);
         this.showRegistryTab();
     };
 
-    $scope.clickEditAccount = function(x) {
+    $scope.clickEditAccount = function (x) {
         console.log(x.id);
         //$scope.selectedAccount = x;
         $scope.accountFormData = x;
-        $scope.showAccountModal=true;
+        $scope.showAccountModal = true;
         //$scope.registryTransactionFormData.primaryAccount=x.id;
         //$scope.$emit('showRegisterTransactions', x);
         //this.getTransactionsForAccount(x.id);
     };
 
-    $scope.showNewAccount = function(x) {
-        $scope.showAccountModal=true;
+    $scope.showNewAccount = function (x) {
+        $scope.accountFormData = {};
+        $scope.showAccountModal = true;
         //$("#accountDetailsForm").show();
     };
 
-    $scope.clickNewAccountCancel = function(x) {
-        $scope.showAccountModal=false;
+    $scope.clickNewAccountCancel = function (x) {
+        $scope.showAccountModal = false;
         //$("#accountDetailsForm").hide();
     };
-    
-    $scope.showNewTransaction = function(x) {
+
+    $scope.showNewTransaction = function (x) {
         $scope.registryTransactionFormData = {};
+        $scope.registryTransactionFormData.txnDate = $scope.currentDate;    
         $scope.registryTransactionFormCategorySplits = [];
-        $scope.showTransactionModal=true;
+        $scope.showTransactionModal = true;
         //$("#transactionDetailsForm").show();
     };
-    
-    $scope.showTransactionForm = function(x) {
+
+    $scope.showTransactionForm = function (x) {
         console.log(x);
         $scope.registryTransactionFormData = x;
         $scope.registryTransactionFormCategorySplits = [];
-        angular.forEach(x.categorySplits, function(value, key) {
+        angular.forEach(x.categorySplits, function (value, key) {
             //this.push(key + ': ' + value);
             if (value.category != '') {
-                $scope.registryTransactionFormCategorySplits.push(value);    
+                $scope.registryTransactionFormCategorySplits.push(value);
             }
 
         });
-        
-        
-        $scope.showTransactionModal=true;
+
+
+        $scope.showTransactionModal = true;
     };
-    
-    $scope.clickNewTransactionCancel=function(x) {
-        $scope.showTransactionModal=false;
+
+    $scope.clickNewTransactionCancel = function (x) {
+        $scope.showTransactionModal = false;
         //$("#transactionDetailsForm").hide();
     }
-    
-    $scope.showRegistryTab=function() {
+
+    $scope.showRegistryTab = function () {
         $("#accountTransactionList").show();
         $("#accountReports").hide();
         $("#accountOnlineFunctions").hide();
         //$scope.showTransactionModal=false;
         //$("#transactionDetailsForm").hide();
     }
-    
-    $scope.addSplit=function() {
+
+    $scope.addSplit = function () {
         console.log("clicked add");
-        
+
     }
-    
-    $scope.showReportTab=function() {
+
+    $scope.showReportTab = function () {
         if ($scope.pieChart) {
             $scope.pieChart.destroy();
         }
@@ -125,113 +323,195 @@ hfwApp.controller('dashboardController', function ($scope,$http,AccountService,R
         $("#accountTransactionList").hide();
         $("#accountReports").show();
         $("#accountOnlineFunctions").hide();
-        plot1=null;
+        plot1 = null;
         $("#pie1").html();
         //$scope.showTransactionModal=false;
         //$("#transactionDetailsForm").hide();
     }
-    $scope.showOnlineTab=function(x) {
-        $("#accountTransactionList").hide();   
+    $scope.showOnlineTab = function (x) {
+        $scope.showOnlineMatchingModal = false;
+        $("#accountTransactionList").hide();
         $("#accountReports").hide();
         $("#accountOnlineFunctions").show();
+        $scope.pendingRegistryTransactions = {};
         //$scope.showTransactionModal=false;
         //$("#transactionDetailsForm").hide();
+
+        //get the pending registry transactions
+
+        RegistryService.getPendingTransactionsForAccount($scope.selectedAccount.id).success(function (response) {
+            $scope.pendingRegistryTransactions = response;
+        });
+
     }
-    
-    $scope.renderReport = function(plotData) {
+
+    $scope.showOnlineMatchingDialog = function (x) {
+        console.log(x);
+        //find some transactions that could match the one that was entered
+        $scope.pendingMatchedTransactions = [];
+        RegistryService.getMatchingTransactionsForPendingTransaction(x.id).success(function (response) {
+            $scope.pendingMatchedTransactions = response;
+        });
+        $scope.showOnlineMatchingModal = true;
+    }
+
+    $scope.showOnlineMatchingEditTxnDialog = function (x) {
+        console.log(x);
+        $scope.showTransactionForm(x);
+    }
+    $scope.hideOnlineMatchingDialog = function () {
+        $scope.showOnlineMatchingModal = false;
+    }
+    $scope.renderReport = function (plotData) {
         if ($scope.pieChart) {
             $scope.pieChart.destroy();
         }
-        $scope.pieChart=$.jqplot('pie1', [plotData], {
-        gridPadding: {top:0, bottom:38, left:0, right:0},
-        seriesDefaults:{
-            renderer:$.jqplot.PieRenderer, 
-            trendline:{ show:false }, 
-            rendererOptions: { padding: 8, showDataLabels: true }
-        },
-        legend:{
-            show:true, 
-            placement: 'inside', 
-            rendererOptions: {
-                
-            }, 
-            location:'e',
-            marginTop: '15px'
-        }       
-    });
+        $scope.pieChart = $.jqplot('pie1', [plotData], {
+            gridPadding: {top: 0, bottom: 38, left: 0, right: 0},
+            seriesDefaults: {
+                renderer: $.jqplot.PieRenderer,
+                trendline: {show: false},
+                rendererOptions: {padding: 8, showDataLabels: true}
+            },
+            legend: {
+                show: true,
+                placement: 'inside',
+                rendererOptions: {
+                },
+                location: 'e',
+                marginTop: '15px'
+            }
+        });
     }
-    $scope.doReport=function (x) {
-        console.log($scope.selectedAccount.id+":"+$scope.reportControl.reportType + ":" + $scope.reportControl.reportPeriod);
+    $scope.doReport = function (x) {
+        console.log($scope.selectedAccount.id + ":" + $scope.reportControl.reportType + ":" + $scope.reportControl.reportPeriod);
         //var plotData = [[['Income:Other',25],['Income:Net Pay',14],['c',7]]]
-        
+
         if ($scope.reportControl.reportType == undefined) {
             $scope.reportControl.reportType = "INCOME";
         }
-        if ($scope.reportControl.reportPeriod== undefined) {
+        if ($scope.reportControl.reportPeriod == undefined) {
             $scope.reportControl.reportPeriod = "currentMonth";
         }
-        ReportService.getReportForPeriodForAccount($scope.selectedAccount.id,$scope.reportControl.reportType,$scope.reportControl.reportPeriod).success(function(response) {
+        ReportService.getReportForPeriodForAccount($scope.selectedAccount.id, $scope.reportControl.reportType, $scope.reportControl.reportPeriod).success(function (response) {
             //parse the data into jqplot data format
             var plotData = [];
             //call the renderReport with the data
-            angular.forEach(response.dataPoints, function(value, key) {
+            angular.forEach(response.dataPoints, function (value, key) {
                 var x = [];
                 x.push(value.name);
                 x.push(value.value);
                 plotData.push(x);
-                
+
 
             });
             $scope.renderReport(plotData);
         });
-        
-        
+
+
     }
-    
-    $scope.addAccount = function() {
-	
-        AccountService.saveAccount($scope.accountFormData).success(function(response) {
-             $scope.accounts.push(response);
+
+    $scope.addAccount = function () {
+
+        if ($scope.accountFormData.id == undefined) {  //doing add
+            AccountService.saveAccount($scope.accountFormData).success(function (response) {
+                
+                if ($scope.accountFormData.accountType == 'Checking') {
+                    $scope.checking_accounts.push(response);
+                } else if ($scope.accountFormData.accountType == 'Savings') {
+                    $scope.savings_accounts.push(response);
+                } else if ($scope.accountFormData.accountType == 'Retirement') {
+                    $scope.retirement_accounts.push(response);
+                } else if ($scope.accountFormData.accountType == 'Investment') {
+                    $scope.investment_accounts.push(response);
+                } else if ($scope.accountFormData.accountType == 'Credit Card') {
+                    $scope.creditcard_accounts.push(response);
+                } else {
+                    $scope.other_accounts.push(value);
+                }
+
+                console.log(response);
+            });
+        } else {  //doing update
             
-            console.log(response);
+            AccountService.saveAccount($scope.accountFormData).success(function (response) {
+                
+                if ($scope.accountFormData.accountType == 'Checking') {
+                    //$scope.checking_accounts.push(response);
+                } else if ($scope.accountFormData.accountType == 'Savings') {
+                    //$scope.savings_accounts.push(response);
+                } else if ($scope.accountFormData.accountType == 'Retirement') {
+                    //$scope.retirement_accounts.push(response);
+                } else if ($scope.accountFormData.accountType == 'Investment') {
+                    //$scope.investment_accounts.push(response);
+                } else if ($scope.accountFormData.accountType == 'Credit Card') {
+                    //$scope.creditcard_accounts.push(response);
+                } else {
+                    //$scope.other_accounts.push(value);
+                }
+
+                console.log(response);
+            });
+        }
+        /*
+         $http({
+         method  : 'POST',
+         url     : '/HFW/services/api/v1/accounts/save',
+         data    : JSON.stringify($scope.accountFormData),  // pass in data as strings
+         headers : { 'Content-Type': 'application/json'  }  // set the headers so angular passing info as form data (not request payload)
+         })
+         .success(function(data) {
+         
+         $scope.accounts.push(data);
+         
+         console.log(data);
+         
+         });
+         */
+    };
+
+
+
+    $scope.getTransactionsForAccount = function (accountId) {
+        RegistryService.getRegistryBlockForAccount(accountId, $scope.txnIndex, $scope.numberTxnsToRetrieve).success(function (response) {
+            for (idx in response) {
+                $scope.registryTransactions.push(response[idx]);
+                //console.log(txn.id);
+            }
+            //$scope.registryTransactions. = response;
+            $scope.txnIndex = $scope.txnIndex + $scope.numberTxnsToRetrieve;
         });
         /*
-        $http({
-        method  : 'POST',
-        url     : '/HFW/services/api/v1/accounts/save',
-        data    : JSON.stringify($scope.accountFormData),  // pass in data as strings
-        headers : { 'Content-Type': 'application/json'  }  // set the headers so angular passing info as form data (not request payload)
-            })
-        .success(function(data) {
-            
-            $scope.accounts.push(data);
-            
-            console.log(data);
-      
-        });
-        */
+         $http.get("/HFW/services/api/v1/register/get/all/"+accountId)
+         .success(function(response) {$scope.registryTransactions = response;}); 
+         */
     };
     
-    
-    
-    $scope.getTransactionsForAccount = function(accountId) {
-        RegistryService.getRegistryForAccount(accountId).success(function(response) {
-       $scope.registryTransactions = response;
-   });
-   /*
-        $http.get("/HFW/services/api/v1/register/get/all/"+accountId)
-    .success(function(response) {$scope.registryTransactions = response;}); 
-    */
-        };
-    
-    $scope.addRegistryTransaction = function() {
+    $scope.getTransactionsForMonth = function (accountId) {
+        var dateToRetrieve = $scope.txnDateControl.year +"-"+$scope.txnDateControl.month;
+        $scope.registryTransactions=[];
+        RegistryService.getRegistryForAccountForMonth(accountId,dateToRetrieve).success(function (response) {
+            for (idx in response) {
+                $scope.registryTransactions.push(response[idx]);
+                //console.log(txn.id);
+            }
+            //$scope.registryTransactions. = response;
+            $scope.txnIndex = $scope.txnIndex + $scope.numberTxnsToRetrieve;
+        });
+        /*
+         $http.get("/HFW/services/api/v1/register/get/all/"+accountId)
+         .success(function(response) {$scope.registryTransactions = response;}); 
+         */
+    };
+
+    $scope.addRegistryTransaction = function () {
         //get the splits and turn it into a better list
         var newCategories = [];
-       $scope.registryTransactionFormData.primaryAccount = $scope.selectedAccount.id;
-        for (var i=0;i<10;i++) {
+        $scope.registryTransactionFormData.primaryAccount = $scope.selectedAccount.id;
+        for (var i = 0; i < 10; i++) {
             if ($scope.registryTransactionFormCategorySplits[i] != undefined) {
                 var categorySplit = new Object();
-                
+
                 var categoryEntered = $scope.registryTransactionFormCategorySplits[i].category;
                 var txnAmountEntered = $scope.registryTransactionFormCategorySplits[i].txnAmount;
                 categorySplit.category = categoryEntered;
@@ -240,85 +520,85 @@ hfwApp.controller('dashboardController', function ($scope,$http,AccountService,R
                 //console.log(categoryEntered + ":"+txnAmountEntered);    
             }
         }
-            //console.log(newCategories);
-        
+
+
         $scope.registryTransactionFormData.categorySplits = newCategories;
-       
-        console.log($scope.registryTransactionFormData); 
-        if ($scope.registryTransactionFormData.id == undefined){
-            RegistryService.saveTransaction($scope.registryTransactionFormData).success(function(response) {
+
+        console.log($scope.registryTransactionFormData);
+        if ($scope.registryTransactionFormData.id == undefined) {
+            RegistryService.saveTransaction($scope.registryTransactionFormData).success(function (response) {
                 $scope.registryTransactions.push(response);
-            $scope.showTransactionModal=false;
+                $scope.showTransactionModal = false;
                 console.log(response);
             });
         } else {
-            RegistryService.saveTransaction($scope.registryTransactionFormData).success(function(response) {
-               $scope.showTransactionModal=false;
+            RegistryService.saveTransaction($scope.registryTransactionFormData).success(function (response) {
+                $scope.showTransactionModal = false;
                 console.log(response);
             });
-            
-        } 
-        
-       
- /*
-	$http({
-        method  : 'POST',
-        url     : '/HFW/services/api/v1/register/save',
-        data    : JSON.stringify($scope.registryTransactionFormData),  // pass in data as strings
-        headers : { 'Content-Type': 'application/json'  }  // set the headers so angular passing info as form data (not request payload)
-            })
-        .success(function(data) {
-            
-            $scope.registryTransactions.push(data);
-            
-            console.log(data);
-      
-        });
-        */
+
+        }
+
+
+        /*
+         $http({
+         method  : 'POST',
+         url     : '/HFW/services/api/v1/register/save',
+         data    : JSON.stringify($scope.registryTransactionFormData),  // pass in data as strings
+         headers : { 'Content-Type': 'application/json'  }  // set the headers so angular passing info as form data (not request payload)
+         })
+         .success(function(data) {
+         
+         $scope.registryTransactions.push(data);
+         
+         console.log(data);
+         
+         });
+         */
     };
-    
+
 });
 
 hfwApp.directive('modal', function () {
     return {
-      template: '<div class="modal fade">' + 
-          '<div class="modal-dialog">' + 
-            '<div class="modal-content">' + 
-              '<div class="modal-header">' + 
-                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + 
-                '<h4 class="modal-title">{{ title }}</h4>' + 
-              '</div>' + 
-              '<div class="modal-body" ng-transclude></div>' + 
-            '</div>' + 
-          '</div>' + 
-        '</div>',
-      restrict: 'E',
-      transclude: true,
-      replace:true,
-      scope:true,
-      link: function postLink(scope, element, attrs) {
-        scope.title = attrs.title;
+        template: '<div class="modal fade">' +
+                '<div class="modal-dialog">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                '<h4 class="modal-title">{{ title }}</h4>' +
+                '</div>' +
+                '<div class="modal-body" ng-transclude></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>',
+        restrict: 'E',
+        transclude: true,
+        replace: true,
+        scope: true,
+        link: function postLink(scope, element, attrs) {
+            scope.title = attrs.title;
 
-        scope.$watch(attrs.visible, function(value){
-          if(value == true)
-            $(element).modal('show');
-          else
-            $(element).modal('hide');
-        });
+            scope.$watch(attrs.visible, function (value) {
+                if (value == true)
+                    $(element).modal('show');
+                else
+                    $(element).modal('hide');
+            });
 
-        $(element).on('shown.bs.modal', function(){
-          scope.$apply(function(){
-            scope.$parent[attrs.visible] = true;
-          });
-        });
+            $(element).on('shown.bs.modal', function () {
+                scope.$apply(function () {
+                    scope.$parent[attrs.visible] = true;
+                });
+            });
 
-        $(element).on('hidden.bs.modal', function(){
-          scope.$apply(function(){
-            scope.$parent[attrs.visible] = false;
-          });
-        });
-      }
+            $(element).on('hidden.bs.modal', function () {
+                scope.$apply(function () {
+                    scope.$parent[attrs.visible] = false;
+                });
+            });
+        }
     };
-  });
+});
 
-    
+

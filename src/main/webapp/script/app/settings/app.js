@@ -3,78 +3,102 @@ var hfwApp = angular.module('HFWSettingsApp', []);
 
 hfwApp.controller('settingsController', function ($scope, $http, SettingsService) {
     $scope.repositoryFormData = {};
+    $scope.basicSecurityFormData = {};
+    $scope.themeFormData = {};
+
+    $scope.init = function () {
+        $scope.getRepositoryConfig();
+        $scope.getThemeConfig();
+        $scope.getBasicSecurityConfig();
+    };
+
+    $scope.getRepositoryConfig = function () {
+
+        SettingsService.getRepositoryConfig().success(function (response) {
+            console.log(response);
+            console.log(response.settings.host);
+            if (response.settings.host) {
+                $scope.repositoryFormData.host = response.settings.host;
+            }
+            if (response.settings.port) {
+                $scope.repositoryFormData.port = response.settings.port;
+            }
+            if (response.settings.database) {
+                $scope.repositoryFormData.database = response.settings.database;
+            }
+            if (response.settings.username) {
+                $scope.repositoryFormData.username = response.settings.username;
+            }
+            if (response.settings.password) {
+                $scope.repositoryFormData.password = response.settings.password;
+            }
+
+
+        });
+
+
+
+    };
+    $scope.getThemeConfig = function () {
+        SettingsService.getThemeConfig().success(function (response) {
+            console.log(response);
+            //console.log(response.settings.host);
+            if (response.settings.theme) {
+                $scope.themeFormData.theme = response.settings.theme;
+            }
+        });        
+    };
     
-    
-
-    SettingsService.getRepositoryConfig().success(function (response) {
-        console.log(response);
-        console.log(response.settings.host);
-        if (response.settings.host) {
-            $scope.repositoryFormData.host=response.settings.host;    
-        }
-        if (response.settings.port) {
-            $scope.repositoryFormData.port=response.settings.port;    
-        }
-        if (response.settings.database) {
-            $scope.repositoryFormData.database=response.settings.database;    
-        }
-        if (response.settings.username) {
-            $scope.repositoryFormData.username=response.settings.username;    
-        }
-        if (response.settings.password) {
-            $scope.repositoryFormData.password=response.settings.password;    
-        }
-        
-        //angular.forEach(response, function (value, key) {
-            //console.log(value);
-          //  $scope.repositoryFormData = value;
-
-            //this.push(key + ': ' + value);
-            //if (value.category != '') {
-            //    $scope.registryTransactionFormCategorySplits.push(value);    
-            //}
-
-        //});
-
-    });
+    $scope.getBasicSecurityConfig = function () {
+        SettingsService.getBasicSecurityConfig().success(function (response) {
+            console.log(response);
+            //console.log(response.settings.host);
+            if (response.settings.enabled) {
+                $scope.basicSecurityFormData.enabled = response.settings.enabled;
+            }
+            if (response.settings.password) {
+                $scope.basicSecurityFormData.password = response.settings.password;
+            }
+        });        
+    };
     
     $scope.saveRepositoryInformation = function () {
         var repoInfo = {};
         repoInfo.typeOfSetting = "db";
-        repoInfo.settings={};
-        repoInfo.settings.host=$scope.repositoryFormData.host;
-        repoInfo.settings.database=$scope.repositoryFormData.database;
-        repoInfo.settings.username=$scope.repositoryFormData.username;
-        repoInfo.settings.password=$scope.repositoryFormData.password;
-        repoInfo.settings.port=$scope.repositoryFormData.port;
+        repoInfo.settings = {};
+        repoInfo.settings.host = $scope.repositoryFormData.host;
+        repoInfo.settings.database = $scope.repositoryFormData.database;
+        repoInfo.settings.username = $scope.repositoryFormData.username;
+        repoInfo.settings.password = $scope.repositoryFormData.password;
+        repoInfo.settings.port = $scope.repositoryFormData.port;
         SettingsService.saveRepositoryConfig(repoInfo).success(function (response) {
-           console.log(response); 
-        });
-    };
-   
-    $scope.saveBudget = function () {
-
-        BudgetService.saveBudget($scope.budgetFormData).success(function (response) {
-            $scope.budgets.push(response);
-
             console.log(response);
         });
-        /*
-         $http({
-         method  : 'POST',
-         url     : '/HFW/services/api/v1/accounts/save',
-         data    : JSON.stringify($scope.accountFormData),  // pass in data as strings
-         headers : { 'Content-Type': 'application/json'  }  // set the headers so angular passing info as form data (not request payload)
-         })
-         .success(function(data) {
-         
-         $scope.accounts.push(data);
-         
-         console.log(data);
-         
-         });
-         */
     };
+
+    $scope.saveBasicSecurityInformation = function () {
+        var basicSecurityInfo = {};
+        basicSecurityInfo.typeOfSetting = "basicSecurity";
+        basicSecurityInfo.settings = {};
+        basicSecurityInfo.settings.enabled = $scope.basicSecurityFormData.enabled;
+        basicSecurityInfo.settings.password = $scope.basicSecurityFormData.password;
+        SettingsService.saveBasicSecurityConfig(basicSecurityInfo).success(function (response) {
+            console.log(response);
+        });
+    };
+
+    $scope.saveThemeInformation = function () {
+        var themeInfo = {};
+        themeInfo.typeOfSetting = "theme";
+        themeInfo.settings = {};
+        themeInfo.settings.enabled = $scope.themeFormData.theme;
+        SettingsService.saveThemeConfig(ThemeInfo).success(function (response) {
+            console.log(response);
+        });
+    };
+
+    $scope.init();
+
 });
 
 hfwApp.directive('modal', function () {
@@ -117,5 +141,6 @@ hfwApp.directive('modal', function () {
             });
         }
     };
+    
 });
 

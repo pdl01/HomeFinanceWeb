@@ -7,12 +7,30 @@
 #header {
     width:100%;
     overflow: auto;
+
+
+}
+#left_header {
+    text-align: left;width:50%;
+    float:left;
+
+    padding-left:5px;
+
+
+}
+
+#right_header {
+    width:20%;
+    text-align: right;    
+    float:right;
+
+    padding-right:5px;
 }
 
 .headerItem {
-     list-style-type: none;
+    list-style-type: none;
     display:inline;
-        cursor: pointer;
+    cursor: pointer;
 }
 #accountTransactionList {
     width:100%;
@@ -20,7 +38,7 @@
 }
 #accountList {
     width:100%;
-    height: 300px;
+    height: 100%;
     overflow-y: scroll;
 }
 #accountDetailsForm {
@@ -31,11 +49,11 @@
 }
 #appMenu{
     width:100%;
-    background-color: #269abc;
 }
 #appSidebar{
     width:20%;
     float:left;
+    height:94%;
 
 }
 #appMain{
@@ -51,18 +69,26 @@
 .menuItem {
     list-style-type: none;
     display:inline;
-        cursor: pointer;
+    cursor: pointer;
 
 }
 #appMainTabs {
     width:100%;
+}
+.retrievedCategoryItem {
+    list-style-type: none;
+    display:inline;
+    cursor: pointer;
 }
 .tabItem {
     list-style-type: none;
     display:inline;
     cursor: pointer;
 }
-
+#pendingTransactionList {
+    height:100%;
+    overflow: auto;
+}
 div{
 
 }
@@ -109,13 +135,24 @@ div{
     font-family: 'arial', 'sans-serif';
 }           
 #accountReports{
-        width:100%;
+    width:100%;
     overflow-y: scroll;
     display:none;
 }
 
 #accountOnlineFunctions{
-        width:100%;
+    width:100%;
     overflow-y: scroll;
     display:none;
+    
 }
+.settingsSection{
+    border:1px;
+    border-color: #000000;
+    border-style: solid;
+    width:100%;
+    padding: 5px;
+    margin: 5px;
+    
+}
+ul{margin-bottom:0px;}

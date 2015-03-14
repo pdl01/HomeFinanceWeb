@@ -3,8 +3,12 @@ var hfwApp = angular.module('HFWBudgetApp', []);
 
 
 
-hfwApp.controller('budgetController', function ($scope, $http, BudgetService) {
+hfwApp.controller('budgetController', function ($scope, $http, BudgetService, CategoryLookupService) {
     $scope.budgets = [];
+    
+    $scope.retrievedCategories = [];
+    $scope.hideBudgetItemRetrievedCategories = true;
+    
     $scope.selectedBudget = {};
     $scope.budgetFormData = {};
     $scope.budgetItemFormData = {};
@@ -27,6 +31,18 @@ hfwApp.controller('budgetController', function ($scope, $http, BudgetService) {
     $scope.$watch('selectedBudget', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         $scope.calcBudgetTotals();
+
+    })
+
+    $scope.$watch('budgetItemFormData.category', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        if (newValue != undefined && newValue.length > 3) {
+            $scope.getCategories(newValue);    
+        } else {
+            $scope.retrievedCategories = [];
+
+        }
 
     })
 
@@ -79,6 +95,30 @@ hfwApp.controller('budgetController', function ($scope, $http, BudgetService) {
         $scope.showBudgetItemModal = true;
         //$("#accountDetailsForm").show();
     };
+    $scope.getCategories = function (val) {
+        CategoryLookupService.lookup(val).success(function (response) {
+            if (response.length>0) {
+                $scope.hideBudgetItemRetrievedCategories=false;
+                $scope.retrievedCategories = response;
+            } else {
+                $scope.hideBudgetItemRetrievedCategories=true;
+                $scope.retrievedCategories = [];
+
+            }
+            
+        });
+    };
+    
+    $scope.selectRetrievedCategory = function(val) {
+        console.log(val);
+        
+        $scope.budgetItemFormData.category = val;
+        $scope.retrievedCategories = [];
+        $scope.hideBudgetItemRetrievedCategories=true;
+
+        
+    };
+    
     $scope.editItem = function (index, type, x) {
         $scope.budgetItemEditIndex = index;
         $scope.budgetItemMode = type;
@@ -128,6 +168,10 @@ hfwApp.controller('budgetController', function ($scope, $http, BudgetService) {
     };
     $scope.clickBudgetItemCancel = function (x) {
         $scope.showBudgetItemModal = false;
+        $scope.retrievedCategories = [];
+        $scope.budgetItemFormData = {};
+        $scope.hideBudgetItemRetrievedCategories=true;
+
         //$("#accountDetailsForm").hide();
     };
     $scope.saveBudgetItem = function (x) {
@@ -180,11 +224,13 @@ hfwApp.controller('budgetController', function ($scope, $http, BudgetService) {
             //            $scope.budgets.push(value);
             //    });
             //});
-            
+
             $scope.selectedBudget = response;
             $scope.budgetItemFormData = {};
             $scope.showBudgetItemModal = false;
+            $scope.retrievedCategories = [];
             $scope.calcBudgetTotals();
+            $scope.hideBudgetItemRetrievedCategories=true;
             console.log(response);
         });
     }
