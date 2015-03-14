@@ -9,6 +9,7 @@ import java.io.File;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -64,11 +65,11 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
             application_home = this.configurationDirectoryService.getApplicationConfigurationDirectory();
             System.out.println("Using default application path"+application_home);
         }
-        System.setProperty("hfw_logging_path", this.configurationDirectoryService.getLoggingRepositoryDirectory());
-        LogManager.shutdown();
-        BasicConfigurator.resetConfiguration();
-
-                //TODO initialize Logging
+        //System.setProperty("hfw_logging_path", this.configurationDirectoryService.getLoggingRepositoryDirectory());
+        //LogManager.shutdown();
+        //BasicConfigurator.resetConfiguration();
+        
+        //TODO initialize Logging
         //TODO initialize ApplicationRepo
         //application_home = "C:\\temp";
         //application_home = ("~/.hfw_dir");
@@ -89,6 +90,8 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
         }
         
         if (application_home != null) {
+            
+            
             File repo_config_file = new File(this.configurationDirectoryService.getRepoConfigFile());
             if (repo_config_file.exists()) {
                 //log.debug("Loading Config:"+config_file.getPath());
@@ -108,6 +111,12 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
             File config_dir = new File(application_home);
             config_dir.mkdirs();
         }
+        //initialize logging
+        System.setProperty("hfw_logging_path", this.configurationDirectoryService.getLoggingRepositoryDirectory());
+        
+        System.out.println("Setting up log4j with config path:"+this.configurationDirectoryService.getLoggingConfigFile());
+        
+        PropertyConfigurator.configure(this.configurationDirectoryService.getLoggingConfigFile());
 		//log.info("Exiting init");
         // this.setupData();
         

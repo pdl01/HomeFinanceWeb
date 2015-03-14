@@ -20,6 +20,8 @@ public class ConfigurationDirectoryService {
         this.initializeImageStorageDirectory();
         this.initializeLoggingConfigurationDirectory();
         this.initializeLoggingRepositoryDirectory();
+        this.initializeFileStorageDirectory();
+        this.initializeTempFileStorageDirectory();
         try {
             System.out.println("file:"+ApplicationState.getApplicationState().getCtx().getResource("config/log4j.properties").getFile().getPath());
         } catch (Exception e) {
@@ -86,10 +88,33 @@ public class ConfigurationDirectoryService {
             file.mkdirs();
         }
     }
+
+    public void initializeFileStorageDirectory() {
+        File file = new File(this.getFileStorageDirectory());
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
+    
+    public void initializeTempFileStorageDirectory() {
+        File file = new File(this.getTempFileStorageDirectory());
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
     
     public String getImageStorageDirectory(){
        return this.getApplicationConfigurationDirectory() + File.separator + "images"; 
     }
+    
+        public String getFileStorageDirectory(){
+       return this.getApplicationConfigurationDirectory() + File.separator + "files"; 
+    }
+
+                public String getTempFileStorageDirectory(){
+       return this.getApplicationConfigurationDirectory() + File.separator + "temp"; 
+    }
+        
     public String getLoggingRepositoryDirectory() {
         return this.getApplicationConfigurationDirectory() + File.separator + "logs";
     }

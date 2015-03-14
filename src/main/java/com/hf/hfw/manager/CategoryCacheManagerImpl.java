@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author pldorrell
  */
 public class CategoryCacheManagerImpl {
+
+    private static final Logger log = Logger.getLogger(CategoryCacheManagerImpl.class);
 
     private RegisterDAO registerDAO;
 
@@ -30,16 +33,25 @@ public class CategoryCacheManagerImpl {
     private Set<String> categorySet;
 
     public void init() {
+        log.debug("Entering init");
         this.initCategorySet();
         this.initDefaultCategories();
         this.initCategoriesFromDB();
+        log.debug("Exiting init");
+
     }
 
     private void initCategorySet() {
+        log.debug("Entering initCategorySet");
+
         this.categorySet = new TreeSet<>();
+        log.debug("Exiting initCategorySet");
+
     }
 
     private void initDefaultCategories() {
+        log.debug("Entering initDefaultCategories");
+
         //TODO:externalize this into a file
         this.categorySet.add("Income");
         this.categorySet.add("Income:Salary:Net Pay");
@@ -59,19 +71,21 @@ public class CategoryCacheManagerImpl {
 
         this.categorySet.add("Taxes:Federal Income Tax");
         this.categorySet.add("Taxes:State Income Tax");
+        log.debug("Exiting initDefaultCategories");
 
     }
 
     private void initCategoriesFromDB() {
+        log.debug("Entering initCategoryFromDB");
         try {
-        if (this.registerDAO != null) {
-            this.categorySet.addAll(this.registerDAO.getAllCategories());    
-        }    
+            if (this.registerDAO != null) {
+                this.categorySet.addAll(this.registerDAO.getAllCategories());
+            }
         } catch (Exception e) {
-            System.out.println(e);
+            log.error(e);
         }
-        
-        
+        log.debug("Exiting initCategoryFromDB");
+
     }
 
     public void add(String category) {

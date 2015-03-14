@@ -74,6 +74,7 @@ public class RegisterServiceImpl implements RegisterService {
             retrievedtxn.setTxnAmount(transaction.getTxnAmount());
             retrievedtxn.setPrimaryAccount(transaction.getPrimaryAccount());
             retrievedtxn.setCredit(transaction.isCredit());
+            retrievedtxn.setStatusTxt(transaction.getStatusTxt());
             return this.registerManager.updateTransaction(retrievedtxn);
         } else {
             return this.registerManager.createTransaction(transaction);
@@ -105,6 +106,59 @@ public class RegisterServiceImpl implements RegisterService {
         }
         response.setMessages(validationMessages);
         return response;
+    }
+
+    @Override
+    public void uploadFile(String accountId, String data) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<RegisterTransaction> getPendingTransactions(String accountId) {
+        Account account = new Account();
+        account.setId(accountId);
+        return this.registerManager.getPendingTransactions(account);    }
+
+    @Override
+    public List<RegisterTransaction> getPendingTransactions(String accountId, String _number, String _start) {
+        Account account = new Account();
+        account.setId(accountId);
+        int start = Integer.parseInt(_start);
+        int number = Integer.parseInt(_number);
+        List<RegisterTransaction> txns = this.registerManager.getPendingTransactions(account);
+        
+        if (txns != null && txns.size() > number) {
+            int end = start + number;
+            if (start + number > txns.size()) {
+                end = txns.size();
+            }
+            return txns.subList(start, end);
+            
+        }
+        return txns;    }
+
+    @Override
+    public List<RegisterTransaction> getTransactionsByMonth(String accountId, String month) {
+        Account account = new Account();
+        account.setId(accountId);
+        return this.registerManager.getAllTransactionsForDateStartWith(account,month);
+        
+    }
+
+    @Override
+    public List<RegisterTransaction> getTransactionsByDate(String accountId, String date) {
+        Account account = new Account();
+        account.setId(accountId);
+        return this.registerManager.getAllTransactionsForDateStartWith(account,date);
+    }
+
+    @Override
+    public List<RegisterTransaction> getMatchedTransactionsForPending(String transactionid) {
+        //get the pending transaction with transactionid
+        RegisterTransaction pendingTransaction = this.registerManager.getPendingTransactionById(transactionid);
+        
+        List<RegisterTransaction> txns = this.registerManager.matchTransaction(pendingTransaction);
+        return txns;
     }
     
 }

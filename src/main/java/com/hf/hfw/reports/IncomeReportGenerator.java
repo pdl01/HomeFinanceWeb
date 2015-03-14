@@ -67,6 +67,9 @@ public class IncomeReportGenerator implements ReportGenerator {
             //List<RegisterTransaction> txns = this.registerManager.getTransactionsByCategoriesStartsWithForDateStartWith(account,"Income",reportOptions.getDateQueryStringBasedOnPeriod());
             List<RegisterTransaction> txns = this.registerManager.getTransactionsForDateStartWith(account, reportOptions.getDateQueryStringBasedOnPeriod(), true);
             for (RegisterTransaction txn : txns) {
+                if (txn.isVoid()) {
+                    continue;
+                }
                 //make sure the data is right for the report;
                 for (CategorySplit category : txn.getCategorySplits()) {
                     if (category.getCategory().startsWith(categoryStarter)) {

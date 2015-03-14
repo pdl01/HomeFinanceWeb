@@ -36,6 +36,17 @@ public class SettingsServiceImpl implements SettingsService {
             settings.put("database", repoConfig.getDb());
             settings.put("type", repoConfig.getType());
             settingsBean.setSettings(settings);
+        } else if ("theme".equals(typeOfSettings)) {
+            settingsBean.setTypeOfSetting("theme");
+            HashMap<String, String> settings = new HashMap<String, String>();
+            settings.put("theme","default");
+            settingsBean.setSettings(settings);
+        } else if ("basicsecurity".equals(typeOfSettings)) {
+            settingsBean.setTypeOfSetting("basicSecurity");
+            HashMap<String, String> settings = new HashMap<String, String>();
+            settings.put("enabled","false");
+            settings.put("password","xxx");
+            settingsBean.setSettings(settings);
         }
         return settingsBean;
         
@@ -52,6 +63,10 @@ public class SettingsServiceImpl implements SettingsService {
             applicationRepositoryConfig.setPassword(settingsbean.getSettings().get("password"));
             applicationRepositoryConfig.setType("mongo");
             ApplicationRepositoryConfig.saveToConfig(applicationRepositoryConfig, this.getConfigurationDirectoryService().getRepoConfigFile());
+        } else if ("theme".equals(typeOfSettings)) {
+            
+        } else if ("basicsecurity".equals(typeOfSettings)) {
+            
         }
         return settingsbean;
     }

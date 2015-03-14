@@ -17,7 +17,7 @@ public class AccountEvent extends ApplicationEvent{
     private Account account;
     
     public enum AccountEventType {
-        ADDED(1),MODIFIED(2),DELETING(3),DELETED(4),UPDATED_TRANSACTIONS(5),UPDATED_BALANCE(6),UPDATED_STARTING_BALANCE(7);
+        ADDED(1),MODIFIED(2),DELETING(3),DELETED(4),UPDATED_TRANSACTIONS(5),UPDATED_BALANCE(6),UPDATED_STARTING_BALANCE(7),UPLOADED_TRANSACTION_FILE(8);
         private int code;
 	private AccountEventType(int _code) {
             this.code = _code;

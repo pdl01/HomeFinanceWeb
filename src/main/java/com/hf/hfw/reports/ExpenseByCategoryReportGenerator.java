@@ -64,6 +64,9 @@ public class ExpenseByCategoryReportGenerator implements ReportGenerator{
             //List<RegisterTransaction> txns = this.registerManager.getTransactionsByCategoriesStartsWithForDateStartWith(account,"Income",reportOptions.getDateQueryStringBasedOnPeriod());
             List<RegisterTransaction> txns = this.registerManager.getTransactionsForDateStartWith(account, reportOptions.getDateQueryStringBasedOnPeriod(), false);
             for (RegisterTransaction txn : txns) {
+                if (txn.isVoid()) {
+                    continue;
+                }
                 //make sure the data is right for the report;
                 for (CategorySplit category : txn.getCategorySplits()) {
                     

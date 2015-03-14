@@ -12,6 +12,7 @@ import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.hfw.dao.RegisterDAO;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.context.ApplicationContext;
@@ -107,6 +108,42 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
     public List<RegisterTransaction> getTransactionsForDateStartWith(Account account, String date, boolean getCredit) {
         return this.registerDAO.getTransactionsForDateStartWith(account, date, getCredit);
         }
+
+    @Override
+    public void addPendingTransactions(List<RegisterTransaction> txns) {
+        this.registerDAO.addPendingTransactions(txns);
+    }
+
+    @Override
+    public void addPendingTransactions(RegisterTransaction txn) {
+        ArrayList<RegisterTransaction> txns = new ArrayList<RegisterTransaction>();
+        this.addPendingTransactions(txns);
+    }
+
+    @Override
+    public List<RegisterTransaction> getPendingTransactions(Account account) {
+        return this.registerDAO.getPendingTransactions(account);
+    }
+
+    @Override
+    public List<RegisterTransaction> getTransactions(Account account, int start, int number) {
+        return null;
+    }
+
+    @Override
+    public List<RegisterTransaction> getAllTransactionsForDateStartWith(Account account, String date) {
+        return this.registerDAO.getAllTransactionsForDateStartWith(account, date);
+   }
+
+    @Override
+    public RegisterTransaction getPendingTransactionById(String id) {
+        return this.registerDAO.getPendingTransactionById(id);
+    }
+
+    @Override
+    public List<RegisterTransaction> matchTransaction(RegisterTransaction pendingTransaction) {
+        return this.registerDAO.matchTransaction(pendingTransaction);
+    }
             
 
 }

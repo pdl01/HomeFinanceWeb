@@ -66,7 +66,9 @@ public static final String REPORT_TYPE = "ExpenseByPayee";
             List<RegisterTransaction> txns = this.registerManager.getTransactionsForDateStartWith(account, reportOptions.getDateQueryStringBasedOnPeriod(), false);
             for (RegisterTransaction txn : txns) {
                 //make sure the data is right for the report;
-                
+                if (txn.isVoid()) {
+                    continue;
+                }
                     
                         ReportDataPoint rdp = data.get(txn.getPayee());
                         List<String> x = null;
