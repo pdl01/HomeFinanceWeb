@@ -15,6 +15,7 @@
             <ref bean="categoryLookupServicev1"/>
             <ref bean="budgetRestServicev1"/>
             <ref bean="settingsRestServicev1"/>
+            <ref bean="dateRestServicev1"/>
             <!--
             <ref bean="officialBillRestServicev1" />
             <ref bean="electedOfficialRestServicev1" />
@@ -48,4 +49,8 @@
     <bean id="settingsRestServicev1" class="com.hf.hfw.api.v1.settings.SettingsServiceImpl" >
         <property name="configurationDirectoryService" ref="configurationDirectoryService"/>
     </bean>
+    <bean id="dateRestServicev1" class="com.hf.hfw.api.v1.DateServiceImpl" >
+        
+    </bean>
+
 </beans>

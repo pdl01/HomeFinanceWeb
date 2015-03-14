@@ -14,4 +14,7 @@
     <bean id="budgetDAO" class="com.hf.hfw.dao.mongo.BudgetDAOImpl">    
     	<property name="dbFactory" ref="dbFactory"/>
     </bean>
+    <bean id="repositoryBasedSettingDAO" class="com.hf.hfw.dao.mongo.RepositoryBasedSettingDAOImpl">    
+    	<property name="dbFactory" ref="dbFactory"/>
+    </bean>
 </beans>

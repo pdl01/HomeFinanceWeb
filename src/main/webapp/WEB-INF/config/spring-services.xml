@@ -132,43 +132,36 @@
   <bean id="ratingSystemTransmissionEventListener" class="com.eoci.events.RatingSystemTransmissionEventListener">    
   </bean>
     -->
-<!-- more bean definitions go here -->
-<bean id="applicationState" class="com.hf.hfw.application.ApplicationState" init-method="init">
-        <property name="configurationDirectoryService" ref="configurationDirectoryService"/>
-        <property name="dbFactory" ref="dbFactory"/>
+    <!-- more bean definitions go here -->
+   
+    <bean id="accountBalanceListener" class="com.hf.hfw.accounts.listeners.AccountBalanceListener">    
+        <property name="accountManager" ref="accountManager"/>
+        <property name="registerManager" ref="registerManager"/>
+    </bean>
+    <bean id="transactionTriggerBalanceListener" class="com.hf.hfw.accounts.listeners.TransactionAccountBalanceListener">    
+        <property name="accountManager" ref="accountManager"/>
+        <property name="registerManager" ref="registerManager"/>
+    </bean>
+    <bean id="transactionCategoryListener" class="com.hf.hfw.accounts.listeners.TransactionCategoryListener">
+        <property name="categoryCacheManager" ref="categoryCacheManagerImpl"/>
+    </bean>
+    <bean id="transactionFileImportListener" class="com.hf.hfw.files.listeners.TransactionFileImportListener">
+        <property name="registerManager" ref="registerManager"/> 
 
-</bean>
-  <bean id="configurationDirectoryService" class="com.hf.hfw.application.ConfigurationDirectoryService">
-      
-  </bean>
-  <bean id="dbFactory" class="com.hf.hfw.application.DBFactory">
-      
-  </bean>
-  <bean id="accountBalanceListener" class="com.hf.hfw.accounts.listeners.AccountBalanceListener">    
-    <property name="accountManager" ref="accountManager"/>
-    <property name="registerManager" ref="registerManager"/>
-</bean>
-  <bean id="transactionTriggerBalanceListener" class="com.hf.hfw.accounts.listeners.TransactionAccountBalanceListener">    
-    <property name="accountManager" ref="accountManager"/>
-    <property name="registerManager" ref="registerManager"/>
-</bean>
-<bean id="transactionCategoryListener" class="com.hf.hfw.accounts.listeners.TransactionCategoryListener">
-    <property name="categoryCacheManager" ref="categoryCacheManagerImpl"/>
-</bean>
-
-<bean id="reportDataGeneratorFactory" class="com.hf.hfw.reports.ReportDataGeneratorFactory"/>
+    </bean>
+    <bean id="reportDataGeneratorFactory" class="com.hf.hfw.reports.ReportDataGeneratorFactory"/>
 
 
-<bean id="incomeReportGenerator" class="com.hf.hfw.reports.IncomeReportGenerator">
-    <property name="accountManager" ref="accountManager"/>
-    <property name="registerManager" ref="registerManager"/>
-</bean>
-<bean id="expenseByCategoryReportGenerator" class="com.hf.hfw.reports.ExpenseByCategoryReportGenerator">
-    <property name="accountManager" ref="accountManager"/>
-    <property name="registerManager" ref="registerManager"/>
-</bean>
-<bean id="expenseByPayeeReportGenerator" class="com.hf.hfw.reports.ExpenseByPayeeReportGenerator">
-    <property name="accountManager" ref="accountManager"/>
-    <property name="registerManager" ref="registerManager"/>
-</bean>
+    <bean id="incomeReportGenerator" class="com.hf.hfw.reports.IncomeReportGenerator">
+        <property name="accountManager" ref="accountManager"/>
+        <property name="registerManager" ref="registerManager"/>
+    </bean>
+    <bean id="expenseByCategoryReportGenerator" class="com.hf.hfw.reports.ExpenseByCategoryReportGenerator">
+        <property name="accountManager" ref="accountManager"/>
+        <property name="registerManager" ref="registerManager"/>
+    </bean>
+    <bean id="expenseByPayeeReportGenerator" class="com.hf.hfw.reports.ExpenseByPayeeReportGenerator">
+        <property name="accountManager" ref="accountManager"/>
+        <property name="registerManager" ref="registerManager"/>
+    </bean>
 </beans>
