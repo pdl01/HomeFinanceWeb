@@ -3,7 +3,7 @@ var hfwApp = angular.module('HFWApp', []);
 
 
 
-hfwApp.controller('dashboardController', function ($scope, $http, AccountService, RegistryService, ReportService, CategoryLookupService,DateService) {
+hfwApp.controller('dashboardController', function ($scope, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService) {
     $scope.accountFormData = {};
 
     $scope.onlineData = {};
@@ -21,6 +21,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     $scope.categoryTypingIndex = -1;
 
     $scope.pendingMatchedTransactions = [];
+    $scope.selectedPendingTransaction = [];
 
     $scope.reportControl = {};
     $scope.pieChart = null;
@@ -40,15 +41,15 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     $scope.debt_accounts = [];
     $scope.asset_accounts = [];
     $scope.other_accounts = [];
-    
-    $scope.hideAccounts=[];
-    $scope.hideAccounts['checking']=false;
-    $scope.hideAccounts['savings']=false;
-    $scope.hideAccounts['retirement']=false;
-    $scope.hideAccounts['investment']=false;
 
-    $scope.hideAccounts['creditcard']=false;
-    $scope.hideAccounts['other']=false;
+    $scope.hideAccounts = [];
+    $scope.hideAccounts['checking'] = false;
+    $scope.hideAccounts['savings'] = false;
+    $scope.hideAccounts['retirement'] = false;
+    $scope.hideAccounts['investment'] = false;
+
+    $scope.hideAccounts['creditcard'] = false;
+    $scope.hideAccounts['other'] = false;
 
 
     $scope.txnIndex = 0;  //this is the start index of txns to retrieve 
@@ -122,11 +123,22 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         }
 
     })
+    $scope.$on('transactionSaved', function (event, data) {
+        //refresh all
+        $scope.refreshAccounts();
+        //refresh one account
+        console.log(data);
+        /*
+        if ($scope.registryTransactionFormData.txnDate == undefined || $scope.registryTransactionFormData.txnDate == "") {
+            $scope.registryTransactionFormData.txnDate = $scope.currentDate;
+        }
+        */
 
+    });
 
-    $scope.toggleAccountGroupHide = function(accountType) {
+    $scope.toggleAccountGroupHide = function (accountType) {
         console.log(accountType);
-        
+
         $scope.hideAccounts[accountType] = !$scope.hideAccounts[accountType];
     }
 
@@ -157,36 +169,36 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
             $scope.accounts = response;
         });
     }
-    $scope.init = function() {
+    $scope.init = function () {
         $scope.getCurrentDate();
-        $scope.getAccounts();    
+        $scope.getAccounts();
     }
     $scope.getCurrentDate = function () {
         DateService.lookupCurrent().success(function (response) {
 
             if (response.length > 0) {
-                
+
                 //parse out the date and get the year and month out; format should be YYYY-MM-DD
                 var retrievedDate = response.split("-");
-                $scope.currentDate = response;    
+                $scope.currentDate = response;
                 $scope.txnDateControl.year = retrievedDate[0];
                 $scope.txnDateControl.month = retrievedDate[1];
             } else {
                 $scope.txnDateControl.year = "2015";
                 $scope.txnDateControl.month = "01";
-                $scope.currentDate = "2015-01-01";    
+                $scope.currentDate = "2015-01-01";
 
             }
 
-        });        
+        });
     }
     $scope.init();
 
     $scope.refreshAccounts = function () {
         $scope.checking_accounts = [];
         $scope.savings_accounts = [];
-        $scope.retirement_accounts=[];
-        $scope.investment_accounts=[];
+        $scope.retirement_accounts = [];
+        $scope.investment_accounts = [];
         $scope.creditcard_accounts = [];
         $scope.other_accounts = [];
         $scope.accounts = {};
@@ -275,7 +287,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
 
     $scope.showNewTransaction = function (x) {
         $scope.registryTransactionFormData = {};
-        $scope.registryTransactionFormData.txnDate = $scope.currentDate;    
+        $scope.registryTransactionFormData.txnDate = $scope.currentDate;
         $scope.registryTransactionFormCategorySplits = [];
         $scope.showTransactionModal = true;
         //$("#transactionDetailsForm").show();
@@ -348,20 +360,58 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     $scope.showOnlineMatchingDialog = function (x) {
         console.log(x);
         //find some transactions that could match the one that was entered
+        $scope.selectedPendingTransaction = x;
         $scope.pendingMatchedTransactions = [];
         RegistryService.getMatchingTransactionsForPendingTransaction(x.id).success(function (response) {
             $scope.pendingMatchedTransactions = response;
         });
         $scope.showOnlineMatchingModal = true;
     }
+    $scope.acceptMatchForPending = function (pendingTransaction, enteredtransaction) {
+        //update the status to cleared of the enteredTransaction
+        //update the status to accepted of the pendingTransaction
+        RegistryService.matchPendingTransactionToExistingTransaction(pendingTransaction.id, enteredtransaction.id).success(function (response) {
+            //$scope.pendingMatchedTransactions = response;
+            //remove the transaction from the pending list or change the display to denote its been accepted
+        });
 
+        $scope.showOnlineMatchingModal = false;
+    };
+    $scope.acceptPendingTransactionAsNew = function (pendingTransaction) {
+        RegistryService.acceptPendingTransactionAsNew(pendingTransaction.id).success(function (response) {
+            //$scope.pendingMatchedTransactions = response;
+            //remove the transaction from the pending list or change the display to denote its been accepted
+            alert("Transaction Created");
+            $scope.showTransactionForm(response);
+            //do the transaction modal based on the response
+        });
+
+    };
+    $scope.filterToCurrentDate = function () {
+        var retrievedDate = $scope.currentDate.split("-");
+
+        $scope.txnDateControl.year = retrievedDate[0];
+        $scope.txnDateControl.month = retrievedDate[1];
+        $scope.getTransactionsForMonth($scope.selectedAccount.id);
+
+    };
+    $scope.dismissMatchForPending = function (pendingTransaction) {
+        //update the status to cleared of the enteredTransaction
+        //update the status to accepted of the pendingTransaction
+        RegistryService.dismissPendingTransaction(pendingTransaction.id).success(function (response) {
+            //$scope.pendingMatchedTransactions = response;
+            //remove the transaction from the pending list or change the display to denote its been dismissed
+        });
+
+        $scope.showOnlineMatchingModal = false;
+    };
     $scope.showOnlineMatchingEditTxnDialog = function (x) {
         console.log(x);
         $scope.showTransactionForm(x);
-    }
+    };
     $scope.hideOnlineMatchingDialog = function () {
         $scope.showOnlineMatchingModal = false;
-    }
+    };
     $scope.renderReport = function (plotData) {
         if ($scope.pieChart) {
             $scope.pieChart.destroy();
@@ -415,7 +465,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
 
         if ($scope.accountFormData.id == undefined) {  //doing add
             AccountService.saveAccount($scope.accountFormData).success(function (response) {
-                
+
                 if ($scope.accountFormData.accountType == 'Checking') {
                     $scope.checking_accounts.push(response);
                 } else if ($scope.accountFormData.accountType == 'Savings') {
@@ -433,9 +483,9 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
                 console.log(response);
             });
         } else {  //doing update
-            
+
             AccountService.saveAccount($scope.accountFormData).success(function (response) {
-                
+
                 if ($scope.accountFormData.accountType == 'Checking') {
                     //$scope.checking_accounts.push(response);
                 } else if ($scope.accountFormData.accountType == 'Savings') {
@@ -486,11 +536,11 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
          .success(function(response) {$scope.registryTransactions = response;}); 
          */
     };
-    
+
     $scope.getTransactionsForMonth = function (accountId) {
-        var dateToRetrieve = $scope.txnDateControl.year +"-"+$scope.txnDateControl.month;
-        $scope.registryTransactions=[];
-        RegistryService.getRegistryForAccountForMonth(accountId,dateToRetrieve).success(function (response) {
+        var dateToRetrieve = $scope.txnDateControl.year + "-" + $scope.txnDateControl.month;
+        $scope.registryTransactions = [];
+        RegistryService.getRegistryForAccountForMonth(accountId, dateToRetrieve).success(function (response) {
             for (idx in response) {
                 $scope.registryTransactions.push(response[idx]);
                 //console.log(txn.id);
@@ -529,11 +579,13 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
             RegistryService.saveTransaction($scope.registryTransactionFormData).success(function (response) {
                 $scope.registryTransactions.push(response);
                 $scope.showTransactionModal = false;
+                $scope.$emit('transactionSaved',$scope.selectedAccount.id);
                 console.log(response);
             });
         } else {
             RegistryService.saveTransaction($scope.registryTransactionFormData).success(function (response) {
                 $scope.showTransactionModal = false;
+                $scope.$emit('transactionSaved',$scope.selectedAccount.id);
                 console.log(response);
             });
 

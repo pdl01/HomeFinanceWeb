@@ -62,7 +62,25 @@ hfwApp.factory("RegistryService", function($http) {
         url: '/HFW/services/api/v1/register/get/pending/'+id
       });
   };
-  RegistryService.getMatchingTransactionsForPendingTransaction = function(transactionId) {
+  RegistryService.matchPendingTransactionToExistingTransaction = function(pendingid,existingid) {
+      return $http({
+        method: 'POST', 
+        url: '/HFW/services/api/v1/register/pending/match/'+pendingid+'/'+existingid
+      });
+  };
+  RegistryService.dismissPendingTransaction = function(pendingid) {
+      return $http({
+        method: 'POST', 
+        url: '/HFW/services/api/v1/register/pending/dismiss/'+pendingid
+      });
+  };
+  RegistryService.acceptPendingTransactionAsNew = function(pendingid) {
+      return $http({
+        method: 'POST', 
+        url: '/HFW/services/api/v1/register/pending/acceptasnew/'+pendingid
+      });
+  };
+    RegistryService.getMatchingTransactionsForPendingTransaction = function(transactionId) {
       return $http({
         method: 'GET', 
         url: '/HFW/services/api/v1/register/get/matched/'+transactionId

@@ -182,7 +182,7 @@ hfwApp.controller('transactionController', function ($scope, $location, Registry
 
         }
 
-    })
+    });
     $scope.$watch('registryTransactionFormCategorySplits[4].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -195,13 +195,13 @@ hfwApp.controller('transactionController', function ($scope, $location, Registry
 
         }
 
-    })
+    });
     $scope.$on('dateResolved', function (event, data) {
         if ($scope.registryTransactionFormData.txnDate == undefined || $scope.registryTransactionFormData.txnDate == "") {
             $scope.registryTransactionFormData.txnDate = $scope.currentDate;    
         }
         
-    })
+    });
 
 });
 
