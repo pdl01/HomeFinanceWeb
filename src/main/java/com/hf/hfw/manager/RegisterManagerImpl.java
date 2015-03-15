@@ -117,6 +117,7 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
     @Override
     public void addPendingTransactions(RegisterTransaction txn) {
         ArrayList<RegisterTransaction> txns = new ArrayList<RegisterTransaction>();
+        txns.add(txn);
         this.addPendingTransactions(txns);
     }
 
@@ -143,6 +144,15 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
     @Override
     public List<RegisterTransaction> matchTransaction(RegisterTransaction pendingTransaction) {
         return this.registerDAO.matchTransaction(pendingTransaction);
+    }
+
+    @Override
+    public void matchTransaction(RegisterTransaction pendingTransaction, RegisterTransaction enteredTransaction) {
+        pendingTransaction.setStatusTxt(RegisterTransaction.STATUS_ACCEPTED);
+        this.addPendingTransactions(pendingTransaction);
+        
+        enteredTransaction.setStatusTxt(RegisterTransaction.STATUS_CLEARED);
+        this.saveTransaction(enteredTransaction);
     }
             
 

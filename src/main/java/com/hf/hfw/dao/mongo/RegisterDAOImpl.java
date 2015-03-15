@@ -138,6 +138,7 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
     @Override
     public List<RegisterTransaction> getPendingTransactions(Account account) {
         Query searchTransactionsQuery = new Query(Criteria.where("primaryAccount").is(account.getId()));
+        searchTransactionsQuery.addCriteria(Criteria.where("statusTxt").is(RegisterTransaction.STATUS_IMPORTED));
         searchTransactionsQuery.with(new Sort(Sort.Direction.ASC,"txnDate"));
 
         return this.getMongoTemplate().find(searchTransactionsQuery, RegisterTransaction.class, "onlineData");

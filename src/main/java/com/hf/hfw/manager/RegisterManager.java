@@ -26,5 +26,6 @@ public interface RegisterManager {
     public List<RegisterTransaction> getPendingTransactions(Account account);
     public RegisterTransaction getPendingTransactionById(String id);
     public List<RegisterTransaction> matchTransaction(RegisterTransaction pendingTransaction);
+    public void matchTransaction(RegisterTransaction pendingTransaction,RegisterTransaction enteredTransaction);
 
 }

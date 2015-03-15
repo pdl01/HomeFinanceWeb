@@ -50,6 +50,7 @@ public class TransactionFileImportListener implements ApplicationListener<Accoun
                 rtxn.setTxnAmount(Math.abs(f.getAmount()));
                 rtxn.setTxnDate(output_format.format(f.getTxnDate()));
                 rtxn.setPrimaryAccount(e.getAccount().getId());
+                rtxn.setStatusTxt(RegisterTransaction.STATUS_IMPORTED);
                 if (f.getAmount() < 0) {
                     rtxn.setCredit(false);
                 }

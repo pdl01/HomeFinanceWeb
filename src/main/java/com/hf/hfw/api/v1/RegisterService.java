@@ -91,5 +91,22 @@ public interface RegisterService {
     @Consumes({"application/json"})
     @Path("/get/matched/{transactionid}")    
     public List<RegisterTransaction> getMatchedTransactionsForPending(@PathParam("transactionid") String transactionid);
- 
+
+    @POST
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
+    @Path("/pending/match/{pendingTransactionid}/{enteredTransactionId}")    
+    public ValidationResponse matchTransaction(@PathParam("pendingTransactionid") String pendingTransactionid,@PathParam("enteredTransactionId") String enteredTransactionId);
+
+    @POST
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
+    @Path("/pending/dismiss/{pendingTransactionid}")    
+    public ValidationResponse dismissPendingTransaction(@PathParam("pendingTransactionid") String pendingTransactionid);
+
+    @POST
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
+    @Path("/pending/acceptasnew/{pendingTransactionid}")    
+    public RegisterTransaction acceptPendingTransactionAsNew(@PathParam("pendingTransactionid") String pendingTransactionid);
 }
