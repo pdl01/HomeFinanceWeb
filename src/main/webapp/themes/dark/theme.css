@@ -1,5 +1,5 @@
 #appMenu{
-    background-color: darkslategray;
+    background-color: #191919;
     color:white;
     
 }
@@ -7,11 +7,42 @@
     color:white;
 }
 #header {
-   background-color: darkslategray;
+   background-color: #191919;
    color: white;
 }
 
 .accountListHeader {
-   background-color: darkslategray;
+   background-color: #121212;
    color: white;    
+}
+
+.accountEntry {
+   background-color: #121212;
+   color: white;
+   spacing:0px;
+}
+
+.tabItem{
+   background-color: #121212;
+   color: white;    
+    
+}
+
+#appMainTabs{
+     background-color: #121212;
+   color: white;     
+}
+
+.registryTransaction{
+     background-color: #121212;
+   color: white;     
+    
+}
+
+#registryFilterControls{
+     background-color: #121212;
+   color: white;     
+}
+.registryFilter{
+    color: black;     
 }
