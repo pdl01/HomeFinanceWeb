@@ -10,20 +10,25 @@ hfwApp.factory("SettingsService", function ($http) {
     };
     SettingsService.validateRepositoryConfig = function (settingsData) {
         delete account.$$hashKey;
+                var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+
         return $http({
             method: 'POST',
             url: '/HFWservices/api/v1/settings/db/validate',
             data: JSON.stringify(settingsData), // pass in data as strings
-            headers: {'Content-Type': 'application/json'}  // set the headers so angular passing info as form data (not request payload)
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         })
     };
     SettingsService.saveRepositoryConfig = function (settingsData) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
 
         return $http({
             method: 'POST',
             url: '/HFW/services/api/v1/settings/db',
             data: JSON.stringify(settingsData), // pass in data as strings
-            headers: {'Content-Type': 'application/json'}  // set the headers so angular passing info as form data (not request payload)
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         })
     };
     SettingsService.getBasicSecurityConfig = function () {
@@ -33,11 +38,14 @@ hfwApp.factory("SettingsService", function ($http) {
         });
     };
     SettingsService.saveBasicSecurityConfig = function (settingsData) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+
         return $http({
             method: 'POST',
             url: '/HFW/services/api/v1/settings/basicsecurity',
             data: JSON.stringify(settingsData), // pass in data as strings
-            headers: {'Content-Type': 'application/json'}  // set the headers so angular passing info as form data (not request payload)
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         })
     };
 
@@ -48,11 +56,14 @@ hfwApp.factory("SettingsService", function ($http) {
         });
     };
     SettingsService.saveThemeConfig = function (settingsData) {
+                var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+
         return $http({
             method: 'POST',
             url: '/HFW/services/api/v1/settings/theme',
             data: JSON.stringify(settingsData), // pass in data as strings
-            headers: {'Content-Type': 'application/json'}  // set the headers so angular passing info as form data (not request payload)
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         })
     };
     SettingsService.getAllCategories = function () {
