@@ -22,5 +22,4 @@
     <bean id="dbFactory" class="com.hf.hfw.application.DBFactory">
       
     </bean>
-  
 </beans>

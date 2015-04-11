@@ -46,6 +46,9 @@
   	<property name="accountDAO" ref="accountDAO"/>
        
   </bean>
+  <bean id="settingsManager" class="com.hf.hfw.manager.SettingsManagerImpl">
+      <property name="repositoryBasedSettingDAO" ref="repositoryBasedSettingDAO"/>
+  </bean>
   <bean id="budgetManager" class="com.hf.hfw.manager.BudgetManagerImpl">    
   	<property name="budgetDAO" ref="budgetDAO"/>
        
@@ -56,6 +59,7 @@
   </bean>
   <bean id="categoryCacheManagerImpl" class="com.hf.hfw.manager.CategoryCacheManagerImpl">    
   	<property name="registerDAO" ref="registerDAO"/>
+        <property name="accountManager" ref="accountManager"/>
   </bean>
   <!--
   <bean id="frameManager" class="com.keystone.manager.FrameManagerImpl">    
@@ -164,4 +168,10 @@
         <property name="accountManager" ref="accountManager"/>
         <property name="registerManager" ref="registerManager"/>
     </bean>
+    
+    
+    <bean id="themeFilter" class="com.hf.hfw.web.theme.ThemeFilter">
+        <property name="settingsManager" ref="settingsManager"/>
+    </bean>
+
 </beans>

@@ -10,5 +10,5 @@
     <import resource="spring-daos.xml"/>
     <import resource="spring-rs.xml"/>
     <import resource="spring-services.xml"/>
-    
+    <import resource="spring-security.xml"/>
 </beans>

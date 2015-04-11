@@ -47,6 +47,7 @@
         <property name="categoryCacheManagerImpl" ref="categoryCacheManagerImpl"/>
     </bean>
     <bean id="settingsRestServicev1" class="com.hf.hfw.api.v1.settings.SettingsServiceImpl" >
+        <property name="settingsManager" ref="settingsManager"/>
         <property name="configurationDirectoryService" ref="configurationDirectoryService"/>
     </bean>
     <bean id="dateRestServicev1" class="com.hf.hfw.api.v1.DateServiceImpl" >
