@@ -55,7 +55,12 @@ hfwApp.factory("SettingsService", function ($http) {
             headers: {'Content-Type': 'application/json'}  // set the headers so angular passing info as form data (not request payload)
         })
     };
-
+    SettingsService.getAllCategories = function () {
+        return $http({
+            method: 'GET',
+            url: '/HFW/services/api/v1/category/all'
+        });
+    };
 
 
     return SettingsService;

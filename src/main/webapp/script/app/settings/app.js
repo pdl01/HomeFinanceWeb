@@ -5,11 +5,13 @@ hfwApp.controller('settingsController', function ($scope, $http, SettingsService
     $scope.repositoryFormData = {};
     $scope.basicSecurityFormData = {};
     $scope.themeFormData = {};
+    $scope.categories = [];
 
     $scope.init = function () {
         $scope.getRepositoryConfig();
         $scope.getThemeConfig();
         $scope.getBasicSecurityConfig();
+        $scope.getCategoryInformation();
     };
 
     $scope.getRepositoryConfig = function () {
@@ -75,7 +77,12 @@ hfwApp.controller('settingsController', function ($scope, $http, SettingsService
             console.log(response);
         });
     };
-
+    $scope.getCategoryInformation = function () {
+    
+        SettingsService.getAllCategories().success(function (response) {
+            $scope.categories = response;
+        });
+    };
     $scope.saveBasicSecurityInformation = function () {
         var basicSecurityInfo = {};
         basicSecurityInfo.typeOfSetting = "basicSecurity";
@@ -91,12 +98,12 @@ hfwApp.controller('settingsController', function ($scope, $http, SettingsService
         var themeInfo = {};
         themeInfo.typeOfSetting = "theme";
         themeInfo.settings = {};
-        themeInfo.settings.enabled = $scope.themeFormData.theme;
-        SettingsService.saveThemeConfig(ThemeInfo).success(function (response) {
+        themeInfo.settings.theme = $scope.themeFormData.theme;
+        SettingsService.saveThemeConfig(themeInfo).success(function (response) {
             console.log(response);
         });
     };
-
+    
     $scope.init();
 
 });

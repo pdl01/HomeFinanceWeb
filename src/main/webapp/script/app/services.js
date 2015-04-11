@@ -17,11 +17,13 @@ hfwApp.factory("AccountService", function($http) {
   
   AccountService.saveAccount = function(account) {
       delete account.$$hashKey;
+      var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+      var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
       return $http({
         method  : 'POST',
         url     : '/HFW/services/api/v1/accounts/save',
         data    : JSON.stringify(account),  // pass in data as strings
-        headers : { 'Content-Type': 'application/json'  }  // set the headers so angular passing info as form data (not request payload)
+        headers : { 'Content-Type': 'application/json','X-CSRF-TOKEN' : csrfHeaderValue  }  // set the headers so angular passing info as form data (not request payload)
             })
   };
   
@@ -63,21 +65,30 @@ hfwApp.factory("RegistryService", function($http) {
       });
   };
   RegistryService.matchPendingTransactionToExistingTransaction = function(pendingid,existingid) {
+            var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+      var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
       return $http({
         method: 'POST', 
-        url: '/HFW/services/api/v1/register/pending/match/'+pendingid+'/'+existingid
+        url: '/HFW/services/api/v1/register/pending/match/'+pendingid+'/'+existingid,
+        headers : { 'Content-Type': 'application/json','X-CSRF-TOKEN' : csrfHeaderValue  }
       });
   };
   RegistryService.dismissPendingTransaction = function(pendingid) {
+            var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+      var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
       return $http({
         method: 'POST', 
-        url: '/HFW/services/api/v1/register/pending/dismiss/'+pendingid
+        url: '/HFW/services/api/v1/register/pending/dismiss/'+pendingid,
+        headers : { 'Content-Type': 'application/json','X-CSRF-TOKEN' : csrfHeaderValue  }
       });
   };
   RegistryService.acceptPendingTransactionAsNew = function(pendingid) {
+            var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+      var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
       return $http({
         method: 'POST', 
-        url: '/HFW/services/api/v1/register/pending/acceptasnew/'+pendingid
+        url: '/HFW/services/api/v1/register/pending/acceptasnew/'+pendingid,
+        headers : { 'Content-Type': 'application/json','X-CSRF-TOKEN' : csrfHeaderValue  }
       });
   };
     RegistryService.getMatchingTransactionsForPendingTransaction = function(transactionId) {
@@ -88,27 +99,34 @@ hfwApp.factory("RegistryService", function($http) {
   };
     RegistryService.saveTransaction = function(transaction) {
      delete transaction.$$hashKey;
-     return $http({
+           var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+      var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+        return $http({
         method  : 'POST',
         url     : '/HFW/services/api/v1/register/save',
         data    : JSON.stringify(transaction),  // pass in data as strings
-        headers : { 'Content-Type': 'application/json'  }  // set the headers so angular passing info as form data (not request payload)
+        headers : { 'Content-Type': 'application/json','X-CSRF-TOKEN' : csrfHeaderValue  }  // set the headers so angular passing info as form data (not request payload)
             });
   };
   RegistryService.validateTransaction = function(transaction) {
      delete transaction.$$hashKey;
-     return $http({
+           var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+      var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+      return $http({
         method  : 'POST',
         url     : '/HFW/services/api/v1/register/validate',
         data    : JSON.stringify(transaction),  // pass in data as strings
-        headers : { 'Content-Type': 'application/json'  }  // set the headers so angular passing info as form data (not request payload)
+        headers : { 'Content-Type': 'application/json','X-CSRF-TOKEN' : csrfHeaderValue  }  // set the headers so angular passing info as form data (not request payload)
             });
   };
   RegistryService.uploadData = function(accountId,data) {
      
      var formData = new FormData($('#onlineDataUploadForm')[0]);
      console.log(formData);
-     //TODO: convert this all to angular form
+           var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+      var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+//
+//TODO: convert this all to angular form
      //$scope.uploadProgress="Uploading";
       $.ajax({
         url: '/HFW/servlet/fileUpload/'+accountId,  //Server script to process data
@@ -119,7 +137,8 @@ hfwApp.factory("RegistryService", function($http) {
         data: formData,
         //Options to tell jQuery not to process data or worry about content-type.
         cache: false,
-        success:function (returndata) {
+        headers : {'X-CSRF-TOKEN' : csrfHeaderValue  },
+          success:function (returndata) {
             //$scope.uploadProgress="Complete";
             alert ("Upload Complete");
     },
@@ -256,20 +275,24 @@ hfwApp.factory("BudgetService", function($http) {
             //}
 
         });
+              var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+      var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
      return $http({
         method  : 'POST',
         url     : '/HFW/services/api/v1/budgets/save',
         data    : JSON.stringify(budget),  // pass in data as strings
-        headers : { 'Content-Type': 'application/json'  }  // set the headers so angular passing info as form data (not request payload)
+        headers : { 'Content-Type': 'application/json','X-CSRF-TOKEN' : csrfHeaderValue   }  // set the headers so angular passing info as form data (not request payload)
             });
   };
   BudgetService.validateTransaction = function(transaction) {
      delete transaction.$$hashKey;
+           var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+      var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
      return $http({
         method  : 'POST',
         url     : '--/HFW/services/api/v1/register/validate',
         data    : JSON.stringify(transaction),  // pass in data as strings
-        headers : { 'Content-Type': 'application/json'  }  // set the headers so angular passing info as form data (not request payload)
+        headers : { 'Content-Type': 'application/json','X-CSRF-TOKEN' : csrfHeaderValue   }  // set the headers so angular passing info as form data (not request payload)
             });
   };
   return BudgetService;
