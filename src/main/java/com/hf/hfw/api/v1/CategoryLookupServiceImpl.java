@@ -6,6 +6,8 @@
 package com.hf.hfw.api.v1;
 
 import com.hf.hfw.manager.CategoryCacheManagerImpl;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import javax.ws.rs.Path;
 
@@ -28,6 +30,11 @@ public class CategoryLookupServiceImpl implements CategoryLookupService {
     @Override
     public List<String> lookupCategories(String categoryString) {
         return this.categoryCacheManagerImpl.get(categoryString, false);
+    }
+
+    @Override
+    public Collection<String> getAll() {
+        return this.categoryCacheManagerImpl.getCategorySet();
     }
     
 }

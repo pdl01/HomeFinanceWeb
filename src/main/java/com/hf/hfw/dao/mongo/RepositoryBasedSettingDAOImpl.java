@@ -6,10 +6,7 @@
 package com.hf.hfw.dao.mongo;
 
 import com.hf.hfw.api.v1.settings.SettingsBean;
-import com.hf.hfw.dao.RegisterDAO;
 import com.hf.hfw.dao.RepositoryBasedSettingDAO;
-import com.hf.homefinanceshared.RegisterTransaction;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -28,7 +25,13 @@ public class RepositoryBasedSettingDAOImpl extends AbstractMongoDAO implements R
 
     @Override
     public void saveSetting(String typeOfSetting, SettingsBean settingsBean) {
-        this.getMongoTemplate().save(settingsBean,"Settings");
+        SettingsBean currentSettingsBean = this.getSetting(typeOfSetting);
+        if (currentSettingsBean != null) {
+            currentSettingsBean.setSettings(settingsBean.getSettings());
+        } else {
+            currentSettingsBean = settingsBean;
+        }
+        this.getMongoTemplate().save(currentSettingsBean,"Settings");
 
     }
 

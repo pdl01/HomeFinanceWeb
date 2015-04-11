@@ -5,6 +5,7 @@
  */
 package com.hf.hfw.reports;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +48,17 @@ public class ReportData {
     }
 
     public void setDataPoints(List<ReportDataPoint> dataPoints) {
-        this.dataPoints = dataPoints;
+        if (dataPoints == null || (dataPoints != null && dataPoints.isEmpty())){
+            this.dataPoints = new ArrayList<ReportDataPoint>();
+            ReportDataPoint rdp = new ReportDataPoint();
+            rdp.setName("0");
+            rdp.setValue(0);
+            this.dataPoints.add(rdp);
+        } else {
+        this.dataPoints = dataPoints;    
+        }
+        
     }
+    
 
 }

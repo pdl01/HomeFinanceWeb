@@ -11,10 +11,12 @@ import com.hf.hfw.application.ApplicationState;
 import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.hfw.dao.RegisterDAO;
+import com.hf.homefinanceshared.CategorySplit;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -22,7 +24,7 @@ import org.springframework.context.ApplicationContext;
  * @author phillip.dorrell
  */
 public class RegisterManagerImpl implements RegisterManager {
-
+private static final Logger log = Logger.getLogger(RegisterManagerImpl.class);
     private RegisterDAO registerDAO;
 private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat("YYYY-MM-d");
     public RegisterDAO getRegisterDAO() {
@@ -44,14 +46,62 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
         return this.registerDAO.getTransactionById(_id);
 
     }
-
-    @Override
-    public RegisterTransaction createTransaction(RegisterTransaction txn) {
-        return this.saveTransaction(txn);
+    
+    public List<RegisterTransaction>  getSupportingTransactions(RegisterTransaction txn) {
+       return null; 
+    }
+    
+    public List<RegisterTransaction>  createSupportingTransactions(RegisterTransaction txn) {
+       return null; 
     }
 
+    public boolean  validateSupportingTransactions(RegisterTransaction txn) {
+        //mark the transfers to create transactions in those accounts
+        if (txn.getCategorySplits() != null) {
+            for (CategorySplit categorySplit: txn.getCategorySplits()) {
+                if (categorySplit.getCategory().startsWith(CategoryCacheManagerImpl.TRANSFER_FROM)) {
+                    //determine the account being accessed
+                    String accountName = categorySplit.getCategory().substring(CategoryCacheManagerImpl.TRANSFER_FROM.length());
+                    log.debug(accountName);
+                    
+                    //record a debit transaction in that account
+                    //set the transfer transaction on the category split
+                    
+                } else if (categorySplit.getCategory().startsWith(CategoryCacheManagerImpl.TRANSFER_TO)) {
+                    //determine the account being accessed
+                    String accountName = categorySplit.getCategory().substring(CategoryCacheManagerImpl.TRANSFER_FROM.length());
+                    log.debug(accountName);
+                    
+                    
+                    //record a credit transaction in that account
+                    //set the transfer transaction on the account
+                    //set the transfer transaction on the category split
+                }
+                    
+            }
+        }
+        return false;
+    }
+    
+    
+    
+    
+    @Override
+    public RegisterTransaction createTransaction(RegisterTransaction txn) {
+
+        RegisterTransaction rtnTxn =  this.saveTransaction(txn);
+        if (rtnTxn.getId() != null) {
+            //perform actions on the other transactions
+        }
+        return rtnTxn;
+        
+    }
+
+    
+    
     @Override
     public void deleteTransaction(RegisterTransaction txn) {
+        //mark as void the supporting txn for the category splits
         this.registerDAO.deleteTransaction(txn);
     }
 
@@ -65,6 +115,7 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
     */
     protected RegisterTransaction saveTransaction(RegisterTransaction _txn) {
         _txn.setLastModifiedDate(new Date());
+        //created
         if (_txn.getId() == null) {
             _txn.setCreatedDate(new Date());
             if (_txn.getTxnDate() == null || "".equals(_txn.getTxnDate())) {
@@ -76,6 +127,7 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
             RegisterTransaction txn = this.registerDAO.createTransaction(_txn);
             this.fireTransactionEvent(txn, TransactionEvent.TransactionEventType.ADDED);
             return txn;
+        //update
         } else {
             if (_txn.getTxnDate() == null || "".equals(_txn.getTxnDate())) {
                 _txn.setTxnDate(transactionDateFormatter.format(new Date()));

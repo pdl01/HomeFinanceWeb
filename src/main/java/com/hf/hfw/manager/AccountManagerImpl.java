@@ -62,8 +62,17 @@ public class AccountManagerImpl implements AccountManager {
             this.fireAccountEvent(account, AccountEvent.AccountEventType.ADDED);
             return account;
         } else {
+            Account oldAccount = this.accountDAO.getAccountById(_account.getId());
+            boolean updatedStartingBalance = false;
+            if (oldAccount.getStartingBalance() != _account.getStartingBalance()) {
+                updatedStartingBalance = true;
+
+            }
             Account account = this.accountDAO.updateAccount(_account);
             this.fireAccountEvent(account, AccountEvent.AccountEventType.MODIFIED);
+            if (updatedStartingBalance) {
+                this.fireAccountEvent(_account, AccountEvent.AccountEventType.UPDATED_STARTING_BALANCE);
+            }
             return account;
         }        
     }

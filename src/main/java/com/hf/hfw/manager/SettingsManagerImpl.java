@@ -2,38 +2,68 @@ package com.hf.hfw.manager;
 
 import com.hf.hfw.api.v1.settings.SettingsBean;
 import com.hf.hfw.dao.RepositoryBasedSettingDAO;
+import java.util.HashMap;
 
 /**
  *
  * @author pldorrell
  */
 public class SettingsManagerImpl implements SettingsManager {
-    private RepositoryBasedSettingDAO repositoryBasedSettingsDAO;
+    public static final String TYPE_OF_SETTING_BASICSECURITY = "basicSecurity";
+    public static final String TYPE_OF_SETTING_THEME = "theme";
+    private RepositoryBasedSettingDAO repositoryBasedSettingDAO;
 
-    public void setRepositoryBasedSettingsDAO(RepositoryBasedSettingDAO repositoryBasedSettingsDAO) {
-        this.repositoryBasedSettingsDAO = repositoryBasedSettingsDAO;
+    public void setRepositoryBasedSettingDAO(RepositoryBasedSettingDAO repositoryBasedSettingsDAO) {
+        this.repositoryBasedSettingDAO = repositoryBasedSettingsDAO;
     }
-    
+
     @Override
     public SettingsBean getThemeSetting() {
-        return this.repositoryBasedSettingsDAO.getSetting("theme");
+        SettingsBean settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_THEME);
+        if (settingsBean == null) {
+            return this.getDefaultThemeSetting();
+        }
+        return settingsBean;
+    }
+
+    private SettingsBean getDefaultThemeSetting() {
+        SettingsBean settingsBean = new SettingsBean();
+        settingsBean.setTypeOfSetting(TYPE_OF_SETTING_THEME);
+        HashMap<String, String> settings = new HashMap<String, String>();
+        settings.put("theme", "default");
+        settingsBean.setSettings(settings);
+        return settingsBean;
+    }
+
+    private SettingsBean getDefaultBasicSecuritySetting() {
+        SettingsBean settingsBean = new SettingsBean();
+        settingsBean.setTypeOfSetting(TYPE_OF_SETTING_BASICSECURITY);
+        HashMap<String, String> settings = new HashMap<String, String>();
+        settings.put("enabled", "false");
+        settings.put("password", "admin");
+        settingsBean.setSettings(settings);
+        return settingsBean;
     }
 
     @Override
     public void saveThemeSettings(SettingsBean bean) {
-        this.repositoryBasedSettingsDAO.saveSetting("theme", bean);
-        
+        this.repositoryBasedSettingDAO.saveSetting(TYPE_OF_SETTING_THEME, bean);
+
     }
 
     @Override
     public SettingsBean getBasicSecuritySetting() {
-        return this.repositoryBasedSettingsDAO.getSetting("basicsecurity");
+        SettingsBean settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_BASICSECURITY);
+        if (settingsBean == null) {
+            settingsBean = this.getDefaultBasicSecuritySetting();
+        }
+        return settingsBean;
     }
 
     @Override
     public void saveBasicSecuritySettings(SettingsBean bean) {
-        this.repositoryBasedSettingsDAO.saveSetting("basicsecurity", bean);
+        this.repositoryBasedSettingDAO.saveSetting(TYPE_OF_SETTING_BASICSECURITY, bean);
 
     }
-    
+
 }

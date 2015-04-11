@@ -3,6 +3,7 @@ package com.hf.hfw.api.v1.settings;
 import com.hf.hfw.application.ApplicationRepositoryConfig;
 import com.hf.hfw.application.ApplicationState;
 import com.hf.hfw.application.ConfigurationDirectoryService;
+import com.hf.hfw.manager.SettingsManager;
 import java.util.HashMap;
 import javax.ws.rs.Path;
 
@@ -12,7 +13,17 @@ import javax.ws.rs.Path;
  */
 @Path("/settings")
 public class SettingsServiceImpl implements SettingsService {
-        private ConfigurationDirectoryService configurationDirectoryService;
+
+    private ConfigurationDirectoryService configurationDirectoryService;
+    private SettingsManager settingsManager;
+
+    public SettingsManager getSettingsManager() {
+        return settingsManager;
+    }
+
+    public void setSettingsManager(SettingsManager settingsManager) {
+        this.settingsManager = settingsManager;
+    }
 
     public ConfigurationDirectoryService getConfigurationDirectoryService() {
         return configurationDirectoryService;
@@ -31,27 +42,20 @@ public class SettingsServiceImpl implements SettingsService {
             ApplicationRepositoryConfig repoConfig = ApplicationState.getApplicationState().getApplicationRepositoryConfig();
             settings.put("host", repoConfig.getHost());
             settings.put("username", repoConfig.getUsername());
-            settings.put("password",repoConfig.getPassword());
+            settings.put("password", repoConfig.getPassword());
             settings.put("port", repoConfig.getPort());
             settings.put("database", repoConfig.getDb());
             settings.put("type", repoConfig.getType());
             settingsBean.setSettings(settings);
         } else if ("theme".equals(typeOfSettings)) {
-            settingsBean.setTypeOfSetting("theme");
-            HashMap<String, String> settings = new HashMap<String, String>();
-            settings.put("theme","default");
-            settingsBean.setSettings(settings);
+            settingsBean = this.settingsManager.getThemeSetting();
         } else if ("basicsecurity".equals(typeOfSettings)) {
-            settingsBean.setTypeOfSetting("basicSecurity");
-            HashMap<String, String> settings = new HashMap<String, String>();
-            settings.put("enabled","false");
-            settings.put("password","xxx");
-            settingsBean.setSettings(settings);
+            settingsBean = this.settingsManager.getBasicSecuritySetting();
         }
         return settingsBean;
-        
+
     }
-    
+
     @Override
     public SettingsBean saveSettings(String typeOfSettings, SettingsBean settingsbean) {
         if ("db".equals(typeOfSettings)) {
@@ -64,11 +68,16 @@ public class SettingsServiceImpl implements SettingsService {
             applicationRepositoryConfig.setType("mongo");
             ApplicationRepositoryConfig.saveToConfig(applicationRepositoryConfig, this.getConfigurationDirectoryService().getRepoConfigFile());
         } else if ("theme".equals(typeOfSettings)) {
-            
+            SettingsBean settingsBean = this.settingsManager.getThemeSetting();
+            settingsBean.settings.put("theme", settingsbean.getSettings().get("theme"));
+            this.settingsManager.saveThemeSettings(settingsbean);
         } else if ("basicsecurity".equals(typeOfSettings)) {
-            
+            SettingsBean settingsBean = this.settingsManager.getBasicSecuritySetting();
+            settingsBean.settings.put("enabled", settingsbean.getSettings().get("enabled"));
+            settingsBean.settings.put("password", settingsbean.getSettings().get("password"));
+            this.settingsManager.saveBasicSecuritySettings(settingsbean);
         }
         return settingsbean;
     }
-    
+
 }

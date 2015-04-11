@@ -17,9 +17,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SettingsBean {
+    protected String id;
     protected String typeOfSetting;
     protected String validationMessage;
     protected HashMap<String,String> settings;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getValidationMessage() {
         return validationMessage;

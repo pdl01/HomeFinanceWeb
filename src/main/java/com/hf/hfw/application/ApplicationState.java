@@ -6,9 +6,6 @@
 package com.hf.hfw.application;
 
 import java.io.File;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;

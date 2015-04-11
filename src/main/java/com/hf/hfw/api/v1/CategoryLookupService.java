@@ -5,6 +5,7 @@
  */
 package com.hf.hfw.api.v1;
 
+import java.util.Collection;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -22,5 +23,11 @@ public interface CategoryLookupService {
     @Consumes({"application/json"})
     @Path("/lookup/{category}")    
     public List<String> lookupCategories(@PathParam("category") String categoryString);
+
+    @GET
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
+    @Path("/all")    
+    public Collection<String> getAll();
 
 }
