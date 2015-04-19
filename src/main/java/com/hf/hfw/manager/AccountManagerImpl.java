@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationContext;
  */
 public class AccountManagerImpl implements AccountManager {
     private AccountDAO accountDAO;
+    
 
     public AccountDAO getAccountDAO() {
         return accountDAO;
@@ -42,12 +43,18 @@ public class AccountManagerImpl implements AccountManager {
 
     @Override
     public Account createAccount(Account account) {
-        return this.saveAccount(account);
+        
+        account = this.saveAccount(account);
+
+        return account;
     }
 
     @Override
     public void deleteAccount(Account account) {
-        this.accountDAO.deleteAccount(account);    
+        this.fireAccountEvent(account, AccountEvent.AccountEventType.DELETING);
+        this.accountDAO.deleteAccount(account);
+        //TODO: delete all register transactions or let a handler take care of it
+        this.fireAccountEvent(account, AccountEvent.AccountEventType.DELETING);
     }
 
     @Override
