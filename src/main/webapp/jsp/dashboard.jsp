@@ -93,6 +93,8 @@
             </div>
             <div id="appMain">
                 <div id="appMainTabs">
+                    <div id="appMainTabsAccountName">{{selectedAccount.name}}</div>
+
                     <ul>
                         <li class="tabItem" id="accountMenuItemRegister" ng-click="showRegistryTab()">Register</li>
                         <li class="tabItem" id="accountMenuItemReport" ng-click="showReportTab()" >Report</li>
@@ -207,6 +209,7 @@
                     Account Type:<input type="text" ng-model="accountFormData.accountType"><br>
                     <button ng-click="addAccount()">Add the Account!</button>
                     <button ng-click="clickNewAccountCancel()">Cancel</button>
+                    <button ng-click="clickDeleteAccount()">Delete Account</button>
                 </div>
             </modal>
 
