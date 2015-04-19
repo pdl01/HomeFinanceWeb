@@ -156,3 +156,6 @@ div{
     
 }
 ul{margin-bottom:0px;}
+#appMainTabsAccountName {
+    float:right;
+}
