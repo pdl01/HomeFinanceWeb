@@ -285,6 +285,18 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         //$("#accountDetailsForm").hide();
     };
 
+    $scope.clickDeleteAccount = function (x) {
+        if ($scope.accountFormData.id != undefined) {
+            AccountService.deleteAccount($scope.accountFormData.id).success(function (response) {
+                alert("Account Deleted");
+                $scope.showAccountModal = false;
+            });
+        }
+        
+        //$("#accountDetailsForm").hide();
+    };
+
+
     $scope.showNewTransaction = function (x) {
         $scope.registryTransactionFormData = {};
         $scope.registryTransactionFormData.txnDate = $scope.currentDate;

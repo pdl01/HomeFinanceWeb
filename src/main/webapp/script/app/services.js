@@ -14,6 +14,18 @@ hfwApp.factory("AccountService", function ($http) {
             url: '/HFW/services/api/v1/accounts/getbyId/' + id
         });
     };
+    AccountService.deleteAccount = function (id) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+
+        return $http({
+            method: 'DELETE',
+            url: '/HFW/services/api/v1/accounts/delete/' + id,
+            //data: JSON.stringify(account), // pass in data as strings
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
+
+        });
+    };
 
     AccountService.saveAccount = function (account) {
         delete account.$$hashKey;
