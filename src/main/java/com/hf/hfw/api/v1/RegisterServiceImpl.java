@@ -183,7 +183,7 @@ public class RegisterServiceImpl implements RegisterService {
     private ValidationResponse validateTransactionsCanBeMatched(RegisterTransaction pendingTransaction, RegisterTransaction enteredTransaction) {
         ValidationResponse response = new ValidationResponse();
         response.setValid(true);
-        List<String> messages = new ArrayList<>();
+        List<String> messages = new ArrayList<String>();
         if (pendingTransaction == null) {
             response.setValid(false);
             messages.add("Pending Transaction is not valid");
@@ -214,7 +214,7 @@ public class RegisterServiceImpl implements RegisterService {
     public ValidationResponse dismissPendingTransaction(String pendingTransactionid) {
         RegisterTransaction pendingTransaction = this.registerManager.getPendingTransactionById(pendingTransactionid);
         ValidationResponse response = new ValidationResponse();
-        List<String> messages = new ArrayList<>();
+        List<String> messages = new ArrayList<String>();
         response.setValid(true);
         if (pendingTransaction == null) {
             response.setValid(false);

@@ -63,7 +63,7 @@ public class CategoryCacheManagerImpl {
     private void initCategorySet() {
         log.debug("Entering initCategorySet");
 
-        this.categorySet = new TreeSet<>();
+        this.categorySet = new TreeSet<String>();
         log.debug("Exiting initCategorySet");
 
     }
