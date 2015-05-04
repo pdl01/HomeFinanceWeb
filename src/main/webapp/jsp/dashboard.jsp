@@ -176,7 +176,9 @@
                 </div>
                 <div id="accountOnlineFunctions">
 
-                    online
+                    <div>online 
+                   <div ng-if="selectedAccount.webAddress != null"><a href="{{selectedAccount.webAddress}}" target="_blank">Web Site</a></div>
+                    </div>
                     <form enctype="multipart/form-data" id="onlineDataUploadForm">
                         Data:<br>
                         <button ng-click="selectFile()">Upload Your File</button>
@@ -207,15 +209,17 @@
                     Account Number:<input typ="text" ng-model="accountFormData.accountNumber"><br>
                     Opening Balance:<input typ="text" ng-model="accountFormData.startingBalance"><br>
                     Account Type:<input type="text" ng-model="accountFormData.accountType"><br>
-                    <button ng-click="addAccount()">Add the Account!</button>
+                    Web Site:<input type="text" ng-model="accountFormData.webAddress"><br>
+                    <button ng-if="accountFormData.id == null" ng-click="addAccount()">Add the Account!</button>
+                    <button ng-if="accountFormData.id != null" ng-click="addAccount()">Save Account!</button>
                     <button ng-click="clickNewAccountCancel()">Cancel</button>
-                    <button ng-click="clickDeleteAccount()">Delete Account</button>
+                    <button ng-if="accountFormData.id != null" ng-click="clickDeleteAccount()">Delete Account</button>
                 </div>
             </modal>
 
 
             <modal title="Transaction Details" visible="showTransactionModal">
-
+                Account:  {{selectedAccount.name}}<br>
                 <input type="hidden" ng-model="registryTransactionFormData.primaryAccount">
                 <input type="hidden" ng-model="registryTransactionFormData.id">
                 Date:<input type="text" ng-model="registryTransactionFormData.txnDate"><br>
