@@ -300,6 +300,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     $scope.showNewTransaction = function (x) {
         $scope.registryTransactionFormData = {};
         $scope.registryTransactionFormData.txnDate = $scope.currentDate;
+        $scope.registryTransactionFormData.statusTxt = 'x';
         $scope.registryTransactionFormCategorySplits = [];
         $scope.showTransactionModal = true;
         //$("#transactionDetailsForm").show();
