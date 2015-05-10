@@ -151,7 +151,7 @@
     </bean>
     <bean id="transactionFileImportListener" class="com.hf.hfw.files.listeners.TransactionFileImportListener">
         <property name="registerManager" ref="registerManager"/> 
-
+        <property name="accountManager" ref="accountManager" />
     </bean>
     <bean id="reportDataGeneratorFactory" class="com.hf.hfw.reports.ReportDataGeneratorFactory"/>
 
