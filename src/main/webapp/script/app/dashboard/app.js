@@ -59,6 +59,9 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     $scope.txnDateControl.year = "";
     $scope.txnDateControl.month = "";
 
+    $scope.report_transactions = {};
+
+
     $scope.$watch('registryTransactionFormCategorySplits[0].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -445,6 +448,8 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
                 marginTop: '15px'
             }
         });
+        
+        
     }
     $scope.doReport = function (x) {
         console.log($scope.selectedAccount.id + ":" + $scope.reportControl.reportType + ":" + $scope.reportControl.reportPeriod);
@@ -468,7 +473,11 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
 
 
             });
+            
             $scope.renderReport(plotData);
+            //push the plotDate into report transactions
+            //and sort
+            $scope.report_transactions = response.dataPoints;
         });
 
 
