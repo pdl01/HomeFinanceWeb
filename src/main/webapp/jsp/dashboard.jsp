@@ -170,13 +170,21 @@
 
 
                         </script>
+                    <div id="reportTransactions">
+                        <div ng-repeat="x in report_transactions"  class="list-group-item accountEntry">
+                        <div>
+                            <span>{{ x.name}}</span>
+                            <span>{{ x.value | currency }}</span>
+                        </div>
+                    </div>
+                    </div>
 
 
                     </div>
                 </div>
                 <div id="accountOnlineFunctions">
 
-                    <div>online 
+                    <div>online Last Transaction Date:{{selectedAccount.lastImportedTransactionDate}} 
                    <div ng-if="selectedAccount.webAddress != null"><a href="{{selectedAccount.webAddress}}" target="_blank">Web Site</a></div>
                     </div>
                     <form enctype="multipart/form-data" id="onlineDataUploadForm">
