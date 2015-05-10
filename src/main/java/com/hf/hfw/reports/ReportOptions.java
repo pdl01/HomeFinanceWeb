@@ -88,7 +88,7 @@ public class ReportOptions {
         Date currentDate = new Date();
         if (reportPeriod == null) {
             return null;
-        } else if (reportPeriod.equals(REPORT_PERIOD_CURRENT_MONTH)) {
+                } else if (reportPeriod.equals(REPORT_PERIOD_CURRENT_MONTH)) {
             return sdf_year_month.format(currentDate);
             //endDate = sdf_year_month.format(currentDate)+"-31";
 

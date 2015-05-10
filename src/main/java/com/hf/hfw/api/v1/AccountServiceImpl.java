@@ -59,6 +59,8 @@ public class AccountServiceImpl implements AccountService {
             account.setBalanceLastCalculatedDate(retrievedAccount.getBalanceLastCalculatedDate());
             account.setCreatedDate(retrievedAccount.getCreatedDate());
             account.setLastModifiedDate(retrievedAccount.getLastModifiedDate());
+            account.setLastImportActionDate(retrievedAccount.getLastImportActionDate());
+            account.setLastImportedTransactionDate(retrievedAccount.getLastImportedTransactionDate());
             return this.accountManager.updateAccount(account);
         } else {
             //TODO validation on existing !!

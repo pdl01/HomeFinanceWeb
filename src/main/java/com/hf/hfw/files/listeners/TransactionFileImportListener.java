@@ -2,7 +2,9 @@ package com.hf.hfw.files.listeners;
 
 import com.hf.hfw.accounts.events.AccountEvent;
 import com.hf.hfw.accounts.events.AccountFileEvent;
+import com.hf.hfw.manager.AccountManager;
 import com.hf.hfw.manager.RegisterManager;
+import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.RegisterTransaction;
 import com.hfw.homefinance.importer.FileAccount;
 import com.hfw.homefinance.importer.FileTransaction;
@@ -26,7 +28,10 @@ public class TransactionFileImportListener implements ApplicationListener<Accoun
 
     private static final Logger log = Logger.getLogger(TransactionFileImportListener.class);
     private RegisterManager registerManager;
-
+    private AccountManager accountManager;
+    public void setAccountManager(AccountManager accountManager) {
+        this.accountManager = accountManager;
+    }
     public RegisterManager getRegisterManager() {
         return registerManager;
     }
@@ -42,6 +47,7 @@ public class TransactionFileImportListener implements ApplicationListener<Accoun
             TransactionDataImporter tdi = TransactionDataImporterFactory.get(new File(e.getFileName()));
             List<FileAccount> txns = tdi.loadFromFile(e.getFileName());
             List<RegisterTransaction> registerTransactions = new ArrayList<RegisterTransaction>();
+            Date latestTxnDate = null;
             for (FileTransaction f : txns.get(0).getTransactions()) {
                 log.info(f.getPayee() + ":" + f.getAmount() + ":" + output_format.format(f.getTxnDate()));
                 RegisterTransaction rtxn = new RegisterTransaction();
@@ -54,10 +60,21 @@ public class TransactionFileImportListener implements ApplicationListener<Accoun
                 if (f.getAmount() < 0) {
                     rtxn.setCredit(false);
                 }
+                if (latestTxnDate == null) {
+                    latestTxnDate = f.getTxnDate();
+                } else if (f.getTxnDate().after(latestTxnDate)) {
+                    latestTxnDate = f.getTxnDate();
+                }
                 registerTransactions.add(rtxn);
             }
             if (!registerTransactions.isEmpty()) {
                 this.registerManager.addPendingTransactions(registerTransactions);
+                
+                //update the transactionDates on t account
+                Account account = this.accountManager.getAccountById(e.getAccount().getId());
+                account.setLastImportActionDate(new Date());
+                account.setLastImportedTransactionDate(output_format.format(latestTxnDate));
+                this.accountManager.updateAccount(account);
             }
             log.info("completed processing:" + e.getAccount().getId() + ":" + e.getFileName());
 
