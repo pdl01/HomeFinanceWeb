@@ -230,6 +230,7 @@
                 Account:  {{selectedAccount.name}}<br>
                 <input type="hidden" ng-model="registryTransactionFormData.primaryAccount">
                 <input type="hidden" ng-model="registryTransactionFormData.id">
+                <div ng-if="selectedAccount.accountType == 'Checking'">Check #<input  ng-model="registryTransactionFormData.txnPersonalRefNumber"></div>
                 Date:<input type="text" ng-model="registryTransactionFormData.txnDate"><br>
                 Payee Name:<input typ="text" ng-model="registryTransactionFormData.payee"><br>
                 Transaction Amount:<input typ="text" size="5" ng-model="registryTransactionFormData.txnAmount"><input type="checkbox" value="true" ng-model="registryTransactionFormData.credit">Is Credit?<br>
