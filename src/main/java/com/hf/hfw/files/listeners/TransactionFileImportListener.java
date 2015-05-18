@@ -44,6 +44,8 @@ public class TransactionFileImportListener implements ApplicationListener<Accoun
     public void onApplicationEvent(AccountFileEvent e) {
         if (e.getType().equals(AccountEvent.AccountEventType.UPLOADED_TRANSACTION_FILE)) {
             log.info("processing:" + e.getAccount().getId() + ":" + e.getFileName());
+            Account account = this.accountManager.getAccountById(e.getAccount().getId());
+            
             TransactionDataImporter tdi = TransactionDataImporterFactory.get(new File(e.getFileName()));
             List<FileAccount> txns = tdi.loadFromFile(e.getFileName());
             List<RegisterTransaction> registerTransactions = new ArrayList<RegisterTransaction>();
@@ -65,13 +67,19 @@ public class TransactionFileImportListener implements ApplicationListener<Accoun
                 } else if (f.getTxnDate().after(latestTxnDate)) {
                     latestTxnDate = f.getTxnDate();
                 }
+                
+                if ("Checking".equals(account.getAccountType())) {
+                    if (f.getCheckNumber() != null) {
+                        rtxn.setTxnPersonalRefNumber(f.getCheckNumber());
+                    }
+                }
                 registerTransactions.add(rtxn);
             }
             if (!registerTransactions.isEmpty()) {
                 this.registerManager.addPendingTransactions(registerTransactions);
                 
                 //update the transactionDates on t account
-                Account account = this.accountManager.getAccountById(e.getAccount().getId());
+                //Account account = this.accountManager.getAccountById(e.getAccount().getId());
                 account.setLastImportActionDate(new Date());
                 account.setLastImportedTransactionDate(output_format.format(latestTxnDate));
                 this.accountManager.updateAccount(account);
