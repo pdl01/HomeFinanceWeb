@@ -8,8 +8,10 @@ package com.hf.hfw.web;
 import com.hf.hfw.files.listeners.TransactionFileImportListener;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.servlet.ModelAndView;
 
@@ -50,4 +52,32 @@ public class MainController {
         return model;
     }
 
+    @RequestMapping(value = {"/mobile","/mobile/accounts"}, method = RequestMethod.GET)
+    public ModelAndView mobileAccount() {
+        ModelAndView model = new ModelAndView();
+        model.addObject("title", "Spring Security Hello World");
+        model.addObject("message", "This is welcome page!");
+        model.setViewName("mobile/accounts");
+        return model;
+    }
+
+    @RequestMapping(value = {"/mobile/registry/*"}, method = RequestMethod.GET)
+    public ModelAndView mobileRegistry(@RequestParam("account") String account) {
+        ModelAndView model = new ModelAndView();
+        model.addObject("title", "Spring Security Hello World");
+        model.addObject("message", "This is welcome page!");
+        model.addObject("account",account);
+        model.setViewName("mobile/registry");
+        return model;
+    }
+
+    @RequestMapping(value = {"/mobile/transaction/new/{account}"}, method = RequestMethod.GET)
+    public ModelAndView mobileTransaction(@PathVariable String account) {
+        ModelAndView model = new ModelAndView();
+        model.addObject("title", "Spring Security Hello World");
+        model.addObject("message", "This is welcome page!");
+        model.addObject("account",account);
+        model.setViewName("mobile/transaction");
+        return model;
+    }
 }
