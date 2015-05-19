@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 
@@ -12,6 +14,8 @@
         <script src="/HFW/script/app/services.js"></script>
 
         <div ng-app="HFWApp" ng-controller="transactionController" id="main">
+            <input type="hidden" ng-model="accountId" ng-init="accountId='<c:out value="${account}"/>'">
+
             <input type="hidden" ng-model="registryTransactionFormData.primaryAccount">
             <input type="hidden" ng-model="registryTransactionFormData.id">
             Date:<input type="text" ng-model="registryTransactionFormData.txnDate"><br>
