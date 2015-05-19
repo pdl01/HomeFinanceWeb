@@ -23,7 +23,7 @@ hfwApp.controller('accountController', function ($scope, AccountService) {
     $scope.clickGoButton = function (x) {
         console.log(x.id);
         this.selectedAccount = x;
-        window.location.href = "/HFW/mobile/registry.jsp#/!?accountId=" + x.id;
+        window.location.href = "/HFW/app/mobile/registry/?account=" + x.id;
     };
 
 

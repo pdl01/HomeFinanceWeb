@@ -5,7 +5,7 @@ var hfwApp = angular.module('HFWApp', []);
 
 hfwApp.controller('transactionController', function ($scope, $location, RegistryService, CategoryLookupService,DateService) {
 
-    var accountId = $location.search().accountId;
+    var accountId = "";//$location.search().accountId;
     $scope.currentDate = "";
     $scope.registryTransactionFormData = {};
     $scope.hideTxnRetrievedCategories = true;
@@ -85,7 +85,7 @@ hfwApp.controller('transactionController', function ($scope, $location, Registry
 
     $scope.clickNewTransactionCancel = function () {
         console.log($scope.accountId);
-        window.location.href = "/HFW/mobile/registry.jsp#/!?accountId=" + $scope.accountId;
+        window.location.href = "/HFW/app/mobile/registry/?account="+ $scope.accountId;
         //$scope.showTransactionModal = false;
         //$("#transactionDetailsForm").hide();
     }

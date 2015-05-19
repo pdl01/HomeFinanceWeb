@@ -46,7 +46,7 @@ hfwApp.controller('registryController', function ($scope, $location, RegistrySer
     };
 
     $scope.clickNewTransactionButton = function (x) {
-        window.location.href = "/HFW/mobile/transaction.jsp#/!?accountId=" + x;
+        window.location.href = "/HFW/app/mobile/transaction/new/" + x;
     };
     $scope.getCurrentDate = function () {
         DateService.lookupCurrent().success(function (response) {
