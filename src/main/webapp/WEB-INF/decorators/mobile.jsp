@@ -23,7 +23,7 @@
   </head>
   <body>
       <div id="header">
-          <a href="/HFW/mobile" class="headerItem mobileHeader">Accounts</a>
+          <a href="/HFW/app/mobile" class="headerItem mobileHeader">Accounts</a>
         </div>
       
     <div id="hfMain">
