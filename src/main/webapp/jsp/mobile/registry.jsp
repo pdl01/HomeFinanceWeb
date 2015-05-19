@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 
@@ -12,6 +14,7 @@
         <script src="/HFW/script/app/services.js"></script>
             
         <div ng-app="HFWApp" ng-controller="registryController" id="main">
+            <input type="hidden" ng-model="accountId" ng-init="accountId='<c:out value="${account}"/>'">
             <div><button ng-click="clickNewTransactionButton(accountId)">New</button> Year:<select name="selectRegisterYear" ng-model="txnDateControl.year">
                             <option value="2015">2015</option>
                             <option value="2014">2014</option>
