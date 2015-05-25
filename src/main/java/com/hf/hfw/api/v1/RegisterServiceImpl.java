@@ -78,6 +78,7 @@ public class RegisterServiceImpl implements RegisterService {
             retrievedtxn.setPrimaryAccount(transaction.getPrimaryAccount());
             retrievedtxn.setCredit(transaction.isCredit());
             retrievedtxn.setStatusTxt(transaction.getStatusTxt());
+            retrievedtxn.setTxnPersonalRefNumber(transaction.getTxnPersonalRefNumber());
             return this.registerManager.updateTransaction(retrievedtxn);
         } else {
             return this.registerManager.createTransaction(transaction);
