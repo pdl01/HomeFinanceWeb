@@ -5,6 +5,6 @@
         <pattern>/*</pattern>
     </decorator>
     <decorator name="mobile" page="mobile.jsp">
-        <pattern>/mobile/*</pattern>
+        <pattern>/app/mobile/*</pattern>
     </decorator>
 </decorators>
