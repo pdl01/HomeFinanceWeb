@@ -126,6 +126,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         }
 
     })
+    
     $scope.$on('transactionSaved', function (event, data) {
         //refresh all
         $scope.refreshAccounts();
