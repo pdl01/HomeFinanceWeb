@@ -16,6 +16,7 @@
             <ref bean="budgetRestServicev1"/>
             <ref bean="settingsRestServicev1"/>
             <ref bean="dateRestServicev1"/>
+            <ref bean="scheduledTransactionRestServicev1"/>
             <!--
             <ref bean="officialBillRestServicev1" />
             <ref bean="electedOfficialRestServicev1" />
@@ -52,6 +53,10 @@
     </bean>
     <bean id="dateRestServicev1" class="com.hf.hfw.api.v1.DateServiceImpl" >
         
+    </bean>
+    <bean id="scheduledTransactionRestServicev1" class="com.hf.hfw.api.v1.ScheduledTransactionServiceImpl" >
+        <property name="scheduledTransactionManager" ref="scheduledTransactionManager"/> 
+        <property name="accountManager" ref="accountManager"/> 
     </bean>
 
 </beans>

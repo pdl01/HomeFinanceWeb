@@ -17,4 +17,8 @@
     <bean id="repositoryBasedSettingDAO" class="com.hf.hfw.dao.mongo.RepositoryBasedSettingDAOImpl">    
     	<property name="dbFactory" ref="dbFactory"/>
     </bean>
+    <bean id="scheduledTransactionDAO" class="com.hf.hfw.dao.mongo.ScheduleTransactionDAOImpl">    
+    	<property name="dbFactory" ref="dbFactory"/>
+    </bean>
+
 </beans>

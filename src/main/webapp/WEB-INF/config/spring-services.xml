@@ -44,7 +44,6 @@
   </bean>
     <bean id="accountManager" class="com.hf.hfw.manager.AccountManagerImpl">    
   	<property name="accountDAO" ref="accountDAO"/>
-       
   </bean>
   <bean id="settingsManager" class="com.hf.hfw.manager.SettingsManagerImpl">
       <property name="repositoryBasedSettingDAO" ref="repositoryBasedSettingDAO"/>
@@ -57,6 +56,10 @@
   	<property name="reportDataGeneratorFactory" ref="reportDataGeneratorFactory"/>
        
   </bean>
+    <bean id="scheduledTransactionManager" class="com.hf.hfw.manager.ScheduledTransactionManagerImpl">    
+  	<property name="scheduledTransactionDAO" ref="scheduledTransactionDAO"/>
+  </bean>
+
   <bean id="categoryCacheManagerImpl" class="com.hf.hfw.manager.CategoryCacheManagerImpl">    
   	<property name="registerDAO" ref="registerDAO"/>
         <property name="accountManager" ref="accountManager"/>

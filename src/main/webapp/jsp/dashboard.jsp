@@ -97,6 +97,7 @@
 
                     <ul>
                         <li class="tabItem" id="accountMenuItemRegister" ng-click="showRegistryTab()">Register</li>
+                        <li class="tabItem" id="accountMenuItemSchedule" ng-click="showScheduleTab()">Schedule</li>
                         <li class="tabItem" id="accountMenuItemReport" ng-click="showReportTab()" >Report</li>
                         <li class="tabItem" id="accountMenuItemOnline" ng-click="showOnlineTab()">Online</li>
                     </ul>
@@ -136,7 +137,51 @@
                         <span>{{ x.txnAmount | currency }}</span>
                     </div>
                 </div>
+                <div id="accountSchedule">
+                    <button ng-click="showScheduledTransactionForm()">New Scheduled Transaction</button>
+                    Upcoming or Overdue 
+                    <div id="scheduledFilterControls"><button ng-click="filterScheduledToCurrentDate()" class="registryFilter">Now</button>
+                        Year:<select name="selectScheduledYear" ng-model="scheduledDateControl.year" class="registryFilter">
+                            <option value="2019">2019</option>
+                            <option value="2018">2018</option>
+                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>
+                            <option value="2015">2015</option>
+                            <option value="2014">2014</option>
+                            <option value="2013">2013</option>
+                            <option value="2012">2012</option>
+                            <option value="2011">2011</option>
+                            <option value="2010">2010</option>
+                            <option value="2009">2009</option>
+                            <option value="2008">2008</option>                             
+                        </select>
+                        Month:<select name="selectScheduledMonth" ng-model="scheduledDateControl.month" class="registryFilter">
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <button ng-click="getScheduledTransactionsForMonth(selectedAccount.id)" class="registryFilter">Go</button>
+                    </div>
 
+                    <div ng-repeat="x in scheduledtransactions" ng-click="showScheduledTransactionForm(x)" class="list-group-item scheduledTransaction">
+                        <button ng-click="enterScheduledTxn(x)">Enter</button>
+                        <button ng-click="skipScheduledTxn(x)">Skip</button>
+                        <button ng-click="editOriginalScheduledTxn(x)">Edit Schedule</button>
+                        <button ng-click="editScheduledTxn(x)">Edit This</button>
+                        <span>{{ x.scheduledDate}}</span>
+                        <span>{{ x.payee}}</span>
+                        <span>{{ x.txnAmount | currency }}</span>
+                    </div>
+                </div>
                 <div id="accountReports">
                     <div id="reportControl">
                         <select name="reportType" id="reportType" ng-model="reportControl.reportType">
@@ -261,6 +306,49 @@
                     <button ng-click="clickNewTransactionCancel()">Cancel</button>
             </modal>
 
+            <modal title="Scheduled Transaction Details" visible="showScheduledTransactionModal">
+                Account:  {{selectedAccount.name}}<br>
+                <input type="hidden" ng-model="scheduledTransactionFormData.primaryAccount">
+                <input type="hidden" ng-model="scheduledTransactionFormData.id">
+                <input type="hidden" ng-model="scheduledTransactionFormData.originalTransactionId">
+                Payee Name:<input typ="text" ng-model="scheduledTransactionFormData.payee"><br>
+                Transaction Amount:<input typ="text" size="5" ng-model="scheduledTransactionFormData.txnAmount"><input type="checkbox" value="true" ng-model="scheduledTransactionFormData.credit">Is Credit?<br>
+
+                Category <a ng-click="addSplit()">Add Split</a><br/>
+                <div id="categorySplits">
+                    <div class="categorySplit">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[0].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[0].txnAmount"><br></div>
+                    <div class="categorySplit">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[1].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[1].txnAmount"><br></div>
+                    <div class="categorySplit">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[2].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[2].txnAmount"><br></div>
+                    <div class="categorySplit">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[3].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[3].txnAmount"><br></div>
+                    <div class="categorySplit">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[4].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[4].txnAmount"><br></div>
+                    <div class="categorySplit hidden">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[5].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[5].txnAmount"><br></div>
+                    <div class="categorySplit hidden">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[6].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[6].txnAmount"><br></div>
+                    <div class="categorySplit hidden">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[7].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[7].txnAmount"><br></div>
+                    <div class="categorySplit hidden">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[8].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[8].txnAmount"><br></div>
+                    <div class="categorySplit hidden">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[9].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[9].txnAmount"><br></div>
+                </div>
+                    <div ng-hide="hideScheduledTxnRetrievedCategories">
+                        <ul ng-repeat="category in scheduledTxnRetrievedCategories">
+                            <li class="retrievedCategoryItem"><a class="retrievedCategoryItem" ng-click="selectScheduledTxnRetrievedCategory(category)">{{category}}</a></li>
+                        </ul>
+                    </div>
+                    <br/>
+                    <div id="scheduleTimingControl">
+                        Frequency:<input type="radio" name="frequency" value="3" ng-model="scheduledTransactionFormData.frequency">Daily
+                        <input type="radio" name="frequency" value="1" ng-model="scheduledTransactionFormData.frequency">Weekly
+                        <input type="radio" name="frequency" value="2" ng-model="scheduledTransactionFormData.frequency">Monthly
+                        <input type="radio" name="frequency" value="4" ng-model="scheduledTransactionFormData.frequency">Yearly
+                        <input type="radio" name="frequency" value="0" ng-model="scheduledTransactionFormData.frequency">One Time
+                        <br/>
+                        Begin Date:<input type="text" ng-model="scheduledTransactionFormData.beginDate"><br>
+                        End Date:<input type="text" ng-model="scheduledTransactionFormData.endDate"><br>
+                        End After <input type="text" ng-model="scheduledTransactionFormData.numberOfOccurrences" size="3"> Occurrences:<br>
+                    </div>
+                    <br>
+                    <button ng-click="addScheduledTransaction()">Save</button>
+                    <button ng-click="clickScheduledTransactionCancel()">Cancel</button>
+            </modal>
+            
             <modal title="Budget Item Details" visible="showBudgetItemModal" >
                 <div>
                     Category:<input type="text" ng-model="budgetFormData.category"><br>
@@ -277,14 +365,14 @@
                     <span>{{selectedPendingTransaction.txnAmount | currency }}</span>
                     <div id="pendingMatchedTransactionList">
                         <div ng-repeat="x in pendingMatchedTransactions" ng-click="" class="list-group-item registryTransaction">
-                            <button ng-click="acceptMatchForPending(selectedPendingTransaction,x)">Accept</button>
+                            <button ng-click="enterScheduleInstance(selectedPendingTransaction,x)">Accept</button>
                     
                             <span>{{ x.txnDate}}</span>
                             <span>{{ x.payee}}</span>
                             <span>{{ x.txnAmount | currency }}</span>
                         </div>
                     </div>
-
+                    
                     <button ng-click="hideOnlineMatchingDialog()">Cancel</button>
                 </div>
             </modal>

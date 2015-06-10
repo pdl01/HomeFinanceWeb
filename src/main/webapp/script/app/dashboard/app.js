@@ -3,7 +3,7 @@ var hfwApp = angular.module('HFWApp', []);
 
 
 
-hfwApp.controller('dashboardController', function ($scope, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService) {
+hfwApp.controller('dashboardController', function ($scope, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService,ScheduledTransactionService) {
     $scope.accountFormData = {};
 
     $scope.onlineData = {};
@@ -61,7 +61,14 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
 
     $scope.report_transactions = {};
 
-
+    $scope.scheduledtransactions=[];
+    $scope.scheduledTransactionFormData = {}
+    $scope.showScheduledTransactionModal=false;
+    $scope.scheduledTransactionFormCategorySplits = [];
+    $scope.scheduledDateControl = {};
+    $scope.scheduledDateControl.year = "";
+    $scope.scheduledDateControl.month = "";
+    
     $scope.$watch('registryTransactionFormCategorySplits[0].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -113,6 +120,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         }
 
     })
+    
     $scope.$watch('registryTransactionFormCategorySplits[4].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -126,6 +134,32 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         }
 
     })
+    $scope.$watch('registryTransactionFormData.txnAmount', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        console.log($scope.registryTransactionFormCategorySplits[0]);
+        if ($scope.registryTransactionFormCategorySplits[0] == undefined) {
+            var obj = new Object();
+            obj.category = "";
+            obj.txnAmount=newValue;
+            $scope.registryTransactionFormCategorySplits.push(obj);
+        } else if ($scope.registryTransactionFormCategorySplits[0].category=="") {
+            $scope.registryTransactionFormCategorySplits[0].txnAmount = $scope.registryTransactionFormData.txnAmount;
+        }
+        /*
+        if (registryTransactionFormCategorySplits[0].category == undefined || registryTransactionFormCategorySplits[0].category == "") {
+            //$scope.$emit('txnAmountEdited', newValue);
+            registryTransactionFormCategorySplits[0].txnAmount = registryTransactionFormData.txnAmount;
+        }
+        */
+
+    })
+    $scope.$on('txnAmountEdited',function(event,data) {
+        //if the txn on the first category split is empty enter it.
+        if ($scope.registryTransactionFormCategorySplits[0].txnAmount == "") {
+            
+        }
+    });
     
     $scope.$on('transactionSaved', function (event, data) {
         //refresh all
@@ -187,9 +221,15 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
                 $scope.currentDate = response;
                 $scope.txnDateControl.year = retrievedDate[0];
                 $scope.txnDateControl.month = retrievedDate[1];
+                $scope.scheduledDateControl.year = retrievedDate[0];
+                $scope.scheduledDateControl.month = retrievedDate[1];
+
             } else {
                 $scope.txnDateControl.year = "2015";
                 $scope.txnDateControl.month = "01";
+                $scope.scheduledDateControl.year = "2015";
+                $scope.scheduledDateControl.month = "01";
+
                 $scope.currentDate = "2015-01-01";
 
             }
@@ -306,10 +346,62 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         $scope.registryTransactionFormData.txnDate = $scope.currentDate;
         $scope.registryTransactionFormData.statusTxt = 'x';
         $scope.registryTransactionFormCategorySplits = [];
+        var obj = new Object();
+        obj.category = "";
+        obj.txnAmount="";
+        $scope.registryTransactionFormCategorySplits.push(obj);
         $scope.showTransactionModal = true;
         //$("#transactionDetailsForm").show();
     };
+    
+    $scope.showScheduledTransactionForm = function(x) {
+        $scope.showScheduledTransactionModal=true;
+    };
+    
+    $scope.clickScheduledTransactionCancel = function() {
+        $scope.showScheduledTransactionModal=false;
+    };
+    
+    $scope.addScheduledTransaction = function() {
+        console.log($scope.scheduledTransactionFormData);
+        //get the splits and turn it into a better list
+        var newCategories = [];
+        $scope.scheduledTransactionFormData.primaryAccount = $scope.selectedAccount.id;
+        for (var i = 0; i < 10; i++) {
+            if ($scope.scheduledTransactionFormCategorySplits[i] != undefined) {
+                var categorySplit = new Object();
 
+                var categoryEntered = $scope.scheduledTransactionFormCategorySplits[i].category;
+                var txnAmountEntered = $scope.scheduledTransactionFormCategorySplits[i].txnAmount;
+                categorySplit.category = categoryEntered;
+                categorySplit.txnAmount = txnAmountEntered;
+                newCategories.push(categorySplit);
+                //console.log(categoryEntered + ":"+txnAmountEntered);    
+            }
+        }
+
+
+        $scope.scheduledTransactionFormData.categorySplits = newCategories;
+
+        console.log($scope.registryTransactionFormData);
+        if ($scope.scheduledTransactionFormData.id == undefined) {
+            ScheduledTransactionService.saveTransaction($scope.scheduledTransactionFormData).success(function (response) {
+                //$scope.registryTransactions.push(response);
+                $scope.showTransactionModal = false;
+                $scope.$emit('transactionSaved',$scope.selectedAccount.id);
+                console.log(response);
+            });
+        } else {
+            ScheduledTransactionService.saveTransaction($scope.scheduledTransactionFormData).success(function (response) {
+                //$scope.showTransactionModal = false;
+                $scope.$emit('scheduledTransactionSaved',$scope.selectedAccount.id);
+                console.log(response);
+            });
+
+        }
+        
+    };
+    
     $scope.showTransactionForm = function (x) {
         console.log(x);
         $scope.registryTransactionFormData = x;
@@ -332,9 +424,14 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     }
 
     $scope.showRegistryTab = function () {
+        if ($scope.selectedAccount == null) {
+            alert ("Please choose an account");
+            return;
+        }
         $("#accountTransactionList").show();
         $("#accountReports").hide();
         $("#accountOnlineFunctions").hide();
+        $("#accountSchedule").hide();
         //$scope.showTransactionModal=false;
         //$("#transactionDetailsForm").hide();
     }
@@ -345,23 +442,38 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     }
 
     $scope.showReportTab = function () {
+        if ($scope.selectedAccount == null) {
+            alert ("Please choose an account");
+            return;
+        }
         if ($scope.pieChart) {
             $scope.pieChart.destroy();
+            
         }
         $scope.reportControl = {};
         $("#accountTransactionList").hide();
         $("#accountReports").show();
         $("#accountOnlineFunctions").hide();
+        $("#accountSchedule").hide();
+
         plot1 = null;
         $("#pie1").html();
         //$scope.showTransactionModal=false;
         //$("#transactionDetailsForm").hide();
     }
     $scope.showOnlineTab = function (x) {
+        if ($scope.selectedAccount == null) {
+            alert ("Please choose an account");
+            return;
+        }
         $scope.showOnlineMatchingModal = false;
         $("#accountTransactionList").hide();
         $("#accountReports").hide();
+        $("#accountSchedule").hide();
         $("#accountOnlineFunctions").show();
+        
+
+        
         $scope.pendingRegistryTransactions = {};
         //$scope.showTransactionModal=false;
         //$("#transactionDetailsForm").hide();
@@ -412,6 +524,15 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         $scope.getTransactionsForMonth($scope.selectedAccount.id);
 
     };
+    $scope.filterScheduledToCurrentDate = function () {
+        var retrievedDate = $scope.currentDate.split("-");
+
+        $scope.scheduledDateControl.year = retrievedDate[0];
+        $scope.scheduledDateControl.month = retrievedDate[1];
+        $scope.getScheduledTransactionsForMonth($scope.selectedAccount.id);
+
+    };
+
     $scope.dismissMatchForPending = function (pendingTransaction) {
         //update the status to cleared of the enteredTransaction
         //update the status to accepted of the pendingTransaction
@@ -631,6 +752,44 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
          });
          */
     };
+    $scope.showScheduleTab = function () {
+        if ($scope.selectedAccount == null) {
+            alert ("Please choose an account");
+            return;
+        }
+        $scope.getUpcomingSchedule($scope.selectedAccount);
+        
+        $("#accountTransactionList").hide();
+        $("#accountReports").hide();
+        $("#accountOnlineFunctions").hide();
+        $("#accountSchedule").show();
+
+
+    };
+    $scope.getUpcomingSchedule = function (account) {
+        $scope.scheduledtransactions = [];
+        ScheduledTransactionService.getUpcomingScheduledTransactionsForAccount(account.id).success(function (response) {
+            for (idx in response) {
+                $scope.scheduledtransactions.push(response[idx]);
+                //console.log(txn.id);
+            }
+            //$scope.registryTransactions. = response;
+            //$scope.txnIndex = $scope.txnIndex + $scope.numberTxnsToRetrieve;
+        });
+
+    };
+    $scope.getScheduledTransactionsForMonth = function (accountId) {
+        var dateToRetrieve = $scope.scheduledDateControl.year + "-" + $scope.scheduledDateControl.month;
+        $scope.scheduledtransactions = [];
+        ScheduledTransactionService.getUpcomingScheduledTransactionsForAccountForDate(accountId,dateToRetrieve).success(function (response) {
+            for (idx in response) {
+                $scope.scheduledtransactions.push(response[idx]);
+                //console.log(txn.id);
+            }
+        });
+
+    };
+
 
 });
 

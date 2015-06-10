@@ -12,6 +12,7 @@ import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.CategorySplit;
 import com.hf.homefinanceshared.RegisterTransaction;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +96,9 @@ public static final String REPORT_TYPE = "ExpenseByPayee";
         for (Map.Entry<String, ReportDataPoint> entry : data.entrySet()) {
             reportDataPoints.add(entry.getValue());
         }
-
+        
+        Collections.sort(reportDataPoints, new ReportDataPointsValueDescendingComparator());
+        
         ReportData reportData = new ReportData();
         reportData.setReportName("Expenses");
         reportData.setReportType(REPORT_TYPE);
