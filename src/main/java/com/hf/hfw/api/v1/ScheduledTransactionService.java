@@ -62,6 +62,13 @@ public interface ScheduledTransactionService {
     @Consumes({"application/json"})
     @Path("/skip/{txnId}")    
     public void skipTransaction(@PathParam("txnId") String transactionId) throws Exception;
+
+    @POST
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
+    @Path("/pay/{txnId}")    
+    public void payTransaction(@PathParam("txnId") String transactionId) throws Exception;
+
     
     @DELETE
     @Produces({"application/json"})
