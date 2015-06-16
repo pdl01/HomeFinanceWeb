@@ -3,7 +3,7 @@ var hfwApp = angular.module('HFWApp', []);
 
 
 
-hfwApp.controller('dashboardController', function ($scope, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService,ScheduledTransactionService) {
+hfwApp.controller('dashboardController', function ($scope, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService,ScheduledTransactionService,TransactionStatusLookupService) {
     $scope.accountFormData = {};
 
     $scope.onlineData = {};
@@ -68,6 +68,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     $scope.scheduledDateControl = {};
     $scope.scheduledDateControl.year = "";
     $scope.scheduledDateControl.month = "";
+    $scope.payingScheduledTxnId="";
     
     $scope.$watch('registryTransactionFormCategorySplits[0].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
@@ -355,6 +356,13 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     };
     
     $scope.showScheduledTransactionForm = function(x) {
+        $scope.showScheduledTransactionModal=true;
+    };
+
+    $scope.showNewScheduledTransactionForm = function(x) {
+        $scope.scheduledTransactionFormData = {};
+        $scope.scheduledTransactionFormCategorySplits = [];  
+
         $scope.showScheduledTransactionModal=true;
     };
     
@@ -722,6 +730,13 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         if ($scope.registryTransactionFormData.id == undefined) {
             RegistryService.saveTransaction($scope.registryTransactionFormData).success(function (response) {
                 $scope.registryTransactions.push(response);
+                if ($scope.payingScheduledTxnId != "") {
+                    ScheduledTransactionService.payTransaction($scope.payingScheduledTxnId).success(function (response){
+                        $scope.payingScheduledTxnId = "";
+                    }).error(function(response){
+                        $scope.payingScheduledTxnId = "";
+                    });       
+                }
                 $scope.showTransactionModal = false;
                 $scope.$emit('transactionSaved',$scope.selectedAccount.id);
                 console.log(response);
@@ -757,7 +772,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
             alert ("Please choose an account");
             return;
         }
-        $scope.getUpcomingSchedule($scope.selectedAccount);
+        $scope.filterScheduledToCurrentDate();//getUpcomingSchedule($scope.selectedAccount);
         
         $("#accountTransactionList").hide();
         $("#accountReports").hide();
@@ -789,7 +804,93 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         });
 
     };
+    
+    $scope.enterScheduledTxn = function (scheduledTxn) {
+      //populate the txn data with the information from the schedule
+      $scope.registryTransactionFormData = {};
+      $scope.registryTransactionFormData.txnAmount = scheduledTxn.txnAmount;
+      $scope.registryTransactionFormData.txnDate = scheduledTxn.scheduledDate;
+      $scope.registryTransactionFormData.payee = scheduledTxn.payee;
+      $scope.registryTransactionFormData.primaryAccount = scheduledTxn.primaryAccount;
+      $scope.registryTransactionFormData.statusTxt = "x";
+      $scope.registryTransactionFormCategorySplits = [];  
+        angular.forEach(scheduledTxn.categorySplits, function (value, key) {
+            //this.push(key + ': ' + value);
+                if (value.category != '') {
+                    $scope.registryTransactionFormCategorySplits.push(value);
+                }
 
+            });
+      $scope.payingScheduledTxnId=scheduledTxn.id;
+      $scope.showTransactionModal=true;
+    };
+    $scope.skipScheduledTxn = function (scheduledTxn) {
+        //call the servie to skip
+        ScheduledTransactionService.skipTransaction(scheduledTxn.id).success(function (response) {
+            alert("Skipped");
+            //update the txn to denote skipped status
+        });
+    };
+    $scope.editOriginalScheduledTxn = function(scheduledTxn) {
+      //get the txn based on the original id
+      
+      ScheduledTransactionService.getTransaction(scheduledTxn.originalTransactionId).success(function (response) {
+            //populate the scheduled form based on the result
+            $scope.scheduledTransactionFormData = {};
+            $scope.scheduledTransactionFormData.id=response.id;
+            $scope.scheduledTransactionFormData.txnAmount=response.txnAmount;
+            $scope.scheduledTransactionFormData.primaryAccount=response.primaryAccount;
+            $scope.scheduledTransactionFormData.payee=response.payee;
+            $scope.scheduledTransactionFormData.originalTransactionId=response.originalTransactionId;
+            $scope.scheduledTransactionFormData.frequency=response.frequency;
+            $scope.scheduledTransactionFormData.beginDate=response.beginDate;
+            $scope.scheduledTransactionFormData.endDate=response.endDate;
+            $scope.scheduledTransactionFormData.numberOfOccurrences=response.numberOfOccurrences;
+            $scope.scheduledTransactionFormData.original = response.original;
+            $scope.scheduledTransactionFormCategorySplits = [];
+            angular.forEach(response.categorySplits, function (value, key) {
+            //this.push(key + ': ' + value);
+                if (value.category != '') {
+                    $scope.scheduledTransactionFormCategorySplits.push(value);
+                }
+
+            });
+      });
+        $scope.showScheduledTransactionModal = true;
+        
+    };
+    
+    $scope.lookupStatus = function (scheduledTxn) {
+        return TransactionStatusLookupService.getStatus(scheduledTxn.statusTxt);
+    }
+    $scope.editScheduledTxn = function (scheduledTxn) {
+        //populate the scheduled form based on the passed in scheduledTxn
+      ScheduledTransactionService.getTransaction(scheduledTxn.id).success(function (response) {
+            //populate the scheduled form based on the result
+            $scope.scheduledTransactionFormData = {};
+            $scope.scheduledTransactionFormData.id=response.id;
+            $scope.scheduledTransactionFormData.txnAmount=response.txnAmount;
+            $scope.scheduledTransactionFormData.primaryAccount=response.primaryAccount;
+            $scope.scheduledTransactionFormData.payee=response.payee;
+            $scope.scheduledTransactionFormData.originalTransactionId=response.originalTransactionId;
+            $scope.scheduledTransactionFormData.frequency=response.frequency;
+            $scope.scheduledTransactionFormData.beginDate=response.beginDate;
+            $scope.scheduledTransactionFormData.endDate=response.endDate;
+            $scope.scheduledTransactionFormData.numberOfOccurrences=response.numberOfOccurrences;
+            $scope.scheduledTransactionFormCategorySplits = [];  
+            angular.forEach(response.categorySplits, function (value, key) {
+            //this.push(key + ': ' + value);
+                if (value.category != '') {
+                    $scope.scheduledTransactionFormCategorySplits.push(value);
+                }
+
+            });
+
+            $scope.scheduledTransactionFormData.original = response.original;
+      });
+        $scope.showScheduledTransactionModal = true;
+        
+    };
 
 });
 
