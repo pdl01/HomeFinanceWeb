@@ -117,8 +117,11 @@ public class ScheduledTransactionServiceImpl implements ScheduledTransactionServ
     @Override
     public void skipTransaction(String transactionId) throws Exception {
         ScheduledTransaction txn = this.scheduledTransactionManager.getById(transactionId);
-        if (txn.getOriginalTransactionId() != null) {
-            this.deleteTransaction(transactionId);
+        if (txn != null && txn.getOriginalTransactionId() != null) {
+            if (!ScheduledTransaction.STATUS_PAID.equalsIgnoreCase(txn.getStatusTxt())) {
+                txn.setStatusTxt(ScheduledTransaction.STATUS_SKIPPED);
+                this.scheduledTransactionManager.updateTransaction(txn);
+            }
         }
 
     }
@@ -157,6 +160,17 @@ public class ScheduledTransactionServiceImpl implements ScheduledTransactionServ
     public List<ScheduledTransaction> getUpcomingTransactions(String accountId, String theTimePeriod) {
         Account account = this.accountManager.getAccountById(accountId);
         return this.scheduledTransactionManager.getUpcomingTransactionsForTimePeriod(account, theTimePeriod);
+    }
+
+    @Override
+    public void payTransaction(String transactionId) throws Exception {
+        ScheduledTransaction txn = this.scheduledTransactionManager.getById(transactionId);
+        if (txn != null && txn.getOriginalTransactionId() != null) {
+            if (!ScheduledTransaction.STATUS_SKIPPED.equalsIgnoreCase(txn.getStatusTxt())) {
+                txn.setStatusTxt(ScheduledTransaction.STATUS_PAID);
+                this.scheduledTransactionManager.updateTransaction(txn);
+            }
+        }
     }
     
 }
