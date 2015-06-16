@@ -335,17 +335,33 @@ hfwApp.factory("ScheduledTransactionService", function ($http) {
             url: '/HFW/services/api/v1/schedule/get/scheduled/' + id
         });
     };
-    
-    ScheduledTransactionService.skipTransaction = function (pendingid) {
-        //var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
-        //var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
-        //return $http({
-        //    method: 'POST',
-        //    url: '/HFW/services/api/v1/register/pending/dismiss/' + pendingid,
-        //    headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}
-        //});
+
+    ScheduledTransactionService.getTransaction = function (id) {
+        return $http({
+            method: 'GET',
+            url: '/HFW/services/api/v1/schedule/byid/' + id
+        });
     };
 
+    
+    ScheduledTransactionService.skipTransaction = function (txnid) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+        return $http({
+            method: 'POST',
+            url: '/HFW/services/api/v1/schedule/skip/'+txnid,
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
+        });
+    };
+    ScheduledTransactionService.payTransaction = function (txnid) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+        return $http({
+            method: 'POST',
+            url: '/HFW/services/api/v1/schedule/pay/'+txnid,
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
+        });
+    };
     ScheduledTransactionService.saveTransaction = function (transaction) {
         delete transaction.$$hashKey;
         var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
@@ -371,5 +387,35 @@ hfwApp.factory("ScheduledTransactionService", function ($http) {
     
 
     return ScheduledTransactionService;
+});
+
+hfwApp.factory("TransactionStatusLookupService", function ($http) {
+    //var users = ["Peter", "Daniel", "Nina"]
+    var TransactionStatusLookupService = {};
+
+    TransactionStatusLookupService.getStatus = function (status_code) {
+        if (status_code == 'k') {
+            return "Skipped";
+        } else if (status_code == 'p') {
+            return "Paid";
+        } else if (status_code == 'p') {
+            return "Paid";
+        } else if (status_code == 'v') {
+            return "Void";
+        } else if (status_code == 'c') {
+            return "Cleared";
+        } else if (status_code == 'x') {
+            return "None";
+        } else if (status_code == 'a') {
+            return "Accepted";
+        } else if (status_code == 'd') {
+            return "Dismissed";
+        } else if (status_code == 'i') {
+            return "Imported";
+        }
+    };
+    
+
+    return TransactionStatusLookupService;
 });
 
