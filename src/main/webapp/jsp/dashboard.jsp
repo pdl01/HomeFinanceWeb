@@ -138,7 +138,7 @@
                     </div>
                 </div>
                 <div id="accountSchedule">
-                    <button ng-click="showScheduledTransactionForm()">New Scheduled Transaction</button>
+                    <button ng-click="showNewScheduledTransactionForm()">New Scheduled Transaction</button>
                     Upcoming or Overdue 
                     <div id="scheduledFilterControls"><button ng-click="filterScheduledToCurrentDate()" class="registryFilter">Now</button>
                         Year:<select name="selectScheduledYear" ng-model="scheduledDateControl.year" class="registryFilter">
@@ -172,7 +172,7 @@
                         <button ng-click="getScheduledTransactionsForMonth(selectedAccount.id)" class="registryFilter">Go</button>
                     </div>
 
-                    <div ng-repeat="x in scheduledtransactions" ng-click="showScheduledTransactionForm(x)" class="list-group-item scheduledTransaction">
+                    <div ng-repeat="x in scheduledtransactions" class="list-group-item scheduledTransaction">
                         <button ng-click="enterScheduledTxn(x)">Enter</button>
                         <button ng-click="skipScheduledTxn(x)">Skip</button>
                         <button ng-click="editOriginalScheduledTxn(x)">Edit Schedule</button>
@@ -180,6 +180,7 @@
                         <span>{{ x.scheduledDate}}</span>
                         <span>{{ x.payee}}</span>
                         <span>{{ x.txnAmount | currency }}</span>
+                        <span>{{lookupStatus(x)}}</span>
                     </div>
                 </div>
                 <div id="accountReports">
@@ -249,6 +250,7 @@
                             <span>{{ x.txnDate}}</span>
                             <span>{{ x.payee}}</span>
                             <span>{{ x.txnAmount | currency }}</span>
+                            <span>{{lookupStatus(x)}}</span>
                         </div>
                     </div>
 
@@ -333,7 +335,7 @@
                         </ul>
                     </div>
                     <br/>
-                    <div id="scheduleTimingControl">
+                    <div id="scheduleTimingControl" ng-if="scheduledTransactionFormData.original == true || scheduledTransactionFormData.id == null">
                         Frequency:<input type="radio" name="frequency" value="3" ng-model="scheduledTransactionFormData.frequency">Daily
                         <input type="radio" name="frequency" value="1" ng-model="scheduledTransactionFormData.frequency">Weekly
                         <input type="radio" name="frequency" value="2" ng-model="scheduledTransactionFormData.frequency">Monthly
@@ -370,6 +372,7 @@
                             <span>{{ x.txnDate}}</span>
                             <span>{{ x.payee}}</span>
                             <span>{{ x.txnAmount | currency }}</span>
+              
                         </div>
                     </div>
                     
