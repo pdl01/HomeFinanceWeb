@@ -367,7 +367,7 @@
                     <span>{{selectedPendingTransaction.txnAmount | currency }}</span>
                     <div id="pendingMatchedTransactionList">
                         <div ng-repeat="x in pendingMatchedTransactions" ng-click="" class="list-group-item registryTransaction">
-                            <button ng-click="enterScheduleInstance(selectedPendingTransaction,x)">Accept</button>
+                            <button ng-click="acceptMatchForPending(selectedPendingTransaction,x)">Accept</button>
                     
                             <span>{{ x.txnDate}}</span>
                             <span>{{ x.payee}}</span>
