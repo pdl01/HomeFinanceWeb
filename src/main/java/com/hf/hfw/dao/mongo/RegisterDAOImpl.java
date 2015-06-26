@@ -87,9 +87,13 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
         TreeSet<String> categories = new TreeSet<String>();
         for (RegisterTransaction txn : txns) {
             if (txn.getCategorySplits() != null) {
-                for (CategorySplit split : txn.getCategorySplits()) {
-                    categories.add(split.getCategory());
-                    log.info("Adding "+split.getCategory());
+                try {
+                    for (CategorySplit split : txn.getCategorySplits()) {
+                        categories.add(split.getCategory());
+                        log.info("Adding "+split.getCategory());
+                    }
+                } catch (Exception e) {
+                    log.error("Error encountered in evaluting category split", e);
                 }
                 
             } else {
