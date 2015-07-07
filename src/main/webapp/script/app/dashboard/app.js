@@ -81,7 +81,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
             $scope.retrievedCategories = [];
 
         }
-    })
+    });
     $scope.$watch('registryTransactionFormCategorySplits[1].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -94,7 +94,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
 
         }
 
-    })
+    });
     $scope.$watch('registryTransactionFormCategorySplits[2].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -107,7 +107,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
 
         }
 
-    })
+    });
     $scope.$watch('registryTransactionFormCategorySplits[3].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -120,7 +120,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
 
         }
 
-    })
+    });
     
     $scope.$watch('registryTransactionFormCategorySplits[4].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
@@ -134,7 +134,70 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
 
         }
 
-    })
+    });
+    $scope.$watch('scheduledTransactionFormCategorySplits[0].category', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        if (newValue != undefined && newValue.length > 3) {
+            $scope.categoryTypingIndex = 1;
+            $scope.getCategories(newValue);
+        } else {
+            $scope.categoryTypingIndex = -1;
+            $scope.retrievedCategories = [];
+
+        }
+    });
+
+    $scope.$watch('scheduledTransactionFormCategorySplits[1].category', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        if (newValue != undefined && newValue.length > 3) {
+            $scope.categoryTypingIndex = 1;
+            $scope.getCategories(newValue);
+        } else {
+            $scope.categoryTypingIndex = -1;
+            $scope.retrievedCategories = [];
+
+        }
+    });
+    $scope.$watch('scheduledTransactionFormCategorySplits[2].category', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        if (newValue != undefined && newValue.length > 3) {
+            $scope.categoryTypingIndex = 1;
+            $scope.getCategories(newValue);
+        } else {
+            $scope.categoryTypingIndex = -1;
+            $scope.retrievedCategories = [];
+
+        }
+    });
+    $scope.$watch('scheduledTransactionFormCategorySplits[3].category', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        if (newValue != undefined && newValue.length > 3) {
+            $scope.categoryTypingIndex = 1;
+            $scope.getCategories(newValue);
+        } else {
+            $scope.categoryTypingIndex = -1;
+            $scope.retrievedCategories = [];
+
+        }
+    });
+    $scope.$watch('scheduledTransactionFormCategorySplits[4].category', function (oldValue, newValue) {
+        //console.log(oldValue, newValue);
+        //$scope.calcBudgetTotals();
+        if (newValue != undefined && newValue.length > 3) {
+            $scope.categoryTypingIndex = 1;
+            $scope.getCategories(newValue);
+        } else {
+            $scope.categoryTypingIndex = -1;
+            $scope.retrievedCategories = [];
+
+        }
+    });
+
+    
     $scope.$watch('registryTransactionFormData.txnAmount', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -845,6 +908,8 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
             $scope.scheduledTransactionFormData.frequency=response.frequency;
             $scope.scheduledTransactionFormData.beginDate=response.beginDate;
             $scope.scheduledTransactionFormData.endDate=response.endDate;
+            $scope.scheduledTransactionFormData.credit=response.credit;
+
             $scope.scheduledTransactionFormData.numberOfOccurrences=response.numberOfOccurrences;
             $scope.scheduledTransactionFormData.original = response.original;
             $scope.scheduledTransactionFormCategorySplits = [];
@@ -876,6 +941,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
             $scope.scheduledTransactionFormData.frequency=response.frequency;
             $scope.scheduledTransactionFormData.beginDate=response.beginDate;
             $scope.scheduledTransactionFormData.endDate=response.endDate;
+            $scope.scheduledTransactionFormData.credit=response.credit;
             $scope.scheduledTransactionFormData.numberOfOccurrences=response.numberOfOccurrences;
             $scope.scheduledTransactionFormCategorySplits = [];  
             angular.forEach(response.categorySplits, function (value, key) {
