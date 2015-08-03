@@ -250,7 +250,9 @@
                             <span>{{ x.txnDate}}</span>
                             <span>{{ x.payee}}</span>
                             <span>{{ x.txnAmount | currency }}</span>
+                            
                             <span>{{lookupStatus(x)}}</span>
+                            <span>{{x.matches}}</span>
                         </div>
                     </div>
 
@@ -329,8 +331,8 @@
                     <div class="categorySplit hidden">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[8].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[8].txnAmount"><br></div>
                     <div class="categorySplit hidden">Category:<input type="text" ng-model="scheduledTransactionFormCategorySplits[9].category"> Amount:<input type="text" size="5" ng-model="scheduledTransactionFormCategorySplits[9].txnAmount"><br></div>
                 </div>
-                    <div ng-hide="hideScheduledTxnRetrievedCategories">
-                        <ul ng-repeat="category in scheduledTxnRetrievedCategories">
+                    <div ng-hide="hideTxnRetrievedCategories">
+                        <ul ng-repeat="category in retrievedCategories">
                             <li class="retrievedCategoryItem"><a class="retrievedCategoryItem" ng-click="selectScheduledTxnRetrievedCategory(category)">{{category}}</a></li>
                         </ul>
                     </div>
@@ -375,7 +377,7 @@
               
                         </div>
                     </div>
-                    
+                    <button ng-click="acceptPendingTransactionAsNew(selectedPendingTransaction)">New</button>
                     <button ng-click="hideOnlineMatchingDialog()">Cancel</button>
                 </div>
             </modal>

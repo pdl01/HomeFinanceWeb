@@ -42,6 +42,12 @@
                 Password:<input type="text" ng-model="basicSecurityFormData.password"/><br>
                 <button ng-click="saveBasicSecurityInformation()">Save</button>
             </div>
+            <div id="limited_user_config">
+                <div ng-repeat="x in users" class="list-group-item limitedUsers">
+                    User<input type="text" value="{{x.username}}"/> Password<input type="text" value="{{x.password}}"/>
+                </div>
+                
+            </div>
             <div id="category_config" class="settingsSection">
                 <div ng-repeat="x in categories" class="list-group-item registryTransaction">
                     <span>{{x}}</span>
