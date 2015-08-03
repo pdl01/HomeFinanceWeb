@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+		   ">
+
+    <bean id="accountBalanceNotifierTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="accountBalanceNotifierTask" />
+        <property name="targetMethod" value="runTask" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="accountBalanceNotifierTask" class="com.hf.hfw.accounts.tasks.AccountBalanceNotifierTask"/>
+    <bean id="accountBalanceNotifierTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="accountBalanceNotifierTaskJob" />
+        <!-- run every minute http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger-->
+        <property name="cronExpression" value="0 0-59 * * * ?" />
+    
+    </bean>    
+
+    
+    <bean id="accountDailyBalanceRecalculationTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="accountDailyBalanceRecalculationTask" />
+        <property name="targetMethod" value="runTask" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="accountDailyBalanceRecalculationTask" class="com.hf.hfw.accounts.tasks.AccountDailyBalanceRecalculationTask"/>
+
+
+    <bean id="accountDailyBalanceRecalculationTaskTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <!-- see the example of method invoking job above -->
+        <property name="jobDetail" ref="accountDailyBalanceRecalculationTaskJob" />
+        <!-- 10 seconds -->
+        <property name="startDelay" value="10000" />
+        <!-- repeat every 50 seconds -->
+        <property name="repeatInterval" value="50000" />
+    </bean>
+
+    <bean id="onlineTransactionPotentialMatchesTask" class="com.hf.hfw.accounts.tasks.OnlineTransactionPotentialMatchesTask">
+    <property name="accountManager" ref="accountManager"/>
+    <property name="registerManager" ref="registerManager"/>
+    </bean>
+       
+             
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobDetails">
+            <list>
+                <ref bean="accountDailyBalanceRecalculationTaskJob" />
+                <ref bean="accountBalanceNotifierTaskJob" />
+            </list>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="accountDailyBalanceRecalculationTaskTrigger" />
+                <ref bean="accountBalanceNotifierTaskTrigger" />
+            </list>
+        </property>
+    </bean>
+                                  
+</beans>
