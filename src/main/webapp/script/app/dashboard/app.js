@@ -99,7 +99,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
         if (newValue != undefined && newValue.length > 3) {
-            $scope.categoryTypingIndex = 1;
+            $scope.categoryTypingIndex = 2;
             $scope.getCategories(newValue);
         } else {
             $scope.categoryTypingIndex = -1;
@@ -112,7 +112,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
         if (newValue != undefined && newValue.length > 3) {
-            $scope.categoryTypingIndex = 1;
+            $scope.categoryTypingIndex = 3;
             $scope.getCategories(newValue);
         } else {
             $scope.categoryTypingIndex = -1;
@@ -126,7 +126,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
         if (newValue != undefined && newValue.length > 3) {
-            $scope.categoryTypingIndex = 1;
+            $scope.categoryTypingIndex = 4;
             $scope.getCategories(newValue);
         } else {
             $scope.categoryTypingIndex = -1;
@@ -139,7 +139,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
         if (newValue != undefined && newValue.length > 3) {
-            $scope.categoryTypingIndex = 1;
+            $scope.categoryTypingIndex = 0;
             $scope.getCategories(newValue);
         } else {
             $scope.categoryTypingIndex = -1;
@@ -164,7 +164,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
         if (newValue != undefined && newValue.length > 3) {
-            $scope.categoryTypingIndex = 1;
+            $scope.categoryTypingIndex = 2;
             $scope.getCategories(newValue);
         } else {
             $scope.categoryTypingIndex = -1;
@@ -176,7 +176,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
         if (newValue != undefined && newValue.length > 3) {
-            $scope.categoryTypingIndex = 1;
+            $scope.categoryTypingIndex = 3;
             $scope.getCategories(newValue);
         } else {
             $scope.categoryTypingIndex = -1;
@@ -188,7 +188,7 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
         if (newValue != undefined && newValue.length > 3) {
-            $scope.categoryTypingIndex = 1;
+            $scope.categoryTypingIndex = 4;
             $scope.getCategories(newValue);
         } else {
             $scope.categoryTypingIndex = -1;
@@ -344,6 +344,19 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         console.log($scope.categoryTypingIndex);
 
     };
+    $scope.selectScheduledTxnRetrievedCategory = function (val, element) {
+        console.log(val);
+        console.log($scope.categoryTypingIndex);
+        if ($scope.categoryTypingIndex != "-1") {
+            //$scope.budgetItemFormData.category = val;
+            $scope.scheduledTransactionFormCategorySplits[$scope.categoryTypingIndex].category = val;
+            $scope.retrievedCategories = [];
+            $scope.hideTxnRetrievedCategories = true;
+            $scope.categoryTypingIndex = -1
+        }
+        console.log($scope.categoryTypingIndex);
+
+    };
 
 
     $scope.fileNameChanged = function () {
@@ -419,10 +432,14 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     };
     
     $scope.showScheduledTransactionForm = function(x) {
+        $scope.hideTxnRetrievedCategories = true;
+        $scope.retrievedCategories = [];
         $scope.showScheduledTransactionModal=true;
     };
 
     $scope.showNewScheduledTransactionForm = function(x) {
+        $scope.hideTxnRetrievedCategories = true;
+        $scope.retrievedCategories = [];
         $scope.scheduledTransactionFormData = {};
         $scope.scheduledTransactionFormCategorySplits = [];  
 
@@ -475,6 +492,8 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     
     $scope.showTransactionForm = function (x) {
         console.log(x);
+        $scope.hideTxnRetrievedCategories = true;
+        $scope.retrievedCategories = [];
         $scope.registryTransactionFormData = x;
         $scope.registryTransactionFormCategorySplits = [];
         angular.forEach(x.categorySplits, function (value, key) {
@@ -921,6 +940,8 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
 
             });
       });
+      $scope.hideTxnRetrievedCategories = true;
+                $scope.retrievedCategories = [];
         $scope.showScheduledTransactionModal = true;
         
     };
@@ -954,6 +975,8 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
 
             $scope.scheduledTransactionFormData.original = response.original;
       });
+      $scope.hideTxnRetrievedCategories = true;
+                $scope.retrievedCategories = [];
         $scope.showScheduledTransactionModal = true;
         
     };
