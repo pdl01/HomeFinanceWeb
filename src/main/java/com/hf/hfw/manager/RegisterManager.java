@@ -2,6 +2,7 @@
 package com.hf.hfw.manager;
 
 import com.hf.homefinanceshared.Account;
+import com.hf.homefinanceshared.OnlineTransaction;
 import com.hf.homefinanceshared.RegisterTransaction;
 import java.util.List;
 
@@ -21,11 +22,15 @@ public interface RegisterManager {
 
     public List<RegisterTransaction> getTransactionsForDateStartWith(Account account, String date, boolean getCredit);
     public List<RegisterTransaction> getAllTransactionsForDateStartWith(Account account, String date);
-    public void addPendingTransactions(List<RegisterTransaction> txns);
-    public void addPendingTransactions(RegisterTransaction txn);
-    public List<RegisterTransaction> getPendingTransactions(Account account);
-    public RegisterTransaction getPendingTransactionById(String id);
-    public List<RegisterTransaction> matchTransaction(RegisterTransaction pendingTransaction);
-    public void matchTransaction(RegisterTransaction pendingTransaction,RegisterTransaction enteredTransaction);
+    
+    public void addPendingTransactions(List<OnlineTransaction> txns);
+    public void addPendingTransactions(OnlineTransaction txn);
+    public List<OnlineTransaction> getPendingTransactions(Account account);
+    public OnlineTransaction getPendingTransactionById(String id);
+    public List<RegisterTransaction> matchTransaction(OnlineTransaction pendingTransaction);
+    public void matchTransaction(OnlineTransaction pendingTransaction,RegisterTransaction enteredTransaction);
 
+
+    public List<RegisterTransaction> findTransaction(String searchTerm);
+    public List<RegisterTransaction> findTransaction(Account account,String searchTerm);
 }

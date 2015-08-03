@@ -5,6 +5,7 @@ import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.hfw.manager.RegisterManager;
 import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.CategorySplit;
+import com.hf.homefinanceshared.OnlineTransaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -118,19 +119,19 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public List<RegisterTransaction> getPendingTransactions(String accountId) {
+    public List<OnlineTransaction> getPendingTransactions(String accountId) {
         Account account = new Account();
         account.setId(accountId);
         return this.registerManager.getPendingTransactions(account);
     }
 
     @Override
-    public List<RegisterTransaction> getPendingTransactions(String accountId, String _number, String _start) {
+    public List<OnlineTransaction> getPendingTransactions(String accountId, String _number, String _start) {
         Account account = new Account();
         account.setId(accountId);
         int start = Integer.parseInt(_start);
         int number = Integer.parseInt(_number);
-        List<RegisterTransaction> txns = this.registerManager.getPendingTransactions(account);
+        List<OnlineTransaction> txns = this.registerManager.getPendingTransactions(account);
 
         if (txns != null && txns.size() > number) {
             int end = start + number;
@@ -161,7 +162,7 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public List<RegisterTransaction> getMatchedTransactionsForPending(String transactionid) {
         //get the pending transaction with transactionid
-        RegisterTransaction pendingTransaction = this.registerManager.getPendingTransactionById(transactionid);
+        OnlineTransaction pendingTransaction = this.registerManager.getPendingTransactionById(transactionid);
 
         List<RegisterTransaction> txns = this.registerManager.matchTransaction(pendingTransaction);
         return txns;
@@ -170,7 +171,7 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public ValidationResponse matchTransaction(String pendingTransactionid, String enteredTransactionId) {
         ValidationResponse response = new ValidationResponse();
-        RegisterTransaction pendingTransaction = this.registerManager.getPendingTransactionById(pendingTransactionid);
+        OnlineTransaction pendingTransaction = this.registerManager.getPendingTransactionById(pendingTransactionid);
         RegisterTransaction enteredTransaction = this.registerManager.getTransactionById(enteredTransactionId);
         ValidationResponse validationResponse = this.validateTransactionsCanBeMatched(pendingTransaction, enteredTransaction);
         if (!validationResponse.isValid()) {
@@ -213,7 +214,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public ValidationResponse dismissPendingTransaction(String pendingTransactionid) {
-        RegisterTransaction pendingTransaction = this.registerManager.getPendingTransactionById(pendingTransactionid);
+        OnlineTransaction pendingTransaction = this.registerManager.getPendingTransactionById(pendingTransactionid);
         ValidationResponse response = new ValidationResponse();
         List<String> messages = new ArrayList<String>();
         response.setValid(true);
@@ -234,11 +235,11 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public RegisterTransaction acceptPendingTransactionAsNew(String pendingTransactionid) {
-        RegisterTransaction pendingTransaction = this.registerManager.getPendingTransactionById(pendingTransactionid);
+        OnlineTransaction pendingTransaction = this.registerManager.getPendingTransactionById(pendingTransactionid);
 
         try {
             //clone the transaction
-            RegisterTransaction newTransaction = (RegisterTransaction)pendingTransaction.clone();
+            RegisterTransaction newTransaction = this.copyOnlineTransactionToRegisterTransaction(pendingTransaction);//RegisterTransaction)pendingTransaction.clone();
             
             //save the transaction
             newTransaction.setId(null);
@@ -250,10 +251,25 @@ public class RegisterServiceImpl implements RegisterService {
             this.registerManager.addPendingTransactions(pendingTransaction);
             return newTransaction;
         
-        } catch (CloneNotSupportedException ex) {
+        } catch (Exception ex) {
             log.error(ex);
         }
         return null;
     }
 
+    private RegisterTransaction copyOnlineTransactionToRegisterTransaction(OnlineTransaction txn) {
+        RegisterTransaction transaction = new RegisterTransaction();
+        transaction.setPayee(txn.getPayee());
+        transaction.setTxnAmount(txn.getTxnAmount());
+        transaction.setTxnDate(txn.getTxnDate());
+        transaction.setCategorySplits(txn.getCategorySplits());
+        transaction.setMemo(txn.getMemo());
+        transaction.setTxnExternalRefNumber(txn.getTxnExternalRefNumber());
+        transaction.setPrimaryAccount(txn.getPrimaryAccount());
+        transaction.setCredit(txn.isCredit());
+        transaction.setTxnPersonalRefNumber(txn.getTxnPersonalRefNumber());
+        transaction.setSecondaryAccount(txn.getSecondaryAccount());
+        return transaction;
+    }
 }
+

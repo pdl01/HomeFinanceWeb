@@ -12,6 +12,7 @@ import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.hfw.dao.RegisterDAO;
 import com.hf.homefinanceshared.CategorySplit;
+import com.hf.homefinanceshared.OnlineTransaction;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -162,19 +163,19 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
         }
 
     @Override
-    public void addPendingTransactions(List<RegisterTransaction> txns) {
+    public void addPendingTransactions(List<OnlineTransaction> txns) {
         this.registerDAO.addPendingTransactions(txns);
     }
 
     @Override
-    public void addPendingTransactions(RegisterTransaction txn) {
-        ArrayList<RegisterTransaction> txns = new ArrayList<RegisterTransaction>();
+    public void addPendingTransactions(OnlineTransaction txn) {
+        ArrayList<OnlineTransaction> txns = new ArrayList<OnlineTransaction>();
         txns.add(txn);
         this.addPendingTransactions(txns);
     }
 
     @Override
-    public List<RegisterTransaction> getPendingTransactions(Account account) {
+    public List<OnlineTransaction> getPendingTransactions(Account account) {
         return this.registerDAO.getPendingTransactions(account);
     }
 
@@ -189,22 +190,32 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
    }
 
     @Override
-    public RegisterTransaction getPendingTransactionById(String id) {
+    public OnlineTransaction getPendingTransactionById(String id) {
         return this.registerDAO.getPendingTransactionById(id);
     }
 
     @Override
-    public List<RegisterTransaction> matchTransaction(RegisterTransaction pendingTransaction) {
+    public List<RegisterTransaction> matchTransaction(OnlineTransaction pendingTransaction) {
         return this.registerDAO.matchTransaction(pendingTransaction);
     }
 
     @Override
-    public void matchTransaction(RegisterTransaction pendingTransaction, RegisterTransaction enteredTransaction) {
+    public void matchTransaction(OnlineTransaction pendingTransaction, RegisterTransaction enteredTransaction) {
         pendingTransaction.setStatusTxt(RegisterTransaction.STATUS_ACCEPTED);
         this.addPendingTransactions(pendingTransaction);
         
         enteredTransaction.setStatusTxt(RegisterTransaction.STATUS_CLEARED);
         this.saveTransaction(enteredTransaction);
+    }
+
+    @Override
+    public List<RegisterTransaction> findTransaction(String searchTerm) {
+        return this.registerDAO.findTransaction(searchTerm);
+    }
+
+    @Override 
+    public List<RegisterTransaction> findTransaction(Account account, String searchTerm) {
+        return this.registerDAO.findTransaction(account, searchTerm);
     }
             
 

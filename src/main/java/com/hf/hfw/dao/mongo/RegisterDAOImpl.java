@@ -9,6 +9,7 @@ import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.hfw.dao.RegisterDAO;
 import com.hf.homefinanceshared.CategorySplit;
+import com.hf.homefinanceshared.OnlineTransaction;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -137,34 +138,53 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
 
     
     @Override
-    public void addPendingTransactions( List<RegisterTransaction> txns) {
-        for (RegisterTransaction txn: txns) {
+    public void addPendingTransactions( List<OnlineTransaction> txns) {
+        for (OnlineTransaction txn: txns) {
             this.getMongoTemplate().save(txn, "onlineData");    
         }
         
     }
 
     @Override
-    public List<RegisterTransaction> getPendingTransactions(Account account) {
+    public List<OnlineTransaction> getPendingTransactions(Account account) {
         Query searchTransactionsQuery = new Query(Criteria.where("primaryAccount").is(account.getId()));
         searchTransactionsQuery.addCriteria(Criteria.where("statusTxt").is(RegisterTransaction.STATUS_IMPORTED));
         searchTransactionsQuery.with(new Sort(Sort.Direction.ASC,"txnDate"));
 
-        return this.getMongoTemplate().find(searchTransactionsQuery, RegisterTransaction.class, "onlineData");
+        return this.getMongoTemplate().find(searchTransactionsQuery, OnlineTransaction.class, "onlineData");
     }
 
     @Override
-    public RegisterTransaction getPendingTransactionById(String _id) {
+    public OnlineTransaction getPendingTransactionById(String _id) {
         Query searchTransactionQuery = new Query(Criteria.where("id").is(_id));
-        return this.getMongoTemplate().findOne(searchTransactionQuery, RegisterTransaction.class,"onlineData");
+        return this.getMongoTemplate().findOne(searchTransactionQuery, OnlineTransaction.class,"onlineData");
     }
 
     @Override
-    public List<RegisterTransaction> matchTransaction(RegisterTransaction pendingTransaction) {
+    public List<RegisterTransaction> matchTransaction(OnlineTransaction pendingTransaction) {
         Query searchTransactionQuery = new Query(Criteria.where("txnAmount").is(pendingTransaction.getTxnAmount()));
         searchTransactionQuery.addCriteria(Criteria.where("statusTxt").is(RegisterTransaction.STATUS_NONE));
         searchTransactionQuery.addCriteria(Criteria.where("primaryAccount").is(pendingTransaction.getPrimaryAccount()));
         return this.getMongoTemplate().find(searchTransactionQuery, RegisterTransaction.class);
+    }
+
+    @Override
+    public List<RegisterTransaction> findTransaction(String searchTerm) {
+        Query searchTransactionQuery = new Query(Criteria.where("payee").regex("^" + searchTerm));
+        searchTransactionQuery.with(new Sort(Sort.Direction.DESC,"txnDate"));
+        
+        return this.getMongoTemplate().find(searchTransactionQuery, RegisterTransaction.class);
+        
+    }
+
+    @Override
+    public List<RegisterTransaction> findTransaction(Account account, String searchTerm) {
+        Query searchTransactionQuery = new Query(Criteria.where("payee").regex("^" + searchTerm));
+        searchTransactionQuery.addCriteria(Criteria.where("primaryAccount").is(account.getId()));
+        searchTransactionQuery.with(new Sort(Sort.Direction.DESC,"txnDate"));
+        
+        return this.getMongoTemplate().find(searchTransactionQuery, RegisterTransaction.class);
+
     }
 
     

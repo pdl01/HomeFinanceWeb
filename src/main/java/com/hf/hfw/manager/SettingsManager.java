@@ -16,4 +16,6 @@ public interface SettingsManager {
     public void saveThemeSettings(SettingsBean bean);
     public SettingsBean getBasicSecuritySetting();
     public void saveBasicSecuritySettings(SettingsBean bean);
+    public SettingsBean getLimitedSecurityUsers();
+    public void saveLimitedSecurityUsers(SettingsBean bean);
 }

@@ -1,5 +1,6 @@
 package com.hf.hfw.api.v1;
 
+import com.hf.homefinanceshared.OnlineTransaction;
 import com.hf.homefinanceshared.RegisterTransaction;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -78,13 +79,13 @@ public interface RegisterService {
     @Produces({"application/json"})
     @Consumes({"application/json"})
     @Path("/get/pending/{accountId}")    
-    public List<RegisterTransaction> getPendingTransactions(@PathParam("accountId") String accountId);
+    public List<OnlineTransaction> getPendingTransactions(@PathParam("accountId") String accountId);
   
     @GET
     @Produces({"application/json"})
     @Consumes({"application/json"})
     @Path("/get/pending/{accountId}/{number}/{start}")    
-    public List<RegisterTransaction> getPendingTransactions(@PathParam("accountId") String accountId,@PathParam("number") String number,@PathParam("start") String start);
+    public List<OnlineTransaction> getPendingTransactions(@PathParam("accountId") String accountId,@PathParam("number") String number,@PathParam("start") String start);
  
     @GET
     @Produces({"application/json"})

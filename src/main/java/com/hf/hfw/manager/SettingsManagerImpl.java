@@ -11,6 +11,8 @@ import java.util.HashMap;
 public class SettingsManagerImpl implements SettingsManager {
     public static final String TYPE_OF_SETTING_BASICSECURITY = "basicSecurity";
     public static final String TYPE_OF_SETTING_THEME = "theme";
+    public static final String TYPE_OF_SETTING_LIMITEDUSERSECURITY="limitedUserSecurity";
+    
     private RepositoryBasedSettingDAO repositoryBasedSettingDAO;
 
     public void setRepositoryBasedSettingDAO(RepositoryBasedSettingDAO repositoryBasedSettingsDAO) {
@@ -45,6 +47,16 @@ public class SettingsManagerImpl implements SettingsManager {
         return settingsBean;
     }
 
+    private SettingsBean getDefaultLimitedUserSecuritySetting() {
+        SettingsBean settingsBean = new SettingsBean();
+        settingsBean.setTypeOfSetting(TYPE_OF_SETTING_LIMITEDUSERSECURITY);
+        HashMap<String, String> settings = new HashMap<String, String>();
+        settings.put("user1.name", "user1");
+        settings.put("user1.password", "admin");
+        settingsBean.setSettings(settings);
+        return settingsBean;
+    }
+    
     @Override
     public void saveThemeSettings(SettingsBean bean) {
         this.repositoryBasedSettingDAO.saveSetting(TYPE_OF_SETTING_THEME, bean);
@@ -64,6 +76,20 @@ public class SettingsManagerImpl implements SettingsManager {
     public void saveBasicSecuritySettings(SettingsBean bean) {
         this.repositoryBasedSettingDAO.saveSetting(TYPE_OF_SETTING_BASICSECURITY, bean);
 
+    }
+
+    @Override
+    public SettingsBean getLimitedSecurityUsers() {        
+        SettingsBean settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_LIMITEDUSERSECURITY);
+        if (settingsBean == null) {
+            settingsBean = this.getDefaultLimitedUserSecuritySetting();
+        }
+        return settingsBean;
+    }
+
+    @Override
+    public void saveLimitedSecurityUsers(SettingsBean bean) {
+        this.repositoryBasedSettingDAO.saveSetting(TYPE_OF_SETTING_LIMITEDUSERSECURITY, bean);
     }
 
 }

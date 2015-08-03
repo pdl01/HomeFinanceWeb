@@ -76,6 +76,14 @@ public class SettingsServiceImpl implements SettingsService {
             settingsBean.settings.put("enabled", settingsbean.getSettings().get("enabled"));
             settingsBean.settings.put("password", settingsbean.getSettings().get("password"));
             this.settingsManager.saveBasicSecuritySettings(settingsbean);
+        } else if ("limitedusersecurity".equals(typeOfSettings)){
+            SettingsBean settingsBean = this.settingsManager.getBasicSecuritySetting();
+            settingsBean.settings.put("user1.name", settingsbean.getSettings().get("user1.name"));
+            settingsBean.settings.put("user1.password", settingsbean.getSettings().get("user1.password"));
+            settingsBean.settings.put("user2.name", settingsbean.getSettings().get("user2.name"));
+            settingsBean.settings.put("user2.password", settingsbean.getSettings().get("user2.password"));
+            settingsBean.settings.put("user3.name", settingsbean.getSettings().get("user3.name"));
+            settingsBean.settings.put("user3.password", settingsbean.getSettings().get("user3.password"));
         }
         return settingsbean;
     }

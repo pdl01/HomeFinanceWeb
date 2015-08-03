@@ -125,6 +125,8 @@ public class CategoryCacheManagerImpl {
             for (String s : this.categorySet) {
                 if (s.startsWith(category)) {
                     returnList.add(s);
+                } else if (s.startsWith("Expenses:"+category) || s.startsWith("Income:"+category)) {
+                    returnList.add(s);
                 }
             }
         }
