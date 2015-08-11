@@ -242,8 +242,35 @@
                         <button ng-click="addOnlineData()">Submit!</button>
                     </form>
                     <div id="progress">{{uploadProgress}}</div>
+                    <div>
+                        <a href="#" ng-click="onlineSortType = 'txnDate' ; onlineSortReverse = ! onlineSortReverse">
+                            Date 
+                            <span ng-show="onlineSortType == 'txnDate' && !onlineSortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="onlineSortType == 'txnDate' && onlineSortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                        <a href="#" ng-click="onlineSortType = 'payee' ; onlineSortReverse = ! onlineSortReverse ">
+                            Payee 
+                            <span ng-show="onlineSortType == 'payee' && !onlineSortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="onlineSortType == 'payee' && onlineSortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                        <a href="#" ng-click="onlineSortType = 'txnAmount'  ; onlineSortReverse = ! onlineSortReverse">
+                            Amount 
+                            <span ng-show="onlineSortType == 'txnAmount' && !onlineSortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="onlineSortType == 'txnAmount' && onlineSortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                        <a href="#" ng-click="onlineSortType = 'statusTxt'  ; onlineSortReverse = ! onlineSortReverse">
+                            Status 
+                            <span ng-show="onlineSortType == 'statusTxt' && !onlineSortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="onlineSortType == 'statusTxt' && onlineSortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                        <a href="#" ng-click="onlineSortType = 'matches' ; onlineSortReverse = ! onlineSortReverse">
+                            Matches
+                            <span ng-show="onlineSortType == 'matches' && !onlineSortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="onlineSortType == 'matches' && onlineSortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </div>
                     <div id="pendingTransactionList">
-                        <div ng-repeat="x in pendingRegistryTransactions" ng-click="" class="list-group-item registryTransaction">
+                        <div ng-repeat="x in pendingRegistryTransactions | orderBy:onlineSortType:onlineSortReverse" ng-click="" class="list-group-item registryTransaction">
                             <button ng-click="acceptPendingTransactionAsNew(x)">New</button>
                             <button ng-click="dismissMatchForPending(x)">Dismiss</button>
                             <button ng-click="showOnlineMatchingDialog(x)">Match</button>

@@ -70,6 +70,9 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     $scope.scheduledDateControl.month = "";
     $scope.payingScheduledTxnId="";
     
+    $scope.onlineSortType     = 'txnDate'; // set the default sort type
+    $scope.onlineSortReverse  = false;  // set the default sort order
+    
     $scope.$watch('registryTransactionFormCategorySplits[0].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
