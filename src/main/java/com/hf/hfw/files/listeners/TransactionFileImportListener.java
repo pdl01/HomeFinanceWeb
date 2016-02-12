@@ -4,6 +4,7 @@ import com.hf.hfw.accounts.events.AccountEvent;
 import com.hf.hfw.accounts.events.AccountFileEvent;
 import com.hf.hfw.accounts.tasks.OnlineTransactionPotentialMatchesTask;
 import com.hf.hfw.manager.AccountManager;
+import com.hf.hfw.manager.NotificationManager;
 import com.hf.hfw.manager.RegisterManager;
 import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.OnlineTransaction;
@@ -32,6 +33,12 @@ public class TransactionFileImportListener implements ApplicationListener<Accoun
     private RegisterManager registerManager;
     private AccountManager accountManager;
     private OnlineTransactionPotentialMatchesTask onlineTransactionPotentialMatchesTask;
+    private NotificationManager notificationManager;
+
+    public void setNotificationManager(NotificationManager notificationManager) {
+        this.notificationManager = notificationManager;
+    }
+    
     public void setAccountManager(AccountManager accountManager) {
         this.accountManager = accountManager;
     }
@@ -66,7 +73,14 @@ public class TransactionFileImportListener implements ApplicationListener<Accoun
                 rtxn.setTxnDate(output_format.format(f.getTxnDate()));
                 rtxn.setPrimaryAccount(e.getAccount().getId());
                 rtxn.setStatusTxt(RegisterTransaction.STATUS_IMPORTED);
-                if (f.getAmount() < 0) {
+                //if (f.getAmount() < 0) {
+                //    rtxn.setCredit(false);
+                //} else {
+                //    rtxn.setCredit(true);
+                //}
+                if ("CREDIT".equals(f.getType())) {
+                    rtxn.setCredit(true);
+                } else {
                     rtxn.setCredit(false);
                 }
                 if (latestTxnDate == null) {
@@ -93,6 +107,7 @@ public class TransactionFileImportListener implements ApplicationListener<Accoun
                 
                 this.onlineTransactionPotentialMatchesTask.execute(account);
             }
+            this.notificationManager.createNotification("Online file processing completed", "File for account:"+account.getName()+" has completed.");
             log.info("completed processing:" + e.getAccount().getId() + ":" + e.getFileName());
 
         }

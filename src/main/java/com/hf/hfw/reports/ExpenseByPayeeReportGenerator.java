@@ -22,7 +22,7 @@ import java.util.Map;
  * @author pldorrell
  */
 public class ExpenseByPayeeReportGenerator implements ReportGenerator{
-public static final String REPORT_TYPE = "ExpenseByPayee";
+    public static final String REPORT_TYPE = "ExpenseByPayee";
     private RegisterManager registerManager;
     private AccountManager accountManager;
 

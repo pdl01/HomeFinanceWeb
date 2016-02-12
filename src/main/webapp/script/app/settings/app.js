@@ -73,6 +73,7 @@ hfwApp.controller('settingsController', function ($scope, $http, SettingsService
         repoInfo.settings.username = $scope.repositoryFormData.username;
         repoInfo.settings.password = $scope.repositoryFormData.password;
         repoInfo.settings.port = $scope.repositoryFormData.port;
+        repoInfo.settings.type=$scope.repositoryFormData.type;
         SettingsService.saveRepositoryConfig(repoInfo).success(function (response) {
             console.log(response);
         });

@@ -155,6 +155,9 @@ div{
     margin: 5px;
     
 }
+.credit {
+    color:green;
+}
 ul{margin-bottom:0px;}
 #appMainTabsAccountName {
     float:right;

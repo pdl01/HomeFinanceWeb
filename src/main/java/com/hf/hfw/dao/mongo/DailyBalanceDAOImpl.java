@@ -7,7 +7,6 @@ package com.hf.hfw.dao.mongo;
 
 import com.hf.hfw.dao.DailyBalanceDAO;
 import com.hf.homefinanceshared.DailyBalance;
-import com.hf.homefinanceshared.RegisterTransaction;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;

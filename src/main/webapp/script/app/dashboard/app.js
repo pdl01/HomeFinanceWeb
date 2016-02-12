@@ -3,7 +3,7 @@ var hfwApp = angular.module('HFWApp', []);
 
 
 
-hfwApp.controller('dashboardController', function ($scope, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService,ScheduledTransactionService,TransactionStatusLookupService) {
+hfwApp.controller('dashboardController', function ($scope,$interval, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService,ScheduledTransactionService,TransactionStatusLookupService,NotificationService) {
     $scope.accountFormData = {};
 
     $scope.onlineData = {};
@@ -72,6 +72,14 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     
     $scope.onlineSortType     = 'txnDate'; // set the default sort type
     $scope.onlineSortReverse  = false;  // set the default sort order
+    
+    $scope.notifications = {};
+    
+    $scope.numNotifications = 0;    
+    $scope.showNotificationsLink = false;
+    $scope.showNotificationsModal = false;
+    $scope.selectednotification = null;
+    
     
     $scope.$watch('registryTransactionFormCategorySplits[0].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
@@ -273,10 +281,42 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
             });
             $scope.accounts = response;
         });
+    };
+    
+    $scope.showNotifications = function () {
+        NotificationService.getNotificationsByStatus("0").success(function(response) {
+            console.log(response);
+            $scope.notifications=response;
+            $scope.showNotificationsModal = true;
+            
+        });
+    };
+    
+    $scope.getNotificationCount = function() {
+        NotificationService.getNotificationCountByStatus("0").success(function(response){
+            //console.log(response);
+            if (response != '0') {
+                $scope.showNotificationsLink = true;
+                $scope.numNotifications = response;               
+            }
+ 
+            //var responseHTML = "<a href=\"#\" class=\"notificationCountLink\">"+response+"</a>";
+            //$("#headerLinkNotifications").html(responseHTML);    
+        });
+        
     }
+    $scope.markNotificationAsRead = function(notificationId) {
+        NotificationService.markRead(notificationId).success(function(response) {
+            $scope.getNotificationCount();
+        });
+    };
+    
     $scope.init = function () {
         $scope.getCurrentDate();
         $scope.getAccounts();
+        
+        $scope.getNotificationCount();
+        $interval(function(){$scope.getNotificationCount()},30000,0);
     }
     $scope.getCurrentDate = function () {
         DateService.lookupCurrent().success(function (response) {
@@ -643,26 +683,31 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
     $scope.hideOnlineMatchingDialog = function () {
         $scope.showOnlineMatchingModal = false;
     };
-    $scope.renderReport = function (plotData) {
+    $scope.renderReport = function (chartType,plotData) {
         if ($scope.pieChart) {
             $scope.pieChart.destroy();
         }
-        $scope.pieChart = $.jqplot('pie1', [plotData], {
-            gridPadding: {top: 0, bottom: 38, left: 0, right: 0},
-            seriesDefaults: {
-                renderer: $.jqplot.PieRenderer,
-                trendline: {show: false},
-                rendererOptions: {padding: 8, showDataLabels: true}
-            },
-            legend: {
-                show: true,
-                placement: 'inside',
-                rendererOptions: {
+        if (chartType == 'pie') {
+            $scope.pieChart = $.jqplot('pie1', [plotData], {
+                gridPadding: {top: 0, bottom: 38, left: 0, right: 0},
+                seriesDefaults: {
+                    renderer: $.jqplot.PieRenderer,
+                    trendline: {show: false},
+                    rendererOptions: {padding: 8, showDataLabels: true}
                 },
-                location: 'e',
-                marginTop: '15px'
-            }
-        });
+                legend: {
+                    show: true,
+                    placement: 'inside',
+                    rendererOptions: {
+                    },
+                    location: 'e',
+                    marginTop: '15px'
+                }
+            });
+            
+        } else if (chartType == 'bar') {
+            
+        }
         
         
     }
@@ -679,17 +724,20 @@ hfwApp.controller('dashboardController', function ($scope, $http, AccountService
         ReportService.getReportForPeriodForAccount($scope.selectedAccount.id, $scope.reportControl.reportType, $scope.reportControl.reportPeriod).success(function (response) {
             //parse the data into jqplot data format
             var plotData = [];
+            chartType = "pie";
             //call the renderReport with the data
             angular.forEach(response.dataPoints, function (value, key) {
                 var x = [];
                 x.push(value.name);
                 x.push(value.value);
                 plotData.push(x);
-
+                if (response.reportType == 'DailyBalance') {
+                    chartType = "bar";
+                }
 
             });
             
-            $scope.renderReport(plotData);
+            $scope.renderReport(chartType,plotData);
             //push the plotDate into report transactions
             //and sort
             $scope.report_transactions = response.dataPoints;

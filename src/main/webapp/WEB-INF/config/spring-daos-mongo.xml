@@ -5,7 +5,7 @@
            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
- <bean id="accountDAO" class="com.hf.hfw.dao.mongo.AccountDAOImpl">    
+    <bean id="accountDAO" class="com.hf.hfw.dao.mongo.AccountDAOImpl">    
     	<property name="dbFactory" ref="dbFactory"/>
     </bean>
      <bean id="registerDAO" class="com.hf.hfw.dao.mongo.RegisterDAOImpl">    
@@ -20,5 +20,10 @@
     <bean id="scheduledTransactionDAO" class="com.hf.hfw.dao.mongo.ScheduleTransactionDAOImpl">    
     	<property name="dbFactory" ref="dbFactory"/>
     </bean>
-
+    <bean id="notificationDAO" class="com.hf.hfw.dao.mongo.NotificationDAOImpl">
+        <property name="dbFactory" ref="dbFactory" />
+    </bean>
+    <bean id="dailyBalanceDAO" class="com.hf.hfw.dao.mongo.DailyBalanceDAOImpl">
+        <property name="dbFactory" ref="dbFactory" />
+    </bean>
 </beans>

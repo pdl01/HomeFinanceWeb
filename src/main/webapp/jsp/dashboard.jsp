@@ -33,6 +33,7 @@
             </div>
             <div id="appSidebar">
                 <div id="accountList">
+                    <div id="notificationsSection" ng-click="showNotifications()" ng-show="showNotificationsLink">Notifications (<span class="" id="notificationNumber">{{numNotifications}}</span>)</div>
                     <div>Accounts <a class="refresh" ng-click="refreshAccounts()">&nbsp;&nbsp;&nbsp;&nbsp;</a></div>
                     <div class="accountListHeader" ng-click="toggleAccountGroupHide('checking')">Checking</div>
                     <div ng-hide="hideAccounts['checking']" ng-repeat="x in checking_accounts"  id="checkingAccounts" class="list-group-item accountEntry">
@@ -389,6 +390,17 @@
                     <button ng-click="clickBudgetItemCancel()">Cancel</button>
                 </div>
             </modal>
+            <modal title="Notification Details" visible="showNotificationsModal" >
+                    <div id="notificationList">
+                        <div ng-repeat="x in notifications | orderBy:createdOn" ng-click="" class="list-group-item notificationList">
+                            <span>{{ x.createdOnAsString }}
+                            <span>{{ x.subject}}</span>
+                            <span>{{ x.message}}</span>
+                            <a class="markAsRead" ng-click="markNotificationAsRead(x.id)">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        </div>
+                    </div>
+                
+            </modal>            
             <modal title="Online Transaction Matching" visible="showOnlineMatchingModal">
                 <div>
                     <span>{{selectedPendingTransaction.txnDate}}</span>

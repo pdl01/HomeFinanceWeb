@@ -8,6 +8,7 @@ package com.hf.hfw.manager;
 import com.hf.hfw.accounts.events.AccountEvent;
 import com.hf.hfw.accounts.events.TransactionEvent;
 import com.hf.hfw.application.ApplicationState;
+import com.hf.hfw.comparator.RegisterTransactionDateAscendingComparator;
 import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.hfw.dao.RegisterDAO;
@@ -148,19 +149,31 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
 
     @Override
     public List<RegisterTransaction> getTransactionsByCategories(Account account, List<String> categories) {
-        return this.registerDAO.getTransactionsByCategories(account, categories);
+        log.debug("Entering getTransactionsByCategories");
+
+        List<RegisterTransaction> txns = this.registerDAO.getTransactionsByCategories(account, categories);
+        txns.sort(new RegisterTransactionDateAscendingComparator());
+        log.debug("Exiting getTransactionsByCategories");
+        return txns;
     }
     
     @Override
     public List<RegisterTransaction> getTransactionsByCategoriesStartsWithForDateStartWith(Account account, String category,String date){
-        return this.registerDAO.getTransactionsByCategoriesStartsWithForDateStartWith(account, category,date);
-
+        log.debug("Entering getTransactionsByCategoriesStartsWithForDateStartWith");
+        List<RegisterTransaction> txns = this.registerDAO.getTransactionsByCategoriesStartsWithForDateStartWith(account, category,date);
+        txns.sort(new RegisterTransactionDateAscendingComparator());
+        log.debug("Exiting getTransactionsByCategoriesStartsWithForDateStartWith");
+        return txns;
     }
 
     @Override
     public List<RegisterTransaction> getTransactionsForDateStartWith(Account account, String date, boolean getCredit) {
-        return this.registerDAO.getTransactionsForDateStartWith(account, date, getCredit);
-        }
+        log.debug("Entering getTransactionsForDateStartWith");
+        List<RegisterTransaction> txns = this.registerDAO.getTransactionsForDateStartWith(account, date, getCredit);
+        txns.sort(new RegisterTransactionDateAscendingComparator());
+        log.debug("Exiting getTransactionsForDateStartWith");
+        return txns;
+    }
 
     @Override
     public void addPendingTransactions(List<OnlineTransaction> txns) {
@@ -186,7 +199,12 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
 
     @Override
     public List<RegisterTransaction> getAllTransactionsForDateStartWith(Account account, String date) {
-        return this.registerDAO.getAllTransactionsForDateStartWith(account, date);
+        log.debug("Entering getAllTransactionsForDateStartWith");
+
+        List<RegisterTransaction> txns = this.registerDAO.getAllTransactionsForDateStartWith(account, date);
+        txns.sort(new RegisterTransactionDateAscendingComparator());
+        log.debug("Exiting getAllTransactionsForDateStartWith");
+        return txns;
    }
 
     @Override

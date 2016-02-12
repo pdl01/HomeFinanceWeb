@@ -1,6 +1,5 @@
 package com.hf.hfw.api.v1;
 
-import com.hf.hfw.files.listeners.TransactionFileImportListener;
 import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.hfw.manager.RegisterManager;
 import com.hf.homefinanceshared.Account;
@@ -8,9 +7,8 @@ import com.hf.homefinanceshared.CategorySplit;
 import com.hf.homefinanceshared.OnlineTransaction;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.Path;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -18,7 +16,7 @@ import javax.ws.rs.Path;
  */
 @Path("/register")
 public class RegisterServiceImpl implements RegisterService {
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(RegisterServiceImpl.class);
+    private static final Logger log = Logger.getLogger(RegisterServiceImpl.class);
 
     protected RegisterManager registerManager;
 

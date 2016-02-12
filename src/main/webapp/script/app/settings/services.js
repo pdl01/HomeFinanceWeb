@@ -5,7 +5,7 @@ hfwApp.factory("SettingsService", function ($http) {
     SettingsService.getRepositoryConfig = function () {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/settings/db'
+            url: '/services/api/v1/settings/db'
         });
     };
     SettingsService.validateRepositoryConfig = function (settingsData) {
@@ -26,7 +26,7 @@ hfwApp.factory("SettingsService", function ($http) {
 
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/settings/db',
+            url: '/services/api/v1/settings/db',
             data: JSON.stringify(settingsData), // pass in data as strings
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         })
@@ -34,7 +34,7 @@ hfwApp.factory("SettingsService", function ($http) {
     SettingsService.getBasicSecurityConfig = function () {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/settings/basicsecurity'
+            url: '/services/api/v1/settings/basicsecurity'
         });
     };
     SettingsService.saveBasicSecurityConfig = function (settingsData) {
@@ -43,7 +43,7 @@ hfwApp.factory("SettingsService", function ($http) {
 
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/settings/basicsecurity',
+            url: '/services/api/v1/settings/basicsecurity',
             data: JSON.stringify(settingsData), // pass in data as strings
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         })
@@ -52,7 +52,7 @@ hfwApp.factory("SettingsService", function ($http) {
     SettingsService.getThemeConfig = function () {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/settings/theme'
+            url: '/services/api/v1/settings/theme'
         });
     };
     SettingsService.saveThemeConfig = function (settingsData) {
@@ -61,7 +61,7 @@ hfwApp.factory("SettingsService", function ($http) {
 
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/settings/theme',
+            url: '/services/api/v1/settings/theme',
             data: JSON.stringify(settingsData), // pass in data as strings
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         })
@@ -69,7 +69,7 @@ hfwApp.factory("SettingsService", function ($http) {
     SettingsService.getAllCategories = function () {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/category/all'
+            url: '/services/api/v1/category/all'
         });
     };
 

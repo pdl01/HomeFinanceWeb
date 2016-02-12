@@ -34,6 +34,7 @@
                 <select id="theme"ng-model="themeFormData.theme">
                     <option value="default">Default</option>
                     <option value="dark">Dark</option>
+                    <option value="arctic">Arctic</option>
                 </select><br>
                 <button ng-click="saveThemeInformation()">Save</button>
             </div>

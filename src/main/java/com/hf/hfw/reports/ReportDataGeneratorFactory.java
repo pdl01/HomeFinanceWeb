@@ -12,6 +12,7 @@ import com.hf.hfw.application.ApplicationState;
  * @author pldorrell
  */
 public class ReportDataGeneratorFactory {
+    //TODO externalize this somehow
     public ReportGenerator get(String reportType) {
         if (reportType == null) {
             return null;
@@ -22,6 +23,8 @@ public class ReportDataGeneratorFactory {
 
         } else if (reportType.toLowerCase().equals("expensebycategory")) {
             return (ReportGenerator)ApplicationState.getApplicationState().getCtx().getBean("expenseByCategoryReportGenerator");
+        } else if (reportType.toLowerCase().equals("dailybalance")) {
+            return (ReportGenerator)ApplicationState.getApplicationState().getCtx().getBean("dailyBalanceReportGenerator");
         } else {
             return null;
         }

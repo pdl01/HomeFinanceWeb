@@ -1,0 +1,56 @@
+#appMenu{
+    background-color: #269abc;
+       color: black;
+
+}
+.headerItem {
+    color:000000;
+}
+#header {
+   background-color: #269abc;
+   color: black;
+}
+.mobileHeader {
+ font-size: 20px;   
+}
+.accountListHeader {
+   background-color: #C0C0E8;
+   color: black;
+   border-bottom-style: solid;
+   border-bottom-width: 1px;
+   border-bottom-color: #E0E0E0;
+}
+
+a.refresh {
+    background-image: url(images/refresh16x16.png);
+    width:16px 16px;
+}
+
+#headerLinkNotifications {
+    color:black;
+    background-color: black;
+    border-width: 1px;
+    border-style: solid;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.notificationCountLink {
+    color:white;
+}
+
+#accountList {
+     -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -webkit-border-top-left-radius: 15px;
+    -khtml-border-radius: 15px;
+    border-radius: 15px;
+   
+        
+    width:160px;
+    background-color:#C0C0E8;
+}
+.accountEntry {
+    background-color:#e8e8e8;
+    padding:10px;
+}

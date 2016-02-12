@@ -22,3 +22,22 @@ a.refresh {
     background-image: url(images/refresh16x16.png);
     width:16px 16px;
 }
+
+a.markAsRead {
+    background-image: url(images/checkmark16x16.png);
+    width:16px 16px;
+}
+
+
+#headerLinkNotifications {
+    color:black;
+    background-color: black;
+    border-width: 1px;
+    border-style: solid;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.notificationCountLink {
+    color:white;
+}

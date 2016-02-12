@@ -7,7 +7,8 @@
 		   ">
     <import resource="springapp.xml"/>
     <import resource="spring-datasources.xml"/>
-    <import resource="spring-daos.xml"/>
+    <!-- <import resource="spring-daos-mongo.xml"/> -->
+    <import resource="spring-daos-lwds.xml"/>
     <import resource="spring-rs.xml"/>
     <import resource="spring-services.xml"/>
     <import resource="spring-tasks.xml"/>

@@ -5,13 +5,13 @@ hfwApp.factory("AccountService", function ($http) {
     AccountService.getAccounts = function () {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/accounts/search/all'
+            url: '/services/api/v1/accounts/search/all'
         });
     };
     AccountService.getAccount = function (id) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/accounts/getbyId/' + id
+            url: '/services/api/v1/accounts/getbyId/' + id
         });
     };
     AccountService.deleteAccount = function (id) {
@@ -20,7 +20,7 @@ hfwApp.factory("AccountService", function ($http) {
 
         return $http({
             method: 'DELETE',
-            url: '/HFW/services/api/v1/accounts/delete/' + id,
+            url: '/services/api/v1/accounts/delete/' + id,
             //data: JSON.stringify(account), // pass in data as strings
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
 
@@ -33,7 +33,7 @@ hfwApp.factory("AccountService", function ($http) {
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/accounts/save',
+            url: '/services/api/v1/accounts/save',
             data: JSON.stringify(account), // pass in data as strings
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         })
@@ -49,31 +49,31 @@ hfwApp.factory("RegistryService", function ($http) {
     RegistryService.getRegistryForAccount = function (id) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/register/get/all/' + id
+            url: '/services/api/v1/register/get/all/' + id
         });
     };
     RegistryService.getRegistryBlockForAccount = function (id, start, number) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/register/get/' + id + '/' + start + '/' + number
+            url: '/services/api/v1/register/get/' + id + '/' + start + '/' + number
         });
     };
     RegistryService.getRegistryForAccountForDate = function (id, date) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/register/get/bydate/' + id + '/' + date
+            url: '/services/api/v1/register/get/bydate/' + id + '/' + date
         });
     };
     RegistryService.getRegistryForAccountForMonth = function (id, date) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/register/get/bymonth/' + id + '/' + date
+            url: '/services/api/v1/register/get/bymonth/' + id + '/' + date
         });
     };
     RegistryService.getPendingTransactionsForAccount = function (id) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/register/get/pending/' + id
+            url: '/services/api/v1/register/get/pending/' + id
         });
     };
     RegistryService.matchPendingTransactionToExistingTransaction = function (pendingid, existingid) {
@@ -81,7 +81,7 @@ hfwApp.factory("RegistryService", function ($http) {
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/register/pending/match/' + pendingid + '/' + existingid,
+            url: '/services/api/v1/register/pending/match/' + pendingid + '/' + existingid,
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}
         });
     };
@@ -90,7 +90,7 @@ hfwApp.factory("RegistryService", function ($http) {
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/register/pending/dismiss/' + pendingid,
+            url: '/services/api/v1/register/pending/dismiss/' + pendingid,
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}
         });
     };
@@ -99,14 +99,14 @@ hfwApp.factory("RegistryService", function ($http) {
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/register/pending/acceptasnew/' + pendingid,
+            url: '/services/api/v1/register/pending/acceptasnew/' + pendingid,
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}
         });
     };
     RegistryService.getMatchingTransactionsForPendingTransaction = function (transactionId) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/register/get/matched/' + transactionId
+            url: '/services/api/v1/register/get/matched/' + transactionId
         });
     };
     RegistryService.saveTransaction = function (transaction) {
@@ -115,7 +115,7 @@ hfwApp.factory("RegistryService", function ($http) {
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/register/save',
+            url: '/services/api/v1/register/save',
             data: JSON.stringify(transaction), // pass in data as strings
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         });
@@ -126,7 +126,7 @@ hfwApp.factory("RegistryService", function ($http) {
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/register/validate',
+            url: '/services/api/v1/register/validate',
             data: JSON.stringify(transaction), // pass in data as strings
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         });
@@ -141,7 +141,7 @@ hfwApp.factory("RegistryService", function ($http) {
 //TODO: convert this all to angular form
         //$scope.uploadProgress="Uploading";
         $.ajax({
-            url: '/HFW/servlet/fileUpload/' + accountId, //Server script to process data
+            url: '/servlet/fileUpload/' + accountId, //Server script to process data
             type: 'POST',
             //Ajax events
 
@@ -179,20 +179,20 @@ hfwApp.factory("ReportService", function ($http) {
     ReportService.getReport = function (reportType) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/reports/' + reportType
+            url: '/services/api/v1/reports/' + reportType
         });
     };
     ReportService.getReportForPeriodForAccount = function (accountId, reportType, reportPeriod) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/reports/' + accountId + '/' + reportType + "/" + reportPeriod
+            url: '/services/api/v1/reports/' + accountId + '/' + reportType + "/" + reportPeriod
         });
     };
 
     ReportService.getReportForCustomPeriod = function (reportType, startDate, endDate) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/reports/' + reportType + "/" + startDate + "/" + endDate
+            url: '/services/api/v1/reports/' + reportType + "/" + startDate + "/" + endDate
         });
     };
 
@@ -207,7 +207,7 @@ hfwApp.factory("CategoryLookupService", function ($http) {
     CategoryLookupService.lookup = function (lookupValue) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/category/lookup/' + lookupValue
+            url: '/services/api/v1/category/lookup/' + lookupValue
         });
     };
 
@@ -223,14 +223,14 @@ hfwApp.factory("DateService", function ($http) {
         return $http({
             method: 'GET',
             async: false,
-            url: '/HFW/services/api/v1/date/current'
+            url: '/services/api/v1/date/current'
         });
     };
 
     DateService.lookupCurrentYear = function () {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/date/current/year'
+            url: '/services/api/v1/date/current/year'
         });
     };
 
@@ -238,7 +238,7 @@ hfwApp.factory("DateService", function ($http) {
     DateService.lookupCurrentMonth = function () {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/date/current/month'
+            url: '/services/api/v1/date/current/month'
         });
     };
     return DateService;
@@ -252,7 +252,7 @@ hfwApp.factory("BudgetService", function ($http) {
     BudgetService.getBudgets = function () {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/budgets/search/all'
+            url: '/services/api/v1/budgets/search/all'
         });
     };
     BudgetService.saveBudget = function (budget) {
@@ -291,7 +291,7 @@ hfwApp.factory("BudgetService", function ($http) {
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/budgets/save',
+            url: '/services/api/v1/budgets/save',
             data: JSON.stringify(budget), // pass in data as strings
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         });
@@ -302,7 +302,7 @@ hfwApp.factory("BudgetService", function ($http) {
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
             method: 'POST',
-            url: '--/HFW/services/api/v1/register/validate',
+            url: '/services/api/v1/register/validate',
             data: JSON.stringify(transaction), // pass in data as strings
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         });
@@ -318,13 +318,13 @@ hfwApp.factory("ScheduledTransactionService", function ($http) {
     ScheduledTransactionService.getUpcomingScheduledTransactionsForAccount = function (id) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/schedule/get/upcoming/' + id
+            url: '/services/api/v1/schedule/get/upcoming/' + id
         });
     };
     ScheduledTransactionService.getUpcomingScheduledTransactionsForAccountForDate = function (id,theDate) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/schedule/get/upcoming/' + id + '/' + theDate
+            url: '/services/api/v1/schedule/get/upcoming/' + id + '/' + theDate
         });
     };
     
@@ -332,14 +332,14 @@ hfwApp.factory("ScheduledTransactionService", function ($http) {
     ScheduledTransactionService.getOriginalScheduledTransactionsForAccount = function (id) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/schedule/get/scheduled/' + id
+            url: '/services/api/v1/schedule/get/scheduled/' + id
         });
     };
 
     ScheduledTransactionService.getTransaction = function (id) {
         return $http({
             method: 'GET',
-            url: '/HFW/services/api/v1/schedule/byid/' + id
+            url: '/services/api/v1/schedule/byid/' + id
         });
     };
 
@@ -349,7 +349,7 @@ hfwApp.factory("ScheduledTransactionService", function ($http) {
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/schedule/skip/'+txnid,
+            url: '/services/api/v1/schedule/skip/'+txnid,
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         });
     };
@@ -358,7 +358,7 @@ hfwApp.factory("ScheduledTransactionService", function ($http) {
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/schedule/pay/'+txnid,
+            url: '/services/api/v1/schedule/pay/'+txnid,
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         });
     };
@@ -368,7 +368,7 @@ hfwApp.factory("ScheduledTransactionService", function ($http) {
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
             method: 'POST',
-            url: '/HFW/services/api/v1/schedule/save',
+            url: '/services/api/v1/schedule/save',
             data: JSON.stringify(transaction), // pass in data as strings
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         });
@@ -417,5 +417,36 @@ hfwApp.factory("TransactionStatusLookupService", function ($http) {
     
 
     return TransactionStatusLookupService;
+});
+
+hfwApp.factory("NotificationService", function ($http) {
+    var NotificationService = {};
+
+    NotificationService.getNotificationsByStatus = function (status) {
+        return $http({
+            method: 'GET',
+            url: '/services/api/v1/notifications/getByStatus/'+status
+        });
+    };
+    
+    NotificationService.getNotificationCountByStatus = function (status) {
+        return $http({
+            method: 'GET',
+            url: '/services/api/v1/notifications/getCountByStatus/'+status
+        });
+    };    
+
+    NotificationService.markRead = function (notificationId) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+        return $http({
+            method: 'POST',
+            url: '/services/api/v1/notifications/markRead/'+notificationId,
+            //data: JSON.stringify(account), // pass in data as strings
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
+        })
+    };
+
+    return NotificationService;
 });
 

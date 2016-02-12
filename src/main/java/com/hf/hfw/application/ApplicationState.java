@@ -51,9 +51,11 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
     }
 
     public void init() {
+        
         if (this.isConfigured()) {
             return;
         }
+        
         //TODO load from the config path
         String application_home = System.getProperty("application.home");
         //if the application_home is not specified set up the default
@@ -122,7 +124,7 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
             dbFactory.initializeRepository(this.applicationRepositoryConfig);
 
         }
-        
+
     }
     /*
      protected void setupData(){

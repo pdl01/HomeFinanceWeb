@@ -129,7 +129,7 @@ public class DailyBalanceManagerImpl implements DailyBalanceManager {
         }
         //fill in the missing dates
         //add more for the scheduled transactions
-        List<ScheduledTransaction> upcomingTransactions = this.scheduledTransactionManager.getUpcomingTransactions(account);
+        //List<ScheduledTransaction> upcomingTransactions = this.scheduledTransactionManager.getUpcomingTransactions(account);
 
         //up to 1 year from the current date
         //then 1 entry for each month past that up to 10 years.

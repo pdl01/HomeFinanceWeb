@@ -6,8 +6,11 @@
 package com.hf.hfw.web;
 
 import com.hf.hfw.files.listeners.TransactionFileImportListener;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,32 +27,50 @@ public class MainController {
     private static final Logger log = Logger.getLogger(MainController.class);
 
     @RequestMapping(value = {"/", "/dashboard**"}, method = RequestMethod.GET)
-    public ModelAndView dashBoard() {
+    public String dashBoard(@ModelAttribute("model") ModelMap model,HttpServletRequest request) {
         log.debug("Entering dashboard");
-        ModelAndView model = new ModelAndView();
-        model.addObject("title", "Spring Security Hello World");
-        model.addObject("message", "This is welcome page!");
-        model.setViewName("dashboard");
-                log.debug("Exiting dashboard");
-
-        return model;
+        //ModelAndView model = new ModelAndView();
+        model.addAttribute("title", "Spring Security Hello World");
+        model.addAttribute("message", "This is welcome page!");
+        model.addAttribute("theme",request.getAttribute("theme"));
+        //model.addAttribute("theme",request.getAttribute("theme"));
+        //model.addAttribute("theme",request.getAttribute("theme"));
+        
+        //model.setViewName("dashboard");
+        log.debug("Exiting dashboard");
+        return "dashboard";
     }
+    
+    @RequestMapping(value = {"/accounts**"}, method = RequestMethod.GET)
+    public String accounts(@ModelAttribute("model") ModelMap model,HttpServletRequest request) {
+        log.debug("Entering dashboard");
+        //ModelAndView model = new ModelAndView();
+        model.addAttribute("title", "Spring Security Hello World");
+        model.addAttribute("message", "This is welcome page!");
+        model.addAttribute("theme",request.getAttribute("theme"));
+        //model.setViewName("dashboard");
+        log.debug("Exiting dashboard");
+        return "accounts";
+    }
+    
     @RequestMapping(value = {"/budget"}, method = RequestMethod.GET)
-    public ModelAndView budget() {
-        ModelAndView model = new ModelAndView();
-        model.addObject("title", "Spring Security Hello World");
-        model.addObject("message", "This is welcome page!");
-        model.setViewName("budget");
-        return model;
+    public String budget(@ModelAttribute("model") ModelMap model,HttpServletRequest request) {
+        //ModelAndView model = new ModelAndView();
+        model.addAttribute("title", "Spring Security Hello World");
+        model.addAttribute("message", "This is welcome page!");
+        model.addAttribute("theme",request.getAttribute("theme"));
+        //model.setViewName("budget");
+        return "budget";
     }
     
     @RequestMapping(value = {"/settings"}, method = RequestMethod.GET)
-    public ModelAndView settings() {
-        ModelAndView model = new ModelAndView();
-        model.addObject("title", "Spring Security Hello World");
-        model.addObject("message", "This is welcome page!");
-        model.setViewName("settings");
-        return model;
+    public String settings(@ModelAttribute("model") ModelMap model,HttpServletRequest request) {
+        //ModelAndView model = new ModelAndView();
+        model.addAttribute("title", "Spring Security Hello World");
+        model.addAttribute("message", "This is welcome page!");
+        model.addAttribute("theme",request.getAttribute("theme"));
+        //model.setViewName("settings");
+        return "settings";
     }
 
     @RequestMapping(value = {"/mobile","/mobile/accounts"}, method = RequestMethod.GET)
@@ -80,4 +101,18 @@ public class MainController {
         model.setViewName("mobile/transaction");
         return model;
     }
+    
+    @RequestMapping(value = {"/fileops**"}, method = RequestMethod.GET)
+    public String fileOps(@ModelAttribute("model") ModelMap model,HttpServletRequest request) {
+        log.debug("Entering fileOps");
+        //ModelAndView model = new ModelAndView();
+        model.addAttribute("title", "Spring Security Hello World");
+        model.addAttribute("message", "This is welcome page!");
+        model.addAttribute("theme",request.getAttribute("theme"));
+        //model.setViewName("dashboard");
+        log.debug("Exiting fileOps");
+        return "fileops";
+    }
+
+    
 }

@@ -30,7 +30,7 @@ public interface RegisterService {
     @Path("/get/{accountId}/{start}/{number}")    
     public List<RegisterTransaction> getTransactions(@PathParam("accountId") String accountId,@PathParam("number") String number,@PathParam("start") String start);
 
-        @GET
+    @GET
     @Produces({"application/json"})
     @Consumes({"application/json"})
     @Path("/get/bymonth/{accountId}/{month}")    

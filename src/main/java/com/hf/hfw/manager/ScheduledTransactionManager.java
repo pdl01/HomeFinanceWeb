@@ -7,6 +7,7 @@ package com.hf.hfw.manager;
 
 import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.ScheduledTransaction;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -14,6 +15,7 @@ import java.util.List;
  * @author pldorrell
  */
 public interface ScheduledTransactionManager {
+    public static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
     public ScheduledTransaction createTransaction(ScheduledTransaction txn);
     public void deleteTransaction(ScheduledTransaction txn);
     public ScheduledTransaction updateTransaction(ScheduledTransaction txn);

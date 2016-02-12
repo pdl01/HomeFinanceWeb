@@ -65,7 +65,7 @@ public class SettingsServiceImpl implements SettingsService {
             applicationRepositoryConfig.setPort(settingsbean.getSettings().get("port"));
             applicationRepositoryConfig.setUsername(settingsbean.getSettings().get("username"));
             applicationRepositoryConfig.setPassword(settingsbean.getSettings().get("password"));
-            applicationRepositoryConfig.setType("mongo");
+            applicationRepositoryConfig.setType(settingsbean.getSettings().get("type"));
             ApplicationRepositoryConfig.saveToConfig(applicationRepositoryConfig, this.getConfigurationDirectoryService().getRepoConfigFile());
         } else if ("theme".equals(typeOfSettings)) {
             SettingsBean settingsBean = this.settingsManager.getThemeSetting();

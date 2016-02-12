@@ -20,6 +20,7 @@
       
     </bean>
     <bean id="dbFactory" class="com.hf.hfw.application.DBFactory">
-      
+    </bean>
+    <bean id="dbFactoryShutdownListener" class="com.hf.hfw.application.DBFactoryShutdownListener">  
     </bean>
 </beans>

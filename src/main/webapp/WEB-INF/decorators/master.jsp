@@ -24,12 +24,14 @@
   <body>
       <div id="header">
             <ul id="left_header">
-                <li class="headerItem"><a class="headerItem" href="/HFW/app/dashboard">Accounts</a></li>
-                <li class="headerItem"><a class="headerItem" href="/HFW/app/budget">Budget</a></li>
+                <li class="headerItem" id="headerLinkAccounts"><a class="headerItem" href="/HFW/app/dashboard">Accounts</a></li>
+                <li class="headerItem" id="headerLinkBudget"><a class="headerItem" href="/HFW/app/budget">Budget</a></li>
+                
             </ul>
           <ul>
                <ul id="right_header">
-                <li class="headerItem"><a class="headerItem" href="/HFW/app/settings">Settings</a></li>
+                   
+                <li class="headerItem" id="headerLinkSettings"><a class="headerItem" href="/HFW/app/settings">Settings</a></li>
             </ul>
           </ul>
         </div>

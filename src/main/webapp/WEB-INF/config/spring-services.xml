@@ -64,6 +64,14 @@
   	<property name="registerDAO" ref="registerDAO"/>
         <property name="accountManager" ref="accountManager"/>
   </bean>
+  <bean id="notificationManager" class="com.hf.hfw.manager.NotificationManagerImpl">
+      <property name="notificationDAO" ref="notificationDAO"/>
+  </bean>
+  <bean id="dailyBalanceManager" class="com.hf.hfw.manager.DailyBalanceManagerImpl">
+      <property name="dailyBalanceDAO" ref="dailyBalanceDAO"/>
+      <property name="accountManager" ref="accountManager"/>
+      <property name="registerManager" ref="registerManager"/>       
+  </bean>
   <!--
   <bean id="frameManager" class="com.keystone.manager.FrameManagerImpl">    
   	<property name="frameDAO" ref="frameDAO"/>
@@ -156,6 +164,7 @@
         <property name="registerManager" ref="registerManager"/> 
         <property name="accountManager" ref="accountManager" />
         <property name="onlineTransactionPotentialMatchesTask" ref="onlineTransactionPotentialMatchesTask" />
+        <property name="notificationManager" ref="notificationManager"/>
     </bean>
     <bean id="reportDataGeneratorFactory" class="com.hf.hfw.reports.ReportDataGeneratorFactory"/>
 
@@ -172,7 +181,12 @@
         <property name="accountManager" ref="accountManager"/>
         <property name="registerManager" ref="registerManager"/>
     </bean>
-    
+
+    <bean id="dailyBalanceReportGenerator" class="com.hf.hfw.reports.DailyBalanceReportGenerator">
+        <property name="accountManager" ref="accountManager"/>
+        <property name="dailyBalanceManager" ref="dailyBalanceManager"/>
+        <property name="scheduledTransactionManager" ref="scheduledTransactionManager"/>
+    </bean>    
     
     <bean id="themeFilter" class="com.hf.hfw.web.theme.ThemeFilter">
         <property name="settingsManager" ref="settingsManager"/>
