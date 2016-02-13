@@ -36,11 +36,7 @@
     width:100%;
     overflow-y: scroll;
 }
-#accountList {
-    width:100%;
-    height: 100%;
-    overflow-y: scroll;
-}
+
 #accountDetailsForm {
     display:none;
 }
@@ -50,12 +46,7 @@
 #appMenu{
     width:100%;
 }
-#appSidebar{
-    width:20%;
-    float:left;
-    height:94%;
 
-}
 #appMain{
     width:80%;
     float:right;
@@ -89,9 +80,7 @@
     height:100%;
     overflow: auto;
 }
-div{
 
-}
 .ng-modal-overlay {
     /* A dark translucent div that covers the whole screen */
     position:absolute;
@@ -161,4 +150,8 @@ div{
 ul{margin-bottom:0px;}
 #appMainTabsAccountName {
     float:right;
+}
+
+#accountSchedule {
+    display:none;
 }

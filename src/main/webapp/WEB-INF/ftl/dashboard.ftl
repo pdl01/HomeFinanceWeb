@@ -1,3 +1,4 @@
+<#include "layoutmacros.ftl"/>
 <!DOCTYPE html>
 <html>
 
@@ -14,6 +15,7 @@
         <link rel="stylesheet" href = "/style/bootstrap/3.2.0/bootstrap.min.css"/>
         <link rel="stylesheet" href = "/style/dashboard.css"/>
         <link rel="stylesheet" href = "/themes/${theme}/theme.css"/>
+        <link rel="shortcut icon" href="favicon.ico" />
     </head>
 
     <body >
@@ -26,15 +28,8 @@
         <script class="include" type="text/javascript" src="/jqplot.1.0.8r1250.dist/jquery.jqplot.min.js"></script>
         <link class="include" rel="stylesheet" type="text/css" href="/jqplot.1.0.8r1250.dist/jquery.jqplot.min.css" />
         <script type="text/javascript" src="/jqplot.1.0.8r1250.dist/plugins/jqplot.pieRenderer.min.js"></script>
-        <!--
-        <div id="header">
-            <ul>
-                <li class="headerItem"><a href="/">Account Dashboard</a></li>
-                <li class="headerItem"><a href="/budget.html">Budget</a></li>
-                <li class="headerItem"><a href="/settings.html">Settings</a></li>
-            </ul>
-        </div>
-        -->
+        <@showLayoutHeader 'dashboard'/>
+
         <div ng-app="HFWApp" ng-controller="dashboardController" id="main">
             <div id="appMenu">
                 <ul>
@@ -42,7 +37,7 @@
                     <li class="menuItem" id="menuItemRegister" ng-click="showNewTransaction()">New Transaction</li>
                 </ul>
             </div>
-            <div id="appSidebar">
+            
                 <div id="accountList">
                     <div id="notificationsSection" ng-click="showNotifications()" ng-show="showNotificationsLink">Notifications (<span class="" id="notificationNumber">{{numNotifications}}</span>)</div>
                     <div>Accounts <a class="refresh" ng-click="refreshAccounts()">&nbsp;&nbsp;&nbsp;&nbsp;</a></div>
@@ -102,7 +97,7 @@
                     </div>
 
                 </div>
-            </div>
+            
             <div id="appMain">
                 <div id="appMainTabs">
                     <div id="appMainTabsAccountName">{{selectedAccount.name}}</div>
@@ -434,6 +429,7 @@
                 </div>
             </modal>
         </div>
+        <@showLayoutFooter 'dashboard'/>
 
     </body>
 </html>
