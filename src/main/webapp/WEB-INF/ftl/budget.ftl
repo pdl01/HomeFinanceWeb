@@ -1,3 +1,4 @@
+<#include "layoutmacros.ftl"/>
 <!DOCTYPE html>
 
 <html>
@@ -14,12 +15,15 @@
         <link rel="stylesheet" href = "/style/bootstrap/3.2.0/bootstrap.min.css"/>
         <link rel="stylesheet" href = "/style/dashboard.css"/>
         <link rel="stylesheet" href = "/themes/${theme}/theme.css"/>
+        <link rel="shortcut icon" href="favicon.ico" />
+
 
     </head>
     <body>
   <script src="/script/app/budget/app.js"></script>
         <script src="/script/app/services.js"></script>
-       
+        <@showLayoutHeader 'dashboard'/>
+
         
         <div ng-app="HFWBudgetApp" ng-controller="budgetController" id="budgetMain">
              <div id="appMenu">

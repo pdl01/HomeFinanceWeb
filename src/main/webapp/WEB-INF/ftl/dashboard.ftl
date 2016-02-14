@@ -48,7 +48,6 @@
                             <span>{{ x.currentBalance | currency }}</span>
                         </div>
 
-                        <div ><a href="#" ng-click="clickEditAccount(x)">Edit</a></div>
                     </div> 
                     <div class="accountListHeader" ng-click="toggleAccountGroupHide('savings')">Savings</div>
                     <div ng-hide="hideAccounts['savings']" ng-repeat="x in savings_accounts"  class="list-group-item accountEntry">
@@ -57,7 +56,7 @@
                             <span>{{ x.currentBalance | currency }}</span>
                         </div>
 
-                        <div ><a href="#" ng-click="clickEditAccount(x)">Edit</a></div>
+                        
                     </div>
                     <div class="accountListHeader" ng-click="toggleAccountGroupHide('creditcard')">Credit Card</div>
                     <div ng-hide="hideAccounts['creditcard']" ng-repeat="x in creditcard_accounts"  class="list-group-item accountEntry">
@@ -66,7 +65,6 @@
                             <span>{{ x.currentBalance | currency }}</span>
                         </div>
 
-                        <div ><a href="#" ng-click="clickEditAccount(x)">Edit</a></div>
                     </div>                    
                     <div class="accountListHeader" ng-click="toggleAccountGroupHide('investment')">Investment</div>
                     <div ng-hide="hideAccounts['investment']" ng-repeat="x in investment_accounts"  class="list-group-item accountEntry">
@@ -75,7 +73,6 @@
                             <span>{{ x.currentBalance | currency }}</span>
                         </div>
 
-                        <div ><a href="#" ng-click="clickEditAccount(x)">Edit</a></div>
                     </div>                    
                     <div class="accountListHeader" ng-click="toggleAccountGroupHide('retirement')">Retirement</div>
                     <div ng-hide="hideAccounts['retirement']" ng-repeat="x in retirement_accounts"  class="list-group-item accountEntry">
@@ -84,7 +81,6 @@
                             <span>{{ x.currentBalance | currency }}</span>
                         </div>
 
-                        <div ><a href="#" ng-click="clickEditAccount(x)">Edit</a></div>
                     </div>
                     <div class="accountListHeader" ng-click="toggleAccountGroupHide('other')">Other</div>
                     <div ng-hide="hideAccounts['other']" ng-repeat="x in other_accounts"  class="list-group-item accountEntry">
@@ -93,7 +89,6 @@
                             <span>{{ x.currentBalance | currency }}</span>
                         </div>
 
-                        <div ><a href="#" ng-click="clickEditAccount(x)">Edit</a></div>
                     </div>
 
                 </div>
@@ -107,11 +102,12 @@
                         <li class="tabItem" id="accountMenuItemSchedule" ng-click="showScheduleTab()">Schedule</li>
                         <li class="tabItem" id="accountMenuItemReport" ng-click="showReportTab()" >Report</li>
                         <li class="tabItem" id="accountMenuItemOnline" ng-click="showOnlineTab()">Online</li>
+                        <li class="tabItem" id=accountEditLink" ng-click="clickEditAccount()">Edit</li>
                     </ul>
                 </div>
                 <div id="accountTransactionList">
                     
-                    <div id="registryFilterControls"><button ng-click="filterToCurrentDate()" class="registryFilter">Now</button>
+                    <div id="registryFilterControls"><a href="" ng-click="filterToCurrentDate()" class="registryFilter">Now</a>
                         Year:<select name="selectRegisterYear" ng-model="txnDateControl.year" class="registryFilter">
                             <option value="2016">2016</option>
                             <option value="2015">2015</option>
@@ -137,7 +133,7 @@
                             <option value="11">11</option>
                             <option value="12">12</option>
                         </select>
-                        <button ng-click="getTransactionsForMonth(selectedAccount.id)" class="registryFilter">Go</button>
+                        <a href="" ng-click="getTransactionsForMonth(selectedAccount.id)" class="registryFilter">Go</a>
                     </div>
                     <div ng-repeat="x in registryTransactions" ng-click="showTransactionForm(x)" ng:class="{true:'list-group-item registryTransaction credit',false:'list-group-item registryTransaction'}[x.credit==true]">
                         <span>{{ x.txnDate}}</span>
@@ -146,7 +142,7 @@
                     </div>
                 </div>
                 <div id="accountSchedule">
-                    <button ng-click="showNewScheduledTransactionForm()">New Scheduled Transaction</button>
+                    <a href="" ng-click="showNewScheduledTransactionForm()">New Scheduled Transaction</a>
                     Upcoming or Overdue 
                     <div id="scheduledFilterControls"><button ng-click="filterScheduledToCurrentDate()" class="registryFilter">Now</button>
                         Year:<select name="selectScheduledYear" ng-model="scheduledDateControl.year" class="registryFilter">
@@ -181,10 +177,10 @@
                     </div>
 
                     <div ng-repeat="x in scheduledtransactions" class="list-group-item scheduledTransaction">
-                        <button ng-click="enterScheduledTxn(x)">Enter</button>
-                        <button ng-click="skipScheduledTxn(x)">Skip</button>
-                        <button ng-click="editOriginalScheduledTxn(x)">Edit Schedule</button>
-                        <button ng-click="editScheduledTxn(x)">Edit This</button>
+                        <a href="" ng-click="enterScheduledTxn(x)">Enter</a>
+                        <a href="" ng-click="skipScheduledTxn(x)">Skip</a>
+                        <a href="" ng-click="editOriginalScheduledTxn(x)">Edit Schedule</a>
+                        <a href="" ng-click="editScheduledTxn(x)">Edit This</a>
                         <span>{{ x.scheduledDate}}</span>
                         <span>{{ x.payee}}</span>
                         <span>{{ x.txnAmount | currency }}</span>
@@ -280,9 +276,9 @@
                     </div>
                     <div id="pendingTransactionList">
                         <div ng-repeat="x in pendingRegistryTransactions | orderBy:onlineSortType:onlineSortReverse" ng-click="" ng-class="{true:'list-group-item registryTransaction credit',false:'list-group-item registryTransaction'}[x.credit==true]">
-                            <button ng-click="acceptPendingTransactionAsNew(x)">New</button>
-                            <button ng-click="dismissMatchForPending(x)">Dismiss</button>
-                            <button ng-click="showOnlineMatchingDialog(x)">Match</button>
+                            <a href="" ng-click="acceptPendingTransactionAsNew(x)">New</a>
+                            <a href="" ng-click="dismissMatchForPending(x)">Dismiss</a>
+                            <a href="" ng-click="showOnlineMatchingDialog(x)">Match</a>
                             <span>{{ x.txnDate}}</span>
                             <span>{{ x.payee}}</span>
                             <span>{{ x.txnAmount | currency }}</span>
@@ -416,7 +412,7 @@
                     <span>{{selectedPendingTransaction.txnAmount | currency }}</span>
                     <div id="pendingMatchedTransactionList">
                         <div ng-repeat="x in pendingMatchedTransactions" ng-click="" class="list-group-item registryTransaction">
-                            <button ng-click="acceptMatchForPending(selectedPendingTransaction,x)">Accept</button>
+                            <a href="" ng-click="acceptMatchForPending(selectedPendingTransaction,x)">Accept</a>
                     
                             <span>{{ x.txnDate}}</span>
                             <span>{{ x.payee}}</span>

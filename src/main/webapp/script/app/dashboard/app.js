@@ -428,10 +428,14 @@ hfwApp.controller('dashboardController', function ($scope,$interval, $http, Acco
         this.showRegistryTab();
     };
 
-    $scope.clickEditAccount = function (x) {
-        console.log(x.id);
+    $scope.clickEditAccount = function () {
+        //console.log(x.id);
+        if ($scope.selectedAccount == null) {
+            alert ("Please choose an account");
+            return;
+        }
         //$scope.selectedAccount = x;
-        $scope.accountFormData = x;
+        $scope.accountFormData = $scope.selectedAccount;
         $scope.showAccountModal = true;
         //$scope.registryTransactionFormData.primaryAccount=x.id;
         //$scope.$emit('showRegisterTransactions', x);

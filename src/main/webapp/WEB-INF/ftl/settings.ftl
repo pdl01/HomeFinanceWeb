@@ -1,3 +1,4 @@
+<#include "layoutmacros.ftl"/>
 <!DOCTYPE html>
 <html>
 
@@ -14,6 +15,7 @@
         <link rel="stylesheet" href = "/style/bootstrap/3.2.0/bootstrap.min.css"/>
         <link rel="stylesheet" href = "/style/dashboard.css"/>
         <link rel="stylesheet" href = "/themes/${theme}/theme.css"/>
+        <link rel="shortcut icon" href="favicon.ico" />
 
 
 
@@ -22,6 +24,7 @@
     <body>
         <script src="/script/app/settings/app.js"></script>
         <script src="/script/app/settings/services.js"></script>
+        <@showLayoutHeader 'dashboard'/>
 
         <div ng-app="HFWSettingsApp" ng-controller="settingsController" id="main">
             <div id="appMenu">
