@@ -9,10 +9,14 @@
                 <meta name="_csrf_header" content="${_csrf.headerName}"/>      
 
         <script src="/script/jquery-1.11.1.min.js"></script>
-        <script src="/script/angular/1.2.26/angular.min.js"></script>
-        <script src="/script/angular/1.2.26/angular-route.min.js"></script>
+        <script src="/script/angular/1.5/angular.min.js"></script>
+        <script src="/script/angular/1.5/angular-route.min.js"></script>
+        <script src="/script/angular/1.5/angular-animate.min.js"></script>
+
         <script src="/script/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="/script/ui-bootstrap-tpls-1.1.2.min.js"></script>
         <link rel="stylesheet" href = "/style/bootstrap/3.2.0/bootstrap.min.css"/>
+        
         <link rel="stylesheet" href = "/style/dashboard.css"/>
         <link rel="stylesheet" href = "/themes/${theme}/theme.css"/>
         <link rel="shortcut icon" href="favicon.ico" />
@@ -33,14 +37,13 @@
         <div ng-app="HFWApp" ng-controller="dashboardController" id="main">
             <div id="appMenu">
                 <ul>
-                    <li class="menuItem" id="menuItemNewAccount" ng-click="showNewAccount()">New Account</li>
-                    <li class="menuItem" id="menuItemRegister" ng-click="showNewTransaction()">New Transaction</li>
+                    <li class="menuItem" >&nbsp;</li>
                 </ul>
             </div>
             
                 <div id="accountList">
                     <div id="notificationsSection" ng-click="showNotifications()" ng-show="showNotificationsLink">Notifications (<span class="" id="notificationNumber">{{numNotifications}}</span>)</div>
-                    <div>Accounts <a class="refresh" ng-click="refreshAccounts()">&nbsp;&nbsp;&nbsp;&nbsp;</a></div>
+                    <div>Accounts <a class="refresh" ng-click="refreshAccounts()">&nbsp;&nbsp;&nbsp;&nbsp;</a><a class="newAccount" ng-click="showNewAccount()">N&nbsp;&nbsp;&nbsp;&nbsp;</a></div>
                     <div class="accountListHeader" ng-click="toggleAccountGroupHide('checking')">Checking</div>
                     <div ng-hide="hideAccounts['checking']" ng-repeat="x in checking_accounts"  id="checkingAccounts" class="list-group-item accountEntry">
                         <div ng-click="clickGoButton(x)">
@@ -103,6 +106,7 @@
                         <li class="tabItem" id="accountMenuItemReport" ng-click="showReportTab()" >Report</li>
                         <li class="tabItem" id="accountMenuItemOnline" ng-click="showOnlineTab()">Online</li>
                         <li class="tabItem" id=accountEditLink" ng-click="clickEditAccount()">Edit</li>
+                        <li class="tabItem" id="accountNewTransaction" ng-click="showNewTransaction()">New Transaction</li>
                     </ul>
                 </div>
                 <div id="accountTransactionList">
@@ -312,8 +316,16 @@
                 <input type="hidden" ng-model="registryTransactionFormData.primaryAccount">
                 <input type="hidden" ng-model="registryTransactionFormData.id">
                 <div ng-if="selectedAccount.accountType == 'Checking'">Check #<input  ng-model="registryTransactionFormData.txnPersonalRefNumber"></div>
-                Date:<input type="text" ng-model="registryTransactionFormData.txnDate"><br>
-                Payee Name:<input typ="text" ng-model="registryTransactionFormData.payee"><br>
+                <!--<input type="text" ng-model="registryTransactionFormData.txnDate"><br>-->
+                    <div class="date-input">
+                    Date<div class="input-group">
+                    <input type="text" class="form-control " uib-datepicker-popup="yyyy-MM-dd" ng-model="registryTransactionFormData.txnDate" is-open="registryTransactionDateField.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openRegistryTransactionDateField()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                    </div>
+                    Payee Name:<input typ="text" ng-model="registryTransactionFormData.payee"><br>
                 Transaction Amount:<input typ="text" size="5" ng-model="registryTransactionFormData.txnAmount"><input type="checkbox" value="true" ng-model="registryTransactionFormData.credit">Is Credit?<br>
 
                 Category <a ng-click="addSplit()">Add Split</a><br/>

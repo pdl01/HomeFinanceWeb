@@ -1,4 +1,4 @@
-var hfwApp = angular.module('HFWApp', []);
+var hfwApp = angular.module('HFWApp', ['ui.bootstrap']);
 
 
 
@@ -10,11 +10,11 @@ hfwApp.controller('dashboardController', function ($scope,$interval, $http, Acco
 
     //$scope.onlineData.src="";
     $scope.uploadProgress = "";
-    $scope.pendingRegistryTransactions = {};
+    $scope.pendingRegistryTransactions = [];
     $scope.showOnlineMatchingModal = false;
-    $scope.onlineTxnMatches = {};
+    $scope.onlineTxnMatches = [];
 
-    $scope.registryTransactions = {};
+    $scope.registryTransactions = [];
     $scope.registryTransactionFormData = {};
     $scope.hideTxnRetrievedCategories = true;
     $scope.retrievedCategories = {};
@@ -59,7 +59,7 @@ hfwApp.controller('dashboardController', function ($scope,$interval, $http, Acco
     $scope.txnDateControl.year = "";
     $scope.txnDateControl.month = "";
 
-    $scope.report_transactions = {};
+    $scope.report_transactions = [];
 
     $scope.scheduledtransactions=[];
     $scope.scheduledTransactionFormData = {}
@@ -73,14 +73,19 @@ hfwApp.controller('dashboardController', function ($scope,$interval, $http, Acco
     $scope.onlineSortType     = 'txnDate'; // set the default sort type
     $scope.onlineSortReverse  = false;  // set the default sort order
     
-    $scope.notifications = {};
+    $scope.notifications = [];
     
     $scope.numNotifications = 0;    
     $scope.showNotificationsLink = false;
     $scope.showNotificationsModal = false;
     $scope.selectednotification = null;
-    
-    
+    $scope.currentDate = "";
+    $scope.maxDate = new Date(2020, 5, 22);
+    $scope.minDate = new Date(2000, 5, 22);
+    $scope.dateOptions = {
+        formatYear: 'yy',
+        startingDay: 1
+    };
     $scope.$watch('registryTransactionFormCategorySplits[0].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -254,7 +259,9 @@ hfwApp.controller('dashboardController', function ($scope,$interval, $http, Acco
 
         $scope.hideAccounts[accountType] = !$scope.hideAccounts[accountType];
     }
-
+    $scope.openRegistryTransactionDateField = function() {
+        $scope.registryTransactionDateField.opened = true;
+    };
     $scope.getAccounts = function () {
         AccountService.getAccounts().success(function (response) {
             angular.forEach(response, function (value, key) {
@@ -321,11 +328,11 @@ hfwApp.controller('dashboardController', function ($scope,$interval, $http, Acco
     $scope.getCurrentDate = function () {
         DateService.lookupCurrent().success(function (response) {
 
-            if (response.length > 0) {
+            if (response.date.length > 0) {
 
                 //parse out the date and get the year and month out; format should be YYYY-MM-DD
-                var retrievedDate = response.split("-");
-                $scope.currentDate = response;
+                var retrievedDate = response.date.split("-");
+                $scope.currentDate = new Date(response.date+"T00:00:00");
                 $scope.txnDateControl.year = retrievedDate[0];
                 $scope.txnDateControl.month = retrievedDate[1];
                 $scope.scheduledDateControl.year = retrievedDate[0];
@@ -341,10 +348,15 @@ hfwApp.controller('dashboardController', function ($scope,$interval, $http, Acco
 
             }
 
+        }).error(function(response){
+            console.log(response);
         });
-    }
+    };
     $scope.init();
-
+$scope.registryTransactionDateField = {
+    opened: false
+  };
+  
     $scope.refreshAccounts = function () {
         $scope.checking_accounts = [];
         $scope.savings_accounts = [];
@@ -814,7 +826,9 @@ hfwApp.controller('dashboardController', function ($scope,$interval, $http, Acco
     $scope.getTransactionsForAccount = function (accountId) {
         RegistryService.getRegistryBlockForAccount(accountId, $scope.txnIndex, $scope.numberTxnsToRetrieve).success(function (response) {
             for (idx in response) {
-                $scope.registryTransactions.push(response[idx]);
+                var txn = response[idx];
+                txn.txnDate = RegistryService.convertTextDateToJSDate(txn.txnDate);
+                $scope.registryTransactions.push(txn);
                 //console.log(txn.id);
             }
             //$scope.registryTransactions. = response;
@@ -831,7 +845,9 @@ hfwApp.controller('dashboardController', function ($scope,$interval, $http, Acco
         $scope.registryTransactions = [];
         RegistryService.getRegistryForAccountForMonth(accountId, dateToRetrieve).success(function (response) {
             for (idx in response) {
-                $scope.registryTransactions.push(response[idx]);
+                var txn = response[idx];
+                txn.txnDate = RegistryService.convertTextDateToJSDate(txn.txnDate);
+                $scope.registryTransactions.push(txn);
                 //console.log(txn.id);
             }
             //$scope.registryTransactions. = response;

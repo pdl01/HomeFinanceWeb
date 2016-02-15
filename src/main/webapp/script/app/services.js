@@ -111,6 +111,7 @@ hfwApp.factory("RegistryService", function ($http) {
     };
     RegistryService.saveTransaction = function (transaction) {
         delete transaction.$$hashKey;
+        transaction.txnDate = this.convertJSDateToTextDate(transaction.txnDate);
         var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
         var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
         return $http({
@@ -120,6 +121,47 @@ hfwApp.factory("RegistryService", function ($http) {
             headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         });
     };
+    RegistryService.convertJSDateToTextDate = function(date){
+      var txnYear = date.getFullYear();
+      var txnMonth = date.getMonth();
+      if (txnMonth == 0) {
+          txnMonth = "01";
+      } else if(txnMonth == 1) {
+          txnMonth = "02";
+      } else if(txnMonth == 2) {
+          txnMonth = "03";
+      } else if(txnMonth == 3) {
+          txnMonth = "04";
+      } else if(txnMonth == 4) {
+          txnMonth = "05";
+      } else if(txnMonth == 5) {
+          txnMonth = "06";
+      } else if(txnMonth == 6) {
+          txnMonth = "07";
+      } else if(txnMonth == 7) {
+          txnMonth = "08";
+      } else if(txnMonth == 8) {
+          txnMonth = "09";
+      } else if(txnMonth == 9) {
+          txnMonth = "10";
+      } else if(txnMonth == 10) {
+          txnMonth = "11";
+      } else if(txnMonth == 11) {
+          txnMonth = "12";
+      }
+      var txnDate = date.getDate()+"";
+      if (txnDate.length < 2) {
+          txnDate = "0"+txnDate;
+      }
+      return txnYear + "-" + txnMonth + "-" + txnDate;
+    };
+
+    RegistryService.convertTextDateToJSDate = function(date){
+      var txnDate = new Date (date+'T01:00:01Z');
+      return txnDate;
+    };
+
+    
     RegistryService.validateTransaction = function (transaction) {
         delete transaction.$$hashKey;
         var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
@@ -240,6 +282,40 @@ hfwApp.factory("DateService", function ($http) {
             method: 'GET',
             url: '/services/api/v1/date/current/month'
         });
+    };
+    DateService.convertJSDateToTextDate = function(date){
+      var txnYear = date.getFullYear();
+      var txnMonth = date.getMonth();
+      if (txnMonth == 0) {
+          txnMonth = "01";
+      } else if(txnMonth == 1) {
+          txnMonth = "02";
+      } else if(txnMonth == 2) {
+          txnMonth = "03";
+      } else if(txnMonth == 3) {
+          txnMonth = "04";
+      } else if(txnMonth == 4) {
+          txnMonth = "05";
+      } else if(txnMonth == 5) {
+          txnMonth = "06";
+      } else if(txnMonth == 6) {
+          txnMonth = "07";
+      } else if(txnMonth == 7) {
+          txnMonth = "08";
+      } else if(txnMonth == 8) {
+          txnMonth = "09";
+      } else if(txnMonth == 9) {
+          txnMonth = "10";
+      } else if(txnMonth == 10) {
+          txnMonth = "11";
+      } else if(txnMonth == 11) {
+          txnMonth = "12";
+      }
+      var txnDate = date.getDate()+"";
+      if (txnDate.length < 2) {
+          txnDate = "0"+txnDate;
+      }
+      return txnYear + "-" + txnMonth + "-" + txnDate;
     };
     return DateService;
 });

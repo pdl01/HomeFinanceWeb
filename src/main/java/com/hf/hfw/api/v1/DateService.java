@@ -39,5 +39,5 @@ public interface DateService {
     @Produces({"application/json"})
     @Consumes({"application/json"})
     @Path("/current")    
-    public String getCurrent();
+    public Object getCurrent();
 }

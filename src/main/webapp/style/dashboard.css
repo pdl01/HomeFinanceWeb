@@ -155,3 +155,7 @@ ul{margin-bottom:0px;}
 #accountSchedule {
     display:none;
 }
+
+.date-input {
+    width:50%;
+}
