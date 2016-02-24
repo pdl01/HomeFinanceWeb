@@ -32,7 +32,9 @@
                     <li class="menuItem" id="menuItemNewAccount" >&nbsp;</li>
                 </ul>
             </div>
+            <@buildMenu 'settings'/>
             <div></div>
+<div id="appMain">
             <div id="application_repository_config" class="settingsSection">
                 <select id="type" ng-model="repositoryFormData.type">
                     <option value="mongo">Mongo</option>
@@ -74,6 +76,6 @@
             </div>
 
         </div>
-
+</div>
     </body>
 </html>

@@ -3,6 +3,7 @@
 
 <html>
     <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
         	<meta name="_csrf" content="${_csrf.token}"/>
                 <!-- default header name is X-CSRF-TOKEN -->
@@ -26,18 +27,16 @@
 
         
         <div ng-app="HFWBudgetApp" ng-controller="budgetController" id="budgetMain">
-             <div id="appMenu">
-                <ul>
-                    <li class="menuItem" id="menuItemNewAccount" ng-click="showNewBudget()">New Budget</li>
-                </ul>
-            </div>
-            <div id="budgetSelectForm">
-                <select ng-model="selectedBudget" ng-options="item.name for item in budgets">
-                    <option value="">Select Budget</option>
-                </select>
-                <p>Currently selected: {{selectedBudget.id}} </p>
+
+            <@buildMenu 'budget'/>
+            <div id="appMain">
+                <div id="budgetSelectForm">
+                    <select ng-model="selectedBudget" ng-options="item.name for item in budgets">
+                        <option value="">Select Budget</option>
+                    </select>
+                    <p>Currently selected: {{selectedBudget.id}} </p>
                
-            </div>
+                </div>
             <div id="budgetTotals">
                 Income Totals: {{ incomeTotal | currency}}<br/>
                 Expense Totals: {{ expenseTotal | currency }}<br/>
@@ -73,6 +72,7 @@
                         <a ng-click="editItem($index, 'transfer', x)">Edit</a> | <a ng-click="deleteItem($index, 'transfer', x)">Remove</a>
                     </div>
                 </div>
+            </div>
             </div>
     <modal title="Budget Item Details" visible="showBudgetItemModal" >
         <div>

@@ -3,6 +3,7 @@
 <html>
 
     <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
         	<meta name="_csrf" content="${_csrf.token}"/>
                 <!-- default header name is X-CSRF-TOKEN -->
@@ -35,66 +36,11 @@
         <@showLayoutHeader 'dashboard'/>
 
         <div ng-app="HFWApp" ng-controller="dashboardController" id="main">
-            <div id="appMenu">
-                <ul>
-                    <li class="menuItem" >&nbsp;</li>
-                </ul>
+            <div id="appSidebar">
+                <@buildMenu 'dashboard'/>            
             </div>
-            
-                <div id="accountList">
-                    <div id="notificationsSection" ng-click="showNotifications()" ng-show="showNotificationsLink">Notifications (<span class="" id="notificationNumber">{{numNotifications}}</span>)</div>
-                    <div>Accounts <a class="refresh" ng-click="refreshAccounts()">&nbsp;&nbsp;&nbsp;&nbsp;</a><a class="newAccount" ng-click="showNewAccount()">N&nbsp;&nbsp;&nbsp;&nbsp;</a></div>
-                    <div class="accountListHeader" ng-click="toggleAccountGroupHide('checking')">Checking</div>
-                    <div ng-hide="hideAccounts['checking']" ng-repeat="x in checking_accounts"  id="checkingAccounts" class="list-group-item accountEntry">
-                        <div ng-click="clickGoButton(x)">
-                            <span>{{ x.name}}</span>
-                            <span>{{ x.currentBalance | currency }}</span>
-                        </div>
 
-                    </div> 
-                    <div class="accountListHeader" ng-click="toggleAccountGroupHide('savings')">Savings</div>
-                    <div ng-hide="hideAccounts['savings']" ng-repeat="x in savings_accounts"  class="list-group-item accountEntry">
-                        <div ng-click="clickGoButton(x)">
-                            <span>{{ x.name}}</span>
-                            <span>{{ x.currentBalance | currency }}</span>
-                        </div>
-
-                        
-                    </div>
-                    <div class="accountListHeader" ng-click="toggleAccountGroupHide('creditcard')">Credit Card</div>
-                    <div ng-hide="hideAccounts['creditcard']" ng-repeat="x in creditcard_accounts"  class="list-group-item accountEntry">
-                        <div ng-click="clickGoButton(x)">
-                            <span>{{ x.name}}</span>
-                            <span>{{ x.currentBalance | currency }}</span>
-                        </div>
-
-                    </div>                    
-                    <div class="accountListHeader" ng-click="toggleAccountGroupHide('investment')">Investment</div>
-                    <div ng-hide="hideAccounts['investment']" ng-repeat="x in investment_accounts"  class="list-group-item accountEntry">
-                        <div ng-click="clickGoButton(x)">
-                            <span>{{ x.name}}</span>
-                            <span>{{ x.currentBalance | currency }}</span>
-                        </div>
-
-                    </div>                    
-                    <div class="accountListHeader" ng-click="toggleAccountGroupHide('retirement')">Retirement</div>
-                    <div ng-hide="hideAccounts['retirement']" ng-repeat="x in retirement_accounts"  class="list-group-item accountEntry">
-                        <div ng-click="clickGoButton(x)">
-                            <span>{{ x.name}}</span>
-                            <span>{{ x.currentBalance | currency }}</span>
-                        </div>
-
-                    </div>
-                    <div class="accountListHeader" ng-click="toggleAccountGroupHide('other')">Other</div>
-                    <div ng-hide="hideAccounts['other']" ng-repeat="x in other_accounts"  class="list-group-item accountEntry">
-                        <div ng-click="clickGoButton(x)">
-                            <span>{{ x.name}}</span>
-                            <span>{{ x.currentBalance | currency }}</span>
-                        </div>
-
-                    </div>
-
-                </div>
+                
             
             <div id="appMain">
                 <div id="appMainTabs">
@@ -140,7 +86,7 @@
                         <a href="" ng-click="getTransactionsForMonth(selectedAccount.id)" class="registryFilter">Go</a>
                     </div>
                     <div ng-repeat="x in registryTransactions" ng-click="showTransactionForm(x)" ng:class="{true:'list-group-item registryTransaction credit',false:'list-group-item registryTransaction'}[x.credit==true]">
-                        <span>{{ x.txnDate}}</span>
+                        <span>{{ convertJSDateToTextDate(x.txnDate)}}</span>
                         <span>{{ x.payee}}</span>
                         <span>{{ x.txnAmount | currency }}</span>
                     </div>
