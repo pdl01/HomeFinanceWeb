@@ -925,7 +925,7 @@ $scope.registryTransactionDateField = {
             alert ("Please choose an account");
             return;
         }
-        $scope.filterScheduledToCurrentDate();//getUpcomingSchedule($scope.selectedAccount);
+        //$scope.filterScheduledToCurrentDate();//getUpcomingSchedule($scope.selectedAccount);
         
         $("#accountTransactionList").hide();
         $("#accountReports").hide();
