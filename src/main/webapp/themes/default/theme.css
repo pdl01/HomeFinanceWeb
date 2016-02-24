@@ -82,7 +82,7 @@ a.markAsRead {
     padding: 5px;
     border: 0px;
 }
-@media only screen and (min-width: 480px) {
+@media only screen and (min-width: 901px) {
 
 #appMain {
     width: 80%;
@@ -165,7 +165,8 @@ nav#appNav ul {
 }
 nav#appNav li {
     display: inline-block;
-    padding: 0 5px; 
+    padding: 0 5px;
+    width:100%;
 }
 nav#appNav li:last-child {
       border-right: none; 
@@ -193,7 +194,8 @@ nav#nav-mobile ul {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    background-color: #ff0032; 
+    background-color: #ff0032;
+    z-index: 800;
 }
 nav#nav-mobile li {
     display: block;
@@ -225,4 +227,15 @@ nav#nav-mobile a:hover {
   nav#nav-mobile {
     display: block; 
   }
+ 
+
+#appMain {
+    width:95%;
+    border-radius: 5px;
+    border: black 1px solid;
+    margin: 20px;
+    padding: 2px;
+}
+
+
 }

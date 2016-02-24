@@ -36,10 +36,11 @@
         <@showLayoutHeader 'dashboard'/>
 
         <div ng-app="HFWApp" ng-controller="dashboardController" id="main">
-            <div id="appSidebar">
-                <@buildMenu 'dashboard'/>            
+            <@buildMenu 'dashboard'/>            
+            <!--<div id="appSidebar">
+                            
             </div>
-
+            -->
                 
             
             <div id="appMain">
