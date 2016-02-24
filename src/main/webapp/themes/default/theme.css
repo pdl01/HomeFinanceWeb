@@ -207,7 +207,7 @@ nav#nav-mobile li:last-child {
 nav#nav-mobile a {
     display: block;
     color: white;
-    padding: 10px 30px; 
+    /*padding: 10px 30px;*/ 
 }
 nav#nav-mobile a:hover {
       background-color: #e6002d;

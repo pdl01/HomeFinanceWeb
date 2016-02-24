@@ -28,9 +28,9 @@
             
     <nav id="appNav">
         <ul>
-        <li><a href="/app/dashboard">Accounts</a><#if pageTitle=='dashboard'><@buildAccountMenu/></#if></li>
+        <li><a href="/app/dashboard">Accounts</a></li><#if pageTitle=='dashboard'><@buildAccountMenu/></#if>
         <li><a href="/app/notifications">Notifications</a></li>
-        <li><a href="/app/budget">Budget</a><#if pageTitle=='budget'></#if></li>
+        <li><a href="/app/budget">Budget</a></li><#if pageTitle=='budget'><@buildBudgetMenu/></#if>
         <li><a href="/app/settings">Settings</a></li>
                     
         </nav>
@@ -56,61 +56,23 @@ $(document).ready(function(){
 
 
 <#macro buildAccountMenu>
-    
-    
-        <li><a class="newAccount" ng-click="showNewAccount()">New Account</a></li>
-        
-        <li class="accountListHeader" ng-click="toggleAccountGroupHide('checking')">Checking</li>
-        <li ng-hide="hideAccounts['checking']" ng-repeat="x in checking_accounts"  id="checkingAccounts" class="accountEntry">
-            <span ng-click="clickGoButton(x)">
-                {{ x.name}}
-                {{ x.currentBalance | currency }}
-            </span>
-        </li> 
-        
-        <li class="accountListHeader" ng-click="toggleAccountGroupHide('savings')">Savings</li>
-        <li ng-hide="hideAccounts['savings']" ng-repeat="x in savings_accounts"  class="accountEntry">
-            <span ng-click="clickGoButton(x)">
-                {{ x.name}}
-                {{ x.currentBalance | currency }}
-            </span>
-        </li>
-        
-        <li class="accountListHeader" ng-click="toggleAccountGroupHide('creditcard')">Credit Card</li>
-        <li ng-hide="hideAccounts['creditcard']" ng-repeat="x in creditcard_accounts"  class="accountEntry">
-            <span ng-click="clickGoButton(x)">
-                {{ x.name}}
-                {{ x.currentBalance | currency }}
-            </span>
-        </li>
-        
-        <li class="accountListHeader" ng-click="toggleAccountGroupHide('investment')">Investment</li>
-        <li ng-hide="hideAccounts['investment']" ng-repeat="x in investment_accounts"  class="accountEntry">
-            <span ng-click="clickGoButton(x)">
-                {{ x.name}}
-                {{ x.currentBalance | currency }}
-            </span>
-        </li>                    
-
-        <li class="accountListHeader" ng-click="toggleAccountGroupHide('retirement')">Retirement</li>
-        <li ng-hide="hideAccounts['retirement']" ng-repeat="x in retirement_accounts"  class="accountEntry">
-            <span ng-click="clickGoButton(x)">
-                {{ x.name}}
-                {{ x.currentBalance | currency }}
-            </span>
-        </li>
-
-        <li class="accountListHeader" ng-click="toggleAccountGroupHide('other')">Other</li>
-        <li ng-hide="hideAccounts['other']" ng-repeat="x in other_accounts"  class="accountEntry">
-            <span ng-click="clickGoButton(x)">
-                {{ x.name}}<
-                {{ x.currentBalance | currency }}
-            </span>
-        </li>
+    <li><a class="newAccount" ng-click="showNewAccount()">New Account</a></li>
+    <@buildAccountSection 'checking' 'Checking'/>
+    <@buildAccountSection 'savings' 'Savings'/>
+    <@buildAccountSection 'creditcard' 'Credit Card'/>
+    <@buildAccountSection 'investment' 'Investment'/>
+    <@buildAccountSection 'retirement' 'Retirement'/>
+    <@buildAccountSection 'other' 'Other'/>
 
     
 </#macro>
+
+<#macro buildAccountSection headerGroup='' headerGroupName='' >
+        <li class="accountListHeader" ng-click="toggleAccountGroupHide('${headerGroup}')">${headerGroupName}</li>
+        <li ng-hide="hideAccounts['${headerGroup}']" ng-repeat="x in ${headerGroup}_accounts"  id="${headerGroup}Accounts" class="accountEntry" ng-click="clickGoButton(x)">{{ x.name}} {{ x.currentBalance | currency }}</li> 
+</#macro>
+
 <#macro buildBudgetMenu>
-   <div><a class="newAccount" ng-click="showNewBudget()">New Budget</a></div>
+   <li><a class="newAccount" ng-click="showNewBudget()">New Budget</a></li>
 
 </#macro>
