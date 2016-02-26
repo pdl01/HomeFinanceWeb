@@ -1,6 +1,8 @@
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.ProtectionDomain;
@@ -22,7 +24,13 @@ public class Runner {
         
         final int port = Integer.parseInt(System.getProperty("port", "8080"));
         final String home = System.getProperty("home", "/home/pldorrell/jsps");
-        Server server = new Server(port);
+        final String bindIP = System.getProperty("hostAddress","127.0.0.1");
+        System.out.println (bindIP);
+        System.out.println(port);
+        InetAddress address = InetAddress.getByName(bindIP);
+        InetSocketAddress socketAddress = new InetSocketAddress(address,port);
+        System.out.println(socketAddress.toString());
+        Server server = new Server(socketAddress);
         ProtectionDomain domain = Runner.class.getProtectionDomain();
         URL location = domain.getCodeSource().getLocation();
         WebAppContext webapp = new WebAppContext();
