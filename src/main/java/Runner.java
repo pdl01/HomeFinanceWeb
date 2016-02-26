@@ -22,11 +22,11 @@ public class Runner {
         //Runner.mainOne(args);
         //return;
         
-        final int port = Integer.parseInt(System.getProperty("port", "8080"));
-        final String home = System.getProperty("home", "/home/pldorrell/jsps");
-        final String bindIP = System.getProperty("hostAddress","127.0.0.1");
-        System.out.println (bindIP);
-        System.out.println(port);
+        final int port = Integer.parseInt(System.getProperty("hfw.port", "8080"));
+        final String home = System.getProperty("hfw.temp.home", "/home/pldorrell/jsps");
+        final String bindIP = System.getProperty("hfw.hostAddress","127.0.0.1");
+        System.out.println ("Using ip:"+bindIP);
+        System.out.println("Using port:"+port);
         InetAddress address = InetAddress.getByName(bindIP);
         InetSocketAddress socketAddress = new InetSocketAddress(address,port);
         System.out.println(socketAddress.toString());
