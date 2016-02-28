@@ -34,7 +34,7 @@
 }
 #accountTransactionList {
     width:100%;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
 }
 
 #accountDetailsForm {
@@ -131,7 +131,7 @@
 
 #accountOnlineFunctions{
     width:100%;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     display:none;
     
 }

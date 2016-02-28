@@ -89,7 +89,9 @@ a.markAsRead {
     float: right;
     border-radius: 5px;
     border: black 1px solid;
-    margin: 20px;
+    margin-top: 20px;
+    margin-right:10px;
+    margin-left:10px;
     padding: 2px;
 }
 
@@ -148,10 +150,10 @@ nav#appNav {
     padding: 2px;
     border-style: solid;
     border-width: 1px;
-    margin-left: 20px;
+    margin-left: 10px;
     margin-right: 10px;
     margin-top: 20px;
-    width:150px;
+    width:200px;
     float: left;
     
 }
@@ -161,7 +163,7 @@ nav#appNav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    text-align: center; 
+    text-align: left; 
 }
 nav#appNav li {
     display: inline-block;
