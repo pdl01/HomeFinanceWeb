@@ -94,7 +94,9 @@ a.markAsRead {
     margin-left:10px;
     padding: 2px;
 }
-
+.menu-indented {
+    margin-left:10px;
+}
 }
 
 

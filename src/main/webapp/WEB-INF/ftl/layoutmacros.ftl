@@ -62,7 +62,7 @@ $(document).ready(function(){
 </#macro>
 
 <#macro buildAccountMenu>
-    <li><a class="newAccount" ng-click="showNewAccount()">New Account</a></li>
+    <li><a class="newAccount menu-indented" ng-click="showNewAccount()">New Account</a></li>
     <@buildAccountSection 'checking' 'Checking'/>
     <@buildAccountSection 'savings' 'Savings'/>
     <@buildAccountSection 'creditcard' 'Credit Card'/>
@@ -74,11 +74,11 @@ $(document).ready(function(){
 </#macro>
 
 <#macro buildAccountSection headerGroup='' headerGroupName='' >
-        <li class="accountListHeader"><a href="#" ng-click="toggleAccountGroupHide('${headerGroup}')">${headerGroupName}</a></li>
-        <li ng-hide="hideAccounts['${headerGroup}']" ng-repeat="x in ${headerGroup}_accounts" id="${headerGroup}Accounts" class="accountEntry" ><a href="#" ng-click="clickGoButton(x)">{{ x.name}} {{ x.currentBalance | currency }}</a></li> 
+        <li class="accountListHeader menu-indented"><a href="#" ng-click="toggleAccountGroupHide('${headerGroup}')">${headerGroupName}</a></li>
+        <li ng-hide="hideAccounts['${headerGroup}']" ng-repeat="x in ${headerGroup}_accounts" id="${headerGroup}Accounts" class="accountEntry menu-indented" ><a href="#" ng-click="clickGoButton(x)">{{ x.name}} {{ x.currentBalance | currency }}</a></li> 
 </#macro>
 
 <#macro buildBudgetMenu>
-   <li><a class="newAccount" ng-click="showNewBudget()">New Budget</a></li>
+   <li><a class="newAccount menu-indented" ng-click="showNewBudget()">New Budget</a></li>
 
 </#macro>
