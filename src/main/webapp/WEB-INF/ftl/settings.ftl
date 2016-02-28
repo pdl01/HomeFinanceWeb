@@ -24,16 +24,12 @@
     <body>
         <script src="/script/app/settings/app.js"></script>
         <script src="/script/app/settings/services.js"></script>
-        <@showLayoutHeader 'dashboard'/>
+        <@showLayoutHeader 'settings'/>
 
         <div ng-app="HFWSettingsApp" ng-controller="settingsController" id="main">
-            <div id="appMenu">
-                <ul>
-                    <li class="menuItem" id="menuItemNewAccount" >&nbsp;</li>
-                </ul>
-            </div>
+
             <@buildMenu 'settings'/>
-            <div></div>
+
 <div id="appMain">
             <div id="application_repository_config" class="settingsSection">
                 <select id="type" ng-model="repositoryFormData.type">
