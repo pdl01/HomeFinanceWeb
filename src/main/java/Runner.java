@@ -62,6 +62,10 @@ public class Runner {
         try {
             ClassLoader jspClassLoader = new URLClassLoader(new URL[0], context.getClass().getClassLoader());
             
+            org.eclipse.jetty.webapp.Configuration.ClassList classlist = org.eclipse.jetty.webapp.Configuration.ClassList.setServerDefault(srv);
+            classlist.addAfter("org.eclipse.jetty.webapp.FragmentConfiguration", "org.eclipse.jetty.plus.webapp.EnvConfiguration", "org.eclipse.jetty.plus.webapp.PlusConfiguration");
+            classlist.addBefore("org.eclipse.jetty.webapp.JettyWebXmlConfiguration", "org.eclipse.jetty.annotations.AnnotationConfiguration");
+            
             //classlist.addBefore("org.eclipse.jetty.webapp.JettyWebXmlConfiguration", "org.eclipse.jetty.annotations.AnnotationConfiguration");
             context.setClassLoader(jspClassLoader);
             //context.setClassLoader(new WebAppClassLoader(getClass().getClassLoader(), context));

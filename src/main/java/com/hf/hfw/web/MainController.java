@@ -83,6 +83,15 @@ public class MainController {
         return "notifications";
     }
 
+    @RequestMapping(value = {"/reports"}, method = RequestMethod.GET)
+    public String reports(@ModelAttribute("model") ModelMap model,HttpServletRequest request) {
+        //ModelAndView model = new ModelAndView();
+        model.addAttribute("title", "Spring Security Hello World");
+        model.addAttribute("message", "This is welcome page!");
+        model.addAttribute("theme",request.getAttribute("theme"));
+        //model.setViewName("settings");
+        return "reports";
+    }
     
     @RequestMapping(value = {"/mobile","/mobile/accounts"}, method = RequestMethod.GET)
     public ModelAndView mobileAccount() {

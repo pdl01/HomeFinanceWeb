@@ -18,6 +18,25 @@ public interface NotificationService {
     @GET
     @Produces({"application/json"})
     @Consumes({"application/json"})
+    @Path("/getAll")    
+    public List<Notification> getAllNotifications();
+
+    @GET
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
+    @Path("/getAll/{start}/{number}")    
+    public List<Notification> getAllNotifications(@PathParam("status") short status,@PathParam("number") String number,@PathParam("start") String start);
+
+    @GET
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
+    @Path("/getAll/{accountId}/{start}/{number}")    
+    public List<Notification> getAllNotificationsForAccount(@PathParam("accoundId") String accountId,@PathParam("number") String number,@PathParam("start") String start);
+    
+    
+    @GET
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
     @Path("/getByStatus/{status}/{start}/{number}")    
     public List<Notification> getNotificationsByStatus(@PathParam("status") short status,@PathParam("number") String number,@PathParam("start") String start);
 

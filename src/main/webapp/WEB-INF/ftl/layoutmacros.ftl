@@ -57,6 +57,7 @@ $(document).ready(function(){
         <li><a href="/app/dashboard">Accounts</a></li><#if pageTitle=='dashboard'><@buildAccountMenu/></#if>
         <li><a href="/app/notifications">Notifications</a></li>
         <li><a href="/app/budget">Budget</a></li><#if pageTitle=='budget'><@buildBudgetMenu/></#if>
+        <li><a href="/app/reports">Reports</a></li>
         <li><a href="/app/settings">Settings</a></li>
         </ul>
 </#macro>

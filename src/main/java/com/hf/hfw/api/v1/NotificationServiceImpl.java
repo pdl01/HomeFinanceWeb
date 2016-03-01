@@ -52,6 +52,21 @@ public class NotificationServiceImpl implements NotificationService {
         List<Notification> notifications = this.notificationManager.getNotificationByStatus(status);
         return notifications.size();
     }
+
+    @Override
+    public List<Notification> getAllNotifications() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Notification> getAllNotifications(short status, String number, String start) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Notification> getAllNotificationsForAccount(String accountId, String number, String start) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
 
