@@ -34,6 +34,23 @@ public class Runner {
         ProtectionDomain domain = Runner.class.getProtectionDomain();
         URL location = domain.getCodeSource().getLocation();
         WebAppContext webapp = new WebAppContext();
+
+        webapp.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
+        try {
+            ClassLoader jspClassLoader = new URLClassLoader(new URL[0], webapp.getClass().getClassLoader());
+            
+            org.eclipse.jetty.webapp.Configuration.ClassList classlist = org.eclipse.jetty.webapp.Configuration.ClassList.setServerDefault(server);
+            classlist.addAfter("org.eclipse.jetty.webapp.FragmentConfiguration", "org.eclipse.jetty.plus.webapp.EnvConfiguration", "org.eclipse.jetty.plus.webapp.PlusConfiguration");
+            classlist.addBefore("org.eclipse.jetty.webapp.JettyWebXmlConfiguration", "org.eclipse.jetty.annotations.AnnotationConfiguration");
+            
+            //classlist.addBefore("org.eclipse.jetty.webapp.JettyWebXmlConfiguration", "org.eclipse.jetty.annotations.AnnotationConfiguration");
+            webapp.setClassLoader(jspClassLoader);
+            //context.setClassLoader(new WebAppClassLoader(getClass().getClassLoader(), context));
+        } catch (Exception ex) {
+            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
         webapp.setContextPath("/");
         if (home.length() != 0) {
             webapp.setTempDirectory(new File(home));
