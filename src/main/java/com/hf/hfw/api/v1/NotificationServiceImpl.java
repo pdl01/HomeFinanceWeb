@@ -64,6 +64,11 @@ public class NotificationServiceImpl implements NotificationService {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public List<Notification> getAllNotificationsForAccount(String accountId, String number, String start) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
 }
 
