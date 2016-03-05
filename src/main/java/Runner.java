@@ -25,16 +25,24 @@ public class Runner {
         final int port = Integer.parseInt(System.getProperty("hfw.port", "8080"));
         final String home = System.getProperty("hfw.temp.home", "/home/pldorrell/jsps");
         final String bindIP = System.getProperty("hfw.hostAddress","127.0.0.1");
+        final String contextPath = System.getProperty("hfw.path","/");
+        
+        ProtectionDomain protectionDomain = Runner.class.getProtectionDomain();
+        String warFile = protectionDomain.getCodeSource().getLocation().toExternalForm();
+        String currentDir = new File(protectionDomain.getCodeSource().getLocation().getPath()).getParent();
+
+        
         System.out.println ("Using ip:"+bindIP);
         System.out.println("Using port:"+port);
+        
         InetAddress address = InetAddress.getByName(bindIP);
         InetSocketAddress socketAddress = new InetSocketAddress(address,port);
         System.out.println(socketAddress.toString());
+        
         Server server = new Server(socketAddress);
-        ProtectionDomain domain = Runner.class.getProtectionDomain();
-        URL location = domain.getCodeSource().getLocation();
-        WebAppContext webapp = new WebAppContext();
-
+        //ProtectionDomain domain = Runner.class.getProtectionDomain();
+        URL location = protectionDomain.getCodeSource().getLocation();
+        WebAppContext webapp = new WebAppContext(warFile,contextPath);
         webapp.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
         try {
             ClassLoader jspClassLoader = new URLClassLoader(new URL[0], webapp.getClass().getClassLoader());
@@ -51,15 +59,22 @@ public class Runner {
         }
 
         
-        webapp.setContextPath("/");
+        
         if (home.length() != 0) {
             webapp.setTempDirectory(new File(home));
         }
+        HandlerList handlers = new HandlerList();
+        handlers.addHandler(webapp);
+        server.setHandler(handlers);
 
-        webapp.setWar(location.toExternalForm());
+        
         server.setHandler(webapp);
-        server.start();
-        server.join();
+        try {
+            server.start();
+            server.join();
+        } catch (Exception ex) {
+            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
+        }
                 
     }
 
