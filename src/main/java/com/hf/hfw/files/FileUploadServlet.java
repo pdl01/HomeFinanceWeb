@@ -12,6 +12,10 @@ import com.hf.hfw.manager.AccountManager;
 import com.hf.homefinanceshared.Account;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Scanner;
 import java.util.UUID;
 import javax.servlet.ServletException;
@@ -51,6 +55,7 @@ public class FileUploadServlet extends HttpServlet {
         // constructs path of the directory to save uploaded file
         //String savePath = appPath + File.separator + SAVE_DIR;
         // creates the save directory if it does not exists
+        System.out.println("Saving to directory:"+savePath);
         File fileSaveDir = new File(savePath);
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
@@ -63,11 +68,20 @@ public class FileUploadServlet extends HttpServlet {
                 accountId = scanner.nextLine();
             } else {
                 String fileName = extractFileName(part);
-
+                System.out.println("fileName From Post:"+fileName);
                 fileName = UUID.randomUUID().toString() + "-" + fileName.replaceAll(" ", "");
                 fullFilePath = savePath + File.separator + fileName;
-                part.write(fullFilePath);
-            }
+                //write to the temp dir
+                part.write(fileName);
+                
+                
+                //move from the temp dir to the file dir
+                //File file=new File(fullFilePath);
+                //Files.move(null, null, options)
+                Path moveFrom = FileSystems.getDefault().getPath(configurationDirectoryService.getTempFileStorageDirectory()+File.separator+fileName);
+                Path moveTo = FileSystems.getDefault().getPath(configurationDirectoryService.getFileStorageDirectory()+File.separator+fileName);
+                Files.move(moveFrom, moveTo, StandardCopyOption.ATOMIC_MOVE);
+            }   
 
         }
 

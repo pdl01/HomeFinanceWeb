@@ -8,10 +8,18 @@ import java.net.URLClassLoader;
 import java.security.ProtectionDomain;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.eclipse.jetty.annotations.AnnotationConfiguration;
+import org.eclipse.jetty.plus.webapp.EnvConfiguration;
+import org.eclipse.jetty.plus.webapp.PlusConfiguration;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.webapp.Configuration;
+import org.eclipse.jetty.webapp.FragmentConfiguration;
+import org.eclipse.jetty.webapp.MetaInfConfiguration;
 import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.webapp.WebInfConfiguration;
+import org.eclipse.jetty.webapp.WebXmlConfiguration;
 
 public class Runner {
 
@@ -23,7 +31,8 @@ public class Runner {
         //return;
         
         final int port = Integer.parseInt(System.getProperty("hfw.port", "8080"));
-        final String home = System.getProperty("hfw.temp.home", "/home/pldorrell/jsps");
+        String x = System.getProperty("user.home")+ File.separator +".hfw_app"+File.separator+"temp";
+        final String tempDir = System.getProperty("hfw.temp.dir", x);
         final String bindIP = System.getProperty("hfw.hostAddress","127.0.0.1");
         final String contextPath = System.getProperty("hfw.path","/");
         
@@ -34,6 +43,8 @@ public class Runner {
         
         System.out.println ("Using ip:"+bindIP);
         System.out.println("Using port:"+port);
+        System.out.println("Using path:"+contextPath);
+        System.out.println("Using warfile:"+warFile);
         
         InetAddress address = InetAddress.getByName(bindIP);
         InetSocketAddress socketAddress = new InetSocketAddress(address,port);
@@ -43,32 +54,68 @@ public class Runner {
         //ProtectionDomain domain = Runner.class.getProtectionDomain();
         URL location = protectionDomain.getCodeSource().getLocation();
         WebAppContext webapp = new WebAppContext(warFile,contextPath);
-        webapp.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
+        
+        //webapp.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
+	webapp.setParentLoaderPriority(true);
+        /*
+                    webapp.setConfigurations(new Configuration[] {
+				new AnnotationConfiguration(), new WebXmlConfiguration(),
+				new WebInfConfiguration(),
+				new PlusConfiguration(), new MetaInfConfiguration(),
+				new FragmentConfiguration(), new EnvConfiguration() });
+        */
+/*          
         try {
-            ClassLoader jspClassLoader = new URLClassLoader(new URL[0], webapp.getClass().getClassLoader());
+          
+            Configuration.ClassList classlist = Configuration.ClassList.setServerDefault(server);
+  */
+            /*
+        classlist.addAfter("org.eclipse.jetty.webapp.FragmentConfiguration",
+                "org.eclipse.jetty.plus.webapp.EnvConfiguration",
+                "org.eclipse.jetty.plus.webapp.PlusConfiguration");
+        classlist.addBefore(
+                   "org.eclipse.jetty.webapp.WebInfConfiguration",
+                    "org.eclipse.jetty.webapp.WebXmlConfiguration",
+                    "org.eclipse.jetty.webapp.MetaInfConfiguration",
+                    "org.eclipse.jetty.webapp.FragmentConfiguration",
+                    "org.eclipse.jetty.webapp.JettyWebXmlConfiguration",
+                    "org.eclipse.jetty.annotations.AnnotationConfiguration"
+  
+            );
+            */            
             
+            /*ClassLoader jspClassLoader = new URLClassLoader(new URL[0], webapp.getClass().getClassLoader());*/
+            
+            
+            /*
             org.eclipse.jetty.webapp.Configuration.ClassList classlist = org.eclipse.jetty.webapp.Configuration.ClassList.setServerDefault(server);
-            classlist.addAfter("org.eclipse.jetty.webapp.FragmentConfiguration", "org.eclipse.jetty.plus.webapp.EnvConfiguration", "org.eclipse.jetty.plus.webapp.PlusConfiguration");
-            classlist.addBefore("org.eclipse.jetty.webapp.JettyWebXmlConfiguration", "org.eclipse.jetty.annotations.AnnotationConfiguration");
-            
+            classlist.addAfter("org.eclipse.jetty.webapp.FragmentConfiguration", 
+                    "org.eclipse.jetty.plus.webapp.EnvConfiguration", 
+                    "org.eclipse.jetty.plus.webapp.PlusConfiguration");
+            classlist.addBefore("org.eclipse.jetty.webapp.JettyWebXmlConfiguration", 
+                    "org.eclipse.jetty.annotations.AnnotationConfiguration");
+            */
             //classlist.addBefore("org.eclipse.jetty.webapp.JettyWebXmlConfiguration", "org.eclipse.jetty.annotations.AnnotationConfiguration");
-            webapp.setClassLoader(jspClassLoader);
+            /*webapp.setClassLoader(jspClassLoader);*/
             //context.setClassLoader(new WebAppClassLoader(getClass().getClassLoader(), context));
-        } catch (Exception ex) {
+                    /*
+    } catch (Exception ex) {
             Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        */
         
+        /*webapp.setServer(server);*/
         
-        if (home.length() != 0) {
-            webapp.setTempDirectory(new File(home));
+        if (tempDir.length() != 0) {
+            webapp.setTempDirectory(new File(tempDir));
         }
+        /*
         HandlerList handlers = new HandlerList();
         handlers.addHandler(webapp);
         server.setHandler(handlers);
-
-        
+        */
         server.setHandler(webapp);
+        
         try {
             server.start();
             server.join();
