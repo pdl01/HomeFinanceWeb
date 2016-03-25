@@ -187,5 +187,20 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
 
     }
 
+    @Override
+    public Set<String> getAllNames() {
+        List<RegisterTransaction> txns = this.getMongoTemplate().findAll(RegisterTransaction.class);
+        TreeSet<String> names = new TreeSet<String>();
+        for (RegisterTransaction txn : txns) {
+            if (txn.getPayee() != null) {
+                names.add(txn.getPayee());                
+            } else {
+                log.info("Skipping txn; no payee");
+            }
+        }
+        return names;
+
+    }
+
     
 }

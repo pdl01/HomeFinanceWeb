@@ -36,7 +36,7 @@ public interface RegisterService {
     @Path("/get/bymonth/{accountId}/{month}")    
     public List<RegisterTransaction> getTransactionsByMonth(@PathParam("accountId") String accountId,@PathParam("month") String month);
 
-        @GET
+    @GET
     @Produces({"application/json"})
     @Consumes({"application/json"})
     @Path("/get/bydate/{accountId}/{date}")    
@@ -110,4 +110,11 @@ public interface RegisterService {
     @Consumes({"application/json"})
     @Path("/pending/acceptasnew/{pendingTransactionid}")    
     public RegisterTransaction acceptPendingTransactionAsNew(@PathParam("pendingTransactionid") String pendingTransactionid);
+    
+    
+    @POST
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
+    @Path("/pending/acceptallasnew/{accountId}")    
+    public void acceptAllPendingTransactionAsNew(@PathParam("accountId") String accountId);
 }

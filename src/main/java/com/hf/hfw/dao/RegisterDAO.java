@@ -35,4 +35,5 @@ public interface RegisterDAO {
     public List<RegisterTransaction> matchTransaction(OnlineTransaction pendingTransaction);
     public List<RegisterTransaction> findTransaction(String searchTerm);
     public List<RegisterTransaction> findTransaction(Account account, String searchTerm);
+    public Set<String> getAllNames();
 }

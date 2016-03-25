@@ -269,5 +269,13 @@ public class RegisterServiceImpl implements RegisterService {
         transaction.setSecondaryAccount(txn.getSecondaryAccount());
         return transaction;
     }
+
+    @Override
+    public void acceptAllPendingTransactionAsNew(String accountId) {
+        List<OnlineTransaction> pendingTransactions = this.getPendingTransactions(accountId);
+        for (OnlineTransaction pendingTransaction:pendingTransactions) {
+            this.acceptPendingTransactionAsNew(pendingTransaction.getId());
+        }
+    }
 }
 
