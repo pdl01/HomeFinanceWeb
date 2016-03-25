@@ -3,7 +3,7 @@ var hfwApp = angular.module('HFWApp', ['ui.bootstrap']);
 
 
 
-hfwApp.controller('dashboardController', function ($scope,$interval, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService,ScheduledTransactionService,TransactionStatusLookupService,NotificationService) {
+hfwApp.controller('dashboardController', function ($scope,$interval, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService,ScheduledTransactionService,TransactionStatusLookupService,NotificationService,NameLookupService) {
     $scope.accountFormData = {};
 
     $scope.onlineData = {};

@@ -229,5 +229,11 @@ public class RegisterDAOImpl implements RegisterDAO {
     public List<RegisterTransaction> findTransaction(Account account, String searchTerm) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Set<String> getAllNames() {
+        
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

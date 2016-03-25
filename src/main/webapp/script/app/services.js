@@ -109,6 +109,15 @@ hfwApp.factory("RegistryService", function ($http) {
             url: '/services/api/v1/register/get/matched/' + transactionId
         });
     };
+    RegistryService.acceptAllPendingTransactionAsNew = function (accountid) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+        return $http({
+            method: 'POST',
+            url: '/services/api/v1/register/pending/acceptallasnew/' + accountid,
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}
+        });
+    };
     RegistryService.saveTransaction = function (transaction) {
         delete transaction.$$hashKey;
         transaction.txnDate = this.convertJSDateToTextDate(transaction.txnDate);
@@ -255,6 +264,21 @@ hfwApp.factory("CategoryLookupService", function ($http) {
 
 
     return CategoryLookupService;
+});
+
+hfwApp.factory("NameLookupService", function ($http) {
+    //var users = ["Peter", "Daniel", "Nina"]
+    var NameLookupService = {};
+
+    NameLookupService.lookup = function (lookupValue) {
+        return $http({
+            method: 'GET',
+            url: '/services/api/v1/name/lookup/' + lookupValue
+        });
+    };
+
+
+    return NameLookupService;
 });
 
 hfwApp.factory("DateService", function ($http) {

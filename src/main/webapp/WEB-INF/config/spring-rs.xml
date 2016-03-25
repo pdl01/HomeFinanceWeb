@@ -13,6 +13,7 @@
             <ref bean="accountRestServicev1" />
             <ref bean="reportRestServicev1"/>
             <ref bean="categoryLookupServicev1"/>
+            <ref bean="nameLookupServicev1"/>
             <ref bean="budgetRestServicev1"/>
             <ref bean="settingsRestServicev1"/>
             <ref bean="dateRestServicev1"/>
@@ -47,6 +48,9 @@
     </bean>
     <bean id="categoryLookupServicev1" class="com.hf.hfw.api.v1.CategoryLookupServiceImpl" >
         <property name="categoryCacheManagerImpl" ref="categoryCacheManagerImpl"/>
+    </bean>
+    <bean id="nameLookupServicev1" class="com.hf.hfw.api.v1.NameLookupServiceImpl" >
+        <property name="nameCacheManagerImpl" ref="nameCacheManagerImpl"/>
     </bean>
     <bean id="settingsRestServicev1" class="com.hf.hfw.api.v1.settings.SettingsServiceImpl" >
         <property name="settingsManager" ref="settingsManager"/>

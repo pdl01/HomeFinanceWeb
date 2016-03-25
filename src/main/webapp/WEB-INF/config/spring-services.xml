@@ -64,6 +64,10 @@
   	<property name="registerDAO" ref="registerDAO"/>
         <property name="accountManager" ref="accountManager"/>
   </bean>
+  <bean id="nameCacheManagerImpl" class="com.hf.hfw.manager.NameCacheManagerImpl">    
+  	<property name="registerDAO" ref="registerDAO"/>
+  </bean>
+
   <bean id="notificationManager" class="com.hf.hfw.manager.NotificationManagerImpl">
       <property name="notificationDAO" ref="notificationDAO"/>
   </bean>
