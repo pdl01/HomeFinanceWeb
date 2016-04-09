@@ -196,6 +196,7 @@
                         <input type="file" style="display:none" 
                                id="file" name='file' />
                         <button ng-click="addOnlineData()">Submit!</button>
+                        <button ng-click="acceptAllOnlineTxns()">Accept All</button>
                     </form>
                     <div id="progress">{{uploadProgress}}</div>
                     <div>

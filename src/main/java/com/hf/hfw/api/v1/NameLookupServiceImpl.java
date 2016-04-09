@@ -13,6 +13,14 @@ import javax.ws.rs.Path;
 public class NameLookupServiceImpl implements NameLookupService{
    private NameCacheManagerImpl nameCacheManagerImpl;
 
+    public NameCacheManagerImpl getNameCacheManagerImpl() {
+        return nameCacheManagerImpl;
+    }
+
+    public void setNameCacheManagerImpl(NameCacheManagerImpl nameCacheManagerImpl) {
+        this.nameCacheManagerImpl = nameCacheManagerImpl;
+    }
+
     @Override
     public List<String> lookupNames(String name) {
         return this.nameCacheManagerImpl.get(name, false);

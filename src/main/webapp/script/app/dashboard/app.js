@@ -427,6 +427,17 @@ $scope.registryTransactionDateField = {
          });
          */
     };
+    $scope.acceptAllOnlineTxns = function () {
+        if ($scope.selectedAccount == null) {
+            alert ("Please choose an account");
+            return;
+        }
+        RegistryService.acceptAllPendingTransactionAsNew($scope.selectedAccount.id).success(function (response) {
+                //$scope.registryTransactions.push(response);
+                $scope.$emit('transactionSaved',$scope.selectedAccount.id);
+                console.log(response);
+            });
+    };
     //TODO:rename this to click account
     $scope.clickGoButton = function (x) {
         console.log(x.id);
