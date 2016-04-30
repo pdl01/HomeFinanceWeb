@@ -195,5 +195,8 @@
     <bean id="themeFilter" class="com.hf.hfw.web.theme.ThemeFilter">
         <property name="settingsManager" ref="settingsManager"/>
     </bean>
+    <bean id="appHealthFilter" class="com.hf.hfw.application.ApplicationHealthFilter">
+        
+    </bean>
 
 </beans>

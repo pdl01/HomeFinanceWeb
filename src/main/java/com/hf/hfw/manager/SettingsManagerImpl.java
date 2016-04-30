@@ -3,12 +3,14 @@ package com.hf.hfw.manager;
 import com.hf.hfw.api.v1.settings.SettingsBean;
 import com.hf.hfw.dao.RepositoryBasedSettingDAO;
 import java.util.HashMap;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author pldorrell
  */
 public class SettingsManagerImpl implements SettingsManager {
+    private static final Logger log = Logger.getLogger(SettingsManagerImpl.class);
     public static final String TYPE_OF_SETTING_BASICSECURITY = "basicSecurity";
     public static final String TYPE_OF_SETTING_THEME = "theme";
     public static final String TYPE_OF_SETTING_LIMITEDUSERSECURITY="limitedUserSecurity";
@@ -21,7 +23,13 @@ public class SettingsManagerImpl implements SettingsManager {
 
     @Override
     public SettingsBean getThemeSetting() {
-        SettingsBean settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_THEME);
+        SettingsBean settingsBean = null;
+        try {
+            settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_THEME);
+        } catch (Exception e) {
+            log.error("Unable to get theme. Setting to default",e);
+        }
+        
         if (settingsBean == null) {
             return this.getDefaultThemeSetting();
         }
@@ -65,7 +73,13 @@ public class SettingsManagerImpl implements SettingsManager {
 
     @Override
     public SettingsBean getBasicSecuritySetting() {
-        SettingsBean settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_BASICSECURITY);
+        SettingsBean settingsBean = null;
+        try {
+            settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_BASICSECURITY);
+        } catch (Exception e) {
+            log.error("Unable to get security setting. Using basic.",e);
+        }
+        
         if (settingsBean == null) {
             settingsBean = this.getDefaultBasicSecuritySetting();
         }
@@ -80,7 +94,13 @@ public class SettingsManagerImpl implements SettingsManager {
 
     @Override
     public SettingsBean getLimitedSecurityUsers() {        
-        SettingsBean settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_LIMITEDUSERSECURITY);
+        SettingsBean settingsBean = null;
+        try {
+            settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_LIMITEDUSERSECURITY);
+        } catch (Exception e) {
+            log.error("Unable to get users from settings",e);
+        }
+        
         if (settingsBean == null) {
             settingsBean = this.getDefaultLimitedUserSecuritySetting();
         }

@@ -21,6 +21,7 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
     //private static final Logger log = Logger.getLogger(ApplicationState.class);
 
     private boolean configured = false;
+    private boolean repositoryRunning = false;
     private static ApplicationContext ctx;
     private ConfigurationDirectoryService configurationDirectoryService;
     private ApplicationRepositoryConfig applicationRepositoryConfig;
@@ -32,6 +33,14 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
 
     public void setApplicationRepositoryConfig(ApplicationRepositoryConfig applicationRepositoryConfig) {
         this.applicationRepositoryConfig = applicationRepositoryConfig;
+    }
+
+    public boolean isRepositoryRunning() {
+        return repositoryRunning;
+    }
+
+    public void setRepositoryRunning(boolean repositoryRunning) {
+        this.repositoryRunning = repositoryRunning;
     }
 
     public DBFactory getDbFactory() {
@@ -122,7 +131,9 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
         //DBFactory dbFactory = new DBFactory();
         if (this.applicationRepositoryConfig.isValid()) {
             dbFactory.initializeRepository(this.applicationRepositoryConfig);
-
+            if (dbFactory.isValid()){
+                repositoryRunning = true;
+            }
         }
 
     }

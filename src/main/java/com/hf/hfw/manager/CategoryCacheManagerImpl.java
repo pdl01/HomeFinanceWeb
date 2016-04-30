@@ -47,9 +47,15 @@ public class CategoryCacheManagerImpl {
     public void init() {
         log.debug("Entering init");
         this.initCategorySet();
-        this.initAccountTransferCategorySet();
+    
         this.initDefaultCategories();
-        this.initCategoriesFromDB();
+        try {
+            this.initAccountTransferCategorySet();    
+            this.initCategoriesFromDB();    
+        } catch (Exception e) {
+            log.warn("Unable to populate categories from DB",e);
+        }
+        
         log.debug("Exiting init");
 
     }

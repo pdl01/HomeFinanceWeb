@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.hf.hfw.web;
 
 import com.hf.hfw.files.listeners.TransactionFileImportListener;
@@ -91,6 +87,16 @@ public class MainController {
         model.addAttribute("theme",request.getAttribute("theme"));
         //model.setViewName("settings");
         return "reports";
+    }
+
+    @RequestMapping(value = {"/transaction"}, method = RequestMethod.GET)
+    public String transactionDisplay(@ModelAttribute("model") ModelMap model,HttpServletRequest request) {
+        //ModelAndView model = new ModelAndView();
+        model.addAttribute("title", "Spring Security Hello World");
+        model.addAttribute("message", "This is welcome page!");
+        model.addAttribute("theme",request.getAttribute("theme"));
+        //model.setViewName("settings");
+        return "transaction";
     }
     
     @RequestMapping(value = {"/mobile","/mobile/accounts"}, method = RequestMethod.GET)
