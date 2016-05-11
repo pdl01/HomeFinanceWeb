@@ -10,6 +10,7 @@ package com.hf.hfw.reports;
  * @author pldorrell
  */
 public interface ReportGenerator {
+    public static final String UNCATEGORIZED = "Uncategorized";
     public ReportData generateReportData(ReportOptions reportOptions);
      
 }

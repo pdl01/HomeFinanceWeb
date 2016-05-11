@@ -725,7 +725,7 @@ $scope.registryTransactionDateField = {
                 legend: {
                     show: true,
                     placement: 'inside',
-                    rendererOptions: {
+                    rendererOptions: {numberColumns:2
                     },
                     location: 'e',
                     marginTop: '15px'

@@ -49,48 +49,42 @@ public class IncomeReportGenerator implements ReportGenerator {
         //load all accounts
         List<Account> accounts = new ArrayList<Account>();
         if (reportOptions.getAccountId() != null) {
-            Account x =this.accountManager.getAccountById(reportOptions.getAccountId());
+            Account x = this.accountManager.getAccountById(reportOptions.getAccountId());
             accounts.add(x);
         } else if (reportOptions.getAccounts() != null) {
-            for (String x: reportOptions.getAccounts()) {
+            for (String x : reportOptions.getAccounts()) {
                 accounts.add(this.accountManager.getAccountById(x));
             }
         } else {
-            accounts = this.accountManager.getAccounts();    
+            accounts = this.accountManager.getAccounts();
         }
         Map<String, ReportDataPoint> data = new HashMap<String, ReportDataPoint>();
         //get all transactions that have a classification of income
         String categoryStarter = "Income";
         for (Account account : accounts) {
             //List<RegisterTransaction> txns = this.registerManager.getTransactionsByCategories(account, categories);
-            
+
             //List<RegisterTransaction> txns = this.registerManager.getTransactionsByCategoriesStartsWithForDateStartWith(account,"Income",reportOptions.getDateQueryStringBasedOnPeriod());
             List<RegisterTransaction> txns = this.registerManager.getTransactionsForDateStartWith(account, reportOptions.getDateQueryStringBasedOnPeriod(), true);
             for (RegisterTransaction txn : txns) {
                 if (txn.isVoid()) {
                     continue;
                 }
-                //make sure the data is right for the report;
-                for (CategorySplit category : txn.getCategorySplits()) {
-                    if (category.getCategory().startsWith(categoryStarter)) {
-                        ReportDataPoint rdp = data.get(category.getCategory());
-                        List<String> x = null;
-                        if (rdp == null) {
-                            rdp = new ReportDataPoint();
-                            rdp.setName(category.getCategory());
-                            x = new ArrayList<String>();
-                            rdp.setTransactions(x);
+                if (txn.getCategorySplits() != null) {
+                    double categorySum = 0;
+                    //make sure the data is right for the report;
+                    for (CategorySplit category : txn.getCategorySplits()) {
+                        if (category.getCategory().startsWith(categoryStarter)) {
+                            categorySum = categorySum + category.getTxnAmount();
+                            this.addToCategory(category.getCategory(), data, txn, category.getTxnAmount());
                         }
-                        
-                        double value = rdp.getValue() + category.getTxnAmount();
-                        rdp.setValue(value);
-                        
-                        x = rdp.getTransactions();
-                        x.add(txn.getId());
-                        rdp.setTransactions(x);
-                        data.put(category.getCategory(), rdp);
-                    }
 
+                    }
+                    if (categorySum < txn.getTxnAmount()) {
+                        this.addToUncategorized(data, txn, txn.getTxnAmount() - categorySum);
+                    }
+                } else {
+                    this.addToUncategorized(data, txn, txn.getTxnAmount());
                 }
             }
         }
@@ -107,6 +101,30 @@ public class IncomeReportGenerator implements ReportGenerator {
         reportData.setDisplay("Income for xxx");
         reportData.setDataPoints(reportDataPoints);
         return reportData;
+    }
+
+    private void addToCategory(String _category,Map<String, ReportDataPoint> data, RegisterTransaction txn, double _value) {
+        ReportDataPoint rdp = data.get(_category);
+        List<String> x = null;
+        if (rdp == null) {
+            rdp = new ReportDataPoint();
+            rdp.setName(_category);
+            x = new ArrayList<String>();
+            rdp.setTransactions(x);
+        }
+
+        double value = rdp.getValue() + _value;
+        //rdp.setValue(value);
+
+        x = rdp.getTransactions();
+        x.add(txn.getId());
+        rdp.setTransactions(x);
+        data.put(_category, rdp);
+        
+    }
+    private void addToUncategorized(Map<String, ReportDataPoint> data, RegisterTransaction txn, double _value) {
+        this.addToCategory(ReportGenerator.UNCATEGORIZED,data, txn, _value);
+
     }
 
 }

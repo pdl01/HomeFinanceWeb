@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hf.hfw.reports;
 
 import com.hf.hfw.manager.AccountManager;
@@ -71,26 +66,16 @@ public class ExpenseByCategoryReportGenerator implements ReportGenerator {
                 }
                 if (txn.getCategorySplits() != null) {
                     //make sure the data is right for the report;
+                    double categorySum = 0;
                     for (CategorySplit category : txn.getCategorySplits()) {
-
-                        ReportDataPoint rdp = data.get(category.getCategory());
-                        List<String> x = null;
-                        if (rdp == null) {
-                            rdp = new ReportDataPoint();
-                            rdp.setName(category.getCategory());
-                            x = new ArrayList<String>();
-                            rdp.setTransactions(x);
-                        }
-
-                        double value = rdp.getValue() + category.getTxnAmount();
-                        rdp.setValue(value);
-
-                        x = rdp.getTransactions();
-                        x.add(txn.getId());
-                        rdp.setTransactions(x);
-                        data.put(category.getCategory(), rdp);
-
+                        categorySum = category.getTxnAmount() + categorySum;
+                        this.addToCategory(category.getCategory(), data, txn, category.getTxnAmount());
                     }
+                    if (categorySum < txn.getTxnAmount()) {
+                        this.addToUncategorized(data, txn, txn.getTxnAmount() - categorySum);
+                    }
+                } else {
+                    this.addToUncategorized(data, txn, txn.getTxnAmount());
                 }
 
             }
@@ -101,9 +86,9 @@ public class ExpenseByCategoryReportGenerator implements ReportGenerator {
         for (Map.Entry<String, ReportDataPoint> entry : data.entrySet()) {
             reportDataPoints.add(entry.getValue());
         }
-        
+
         Collections.sort(reportDataPoints, new ReportDataPointsValueDescendingComparator());
-        
+
         ReportData reportData = new ReportData();
         reportData.setReportName("Expenses");
         reportData.setReportType(REPORT_TYPE);
@@ -112,4 +97,27 @@ public class ExpenseByCategoryReportGenerator implements ReportGenerator {
         return reportData;
     }
 
+    private void addToCategory(String _category,Map<String, ReportDataPoint> data, RegisterTransaction txn, double _value) {
+        ReportDataPoint rdp = data.get(_category);
+        List<String> x = null;
+        if (rdp == null) {
+            rdp = new ReportDataPoint();
+            rdp.setName(_category);
+            x = new ArrayList<String>();
+            rdp.setTransactions(x);
+        }
+
+        double value = rdp.getValue() + _value;
+        rdp.setValue(value);
+
+        x = rdp.getTransactions();
+        x.add(txn.getId());
+        rdp.setTransactions(x);
+        data.put(_category, rdp);
+        
+    }
+    private void addToUncategorized(Map<String, ReportDataPoint> data, RegisterTransaction txn, double _value) {
+        this.addToCategory(ReportGenerator.UNCATEGORIZED,data, txn, _value);
+
+    }
 }
