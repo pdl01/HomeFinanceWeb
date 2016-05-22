@@ -10,7 +10,7 @@
         	<meta name="_csrf" content="${_csrf.token}"/>
                 <!-- default header name is X-CSRF-TOKEN -->
                 <meta name="_csrf_header" content="${_csrf.headerName}"/>      
-
+<title>Dashboard</title>
         <script src="/script/jquery-1.11.1.min.js"></script>
         <script src="/script/angular/1.5/angular.min.js"></script>
         <script src="/script/angular/1.5/angular-route.min.js"></script>
@@ -120,8 +120,9 @@
                     <div id="reportTransactions">
                         <div ng-repeat="x in report_transactions"  class="list-group-item accountEntry">
                         <div>
-                            <span>{{ x.name}}</span>
+                            <span><a href="#" ng-click="selectReportDataPoint(x)" class="report_transaction" id="">{{ x.name}}</a></span>
                             <span>{{ x.value | currency }}</span>
+                            
                         </div>
                     </div>
                     </div>
@@ -211,6 +212,23 @@
             <modal title="Scheduled Transaction Details" visible="showScheduledTransactionModal">
                 <@scheduledTransactionDetailsForm 'dashboard'/>
             </modal>
+
+            <modal title="Report Data Details" visible="showReportDataModal">
+                    <div ng-repeat="x in reportDataPointTxns" ng-click="showTransactionForm(x)" ng:class="{true:'list-group-item registryTransaction credit',false:'list-group-item registryTransaction'}[x.credit==true]">
+                        <span>{{ convertJSDateToTextDate(x.txnDate)}}</span>
+                        <span>{{ x.payee}}</span>
+                        <span>{{ x.txnAmount | currency }}</span>
+                    </div>                
+
+                <#--
+                <div ng-repeat="x in reportDataPointTxns" ng-click="showTransactionForm(x)">
+                    <span>{{ x.txnDate}}</span>
+                    <span>{{ x.payee}}</span>
+                    <span>{{ x.txnAmount | currency }}</span>
+                </div>
+                -->
+            </modal>
+
             
             <modal title="Budget Item Details" visible="showBudgetItemModal" >
                 <div>
