@@ -9,7 +9,7 @@
         	<meta name="_csrf" content="${_csrf.token}"/>
                 <!-- default header name is X-CSRF-TOKEN -->
                 <meta name="_csrf_header" content="${_csrf.headerName}"/>      
-
+<title>Transaction</title>
         <script src="/script/jquery-1.11.1.min.js"></script>
         <script src="/script/angular/1.2.26/angular.min.js"></script>
         <script src="/script/angular/1.2.26/angular-route.min.js"></script>
