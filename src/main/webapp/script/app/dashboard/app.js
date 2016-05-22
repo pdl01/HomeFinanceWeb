@@ -86,6 +86,11 @@ hfwApp.controller('dashboardController', function ($scope,$interval, $http, Acco
         formatYear: 'yy',
         startingDay: 1
     };
+    
+    $scope.showReportDataModal = false;
+    $scope.reportDataPointTxns = [];
+   
+    
     $scope.$watch('registryTransactionFormCategorySplits[0].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -1070,7 +1075,29 @@ $scope.registryTransactionDateField = {
     
     $scope.lookupStatus = function (scheduledTxn) {
         return TransactionStatusLookupService.getStatus(scheduledTxn.statusTxt);
+    };
+    
+    $scope.selectReportDataPoint = function(reportDataPoint) {
+        //txn ids are stored on the data point
+        //pull the full transactions for the set.
+        
+               
+        RegistryService.getRegistryForAccountForTxnSet($scope.selectedAccount.id,reportDataPoint.transactions).success(function (response) {
+            $scope.reportDataPointTxns = [];
+            for (idx in response) {
+                var txn = response[idx];
+                txn.txnDate = RegistryService.convertTextDateToJSDate(txn.txnDate);
+                $scope.reportDataPointTxns.push(txn);
+            }
+            
+//
+//$scope.showTransactionModal = false;
+                //$scope.$emit('transactionSaved',$scope.selectedAccount.id);
+                //console.log(response);
+            });
+        $scope.showReportDataModal = true;
     }
+    
     $scope.editScheduledTxn = function (scheduledTxn) {
         //populate the scheduled form based on the passed in scheduledTxn
       ScheduledTransactionService.getTransaction(scheduledTxn.id).success(function (response) {

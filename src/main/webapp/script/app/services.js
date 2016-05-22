@@ -68,6 +68,16 @@ hfwApp.factory("RegistryService", function ($http) {
         return $http({
             method: 'GET',
             url: '/services/api/v1/register/get/bymonth/' + id + '/' + date
+        })
+    };
+    RegistryService.getRegistryForAccountForTxnSet = function (id, txnIds) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+        return $http({
+            method: 'POST',
+            url: '/services/api/v1/register/get/txnset/' + id ,
+            data: JSON.stringify(txnIds),
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}
         });
     };
     RegistryService.getPendingTransactionsForAccount = function (id) {
