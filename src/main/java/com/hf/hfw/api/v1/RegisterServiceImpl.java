@@ -277,5 +277,17 @@ public class RegisterServiceImpl implements RegisterService {
             this.acceptPendingTransactionAsNew(pendingTransaction.getId());
         }
     }
+
+    @Override
+    public List<RegisterTransaction> getTransactionSet(String accountId, String[] transactionIds) throws Exception {
+        ArrayList<RegisterTransaction> txns = new ArrayList<>();
+        for (String txnId: transactionIds) {
+            RegisterTransaction txn = this.getTransactionById(txnId);
+            if (txn != null && txn.getPrimaryAccount().equals(accountId)){
+                txns.add(txn);
+            }
+        }
+        return txns;
+    }
 }
 

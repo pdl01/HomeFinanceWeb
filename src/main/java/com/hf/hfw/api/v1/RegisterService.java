@@ -117,4 +117,12 @@ public interface RegisterService {
     @Consumes({"application/json"})
     @Path("/pending/acceptallasnew/{accountId}")    
     public void acceptAllPendingTransactionAsNew(@PathParam("accountId") String accountId);
+
+    @POST
+    @Produces({"application/json"})
+    @Consumes({"application/json"})
+    @Path("/get/txnset/{accountId}")    
+    public List<RegisterTransaction> getTransactionSet(@PathParam("accountId") String accountId,String[] transactionIds) throws Exception;
+
+    
 }
