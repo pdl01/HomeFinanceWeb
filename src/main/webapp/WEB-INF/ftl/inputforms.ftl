@@ -143,3 +143,9 @@ Month:<select name="selectScheduledMonth" ng-model="scheduledDateControl.month" 
                     </div>
 </#macro>
 
+<#macro summary pageTitle="" invokedFrom=''>
+    <div id="sectionCurrentBalance">Current Balance</div>
+    <div id="sectionLastUpdated"></div>
+    <div id="sectionFutureBalance"></div>
+</#macro>
+
