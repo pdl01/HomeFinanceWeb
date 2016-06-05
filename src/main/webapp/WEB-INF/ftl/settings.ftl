@@ -70,6 +70,10 @@
             </div>
             <div id="security_config" class="settingsSection">
             </div>
+            <div id="version_config" class="settingsVersion">
+            </div>
+            <div id="license_config" class="settingsLicense">
+            </div>
 
         </div>
 </div>
