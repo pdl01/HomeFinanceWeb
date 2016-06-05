@@ -70,8 +70,6 @@ $(document).ready(function(){
     <@buildAccountSection 'investment' 'Investment'/>
     <@buildAccountSection 'retirement' 'Retirement'/>
     <@buildAccountSection 'other' 'Other'/>
-
-    
 </#macro>
 
 <#macro buildAccountSection headerGroup='' headerGroupName='' >
@@ -81,5 +79,4 @@ $(document).ready(function(){
 
 <#macro buildBudgetMenu>
    <li><a class="newAccount menu-indented" ng-click="showNewBudget()">New Budget</a></li>
-
 </#macro>
