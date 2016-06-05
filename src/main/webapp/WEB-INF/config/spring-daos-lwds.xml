@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans.xsd">
+           http://www.springframework.org/schema/beans/spring-beans.xsd" profile="lwds">
 
 
     <bean id="accountDAO" class="com.hf.hfw.dao.lwmds.AccountDAOImpl">    
