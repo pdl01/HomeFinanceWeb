@@ -616,11 +616,12 @@ $scope.registryTransactionDateField = {
             
         }
         $scope.reportControl = {};
+        $scope.report_transactions = [];
         $("#accountTransactionList").hide();
         $("#accountReports").show();
         $("#accountOnlineFunctions").hide();
         $("#accountSchedule").hide();
-
+        
         plot1 = null;
         $("#pie1").html();
         //$scope.showTransactionModal=false;
