@@ -586,14 +586,26 @@ $scope.registryTransactionDateField = {
     $scope.clickNewTransactionCancel = function (x) {
         $scope.showTransactionModal = false;
         //$("#transactionDetailsForm").hide();
-    }
-
+    };
+    $scope.showSummaryTab = function() {
+        if ($scope.selectedAccount == null) {
+            alert ("Please choose an account");
+            return;
+        }
+        $("#accountSummary").show();
+        $("#accountTransactionList").hide();
+        $("#accountReports").hide();
+        $("#accountOnlineFunctions").hide();
+        $("#accountSchedule").hide();
+        
+    };
     $scope.showRegistryTab = function () {
         if ($scope.selectedAccount == null) {
             alert ("Please choose an account");
             return;
         }
         $("#accountTransactionList").show();
+        $("#accountSummary").hide();
         $("#accountReports").hide();
         $("#accountOnlineFunctions").hide();
         $("#accountSchedule").hide();
@@ -618,6 +630,7 @@ $scope.registryTransactionDateField = {
         $scope.reportControl = {};
         $scope.report_transactions = [];
         $("#accountTransactionList").hide();
+        $("#accountSummary").hide();
         $("#accountReports").show();
         $("#accountOnlineFunctions").hide();
         $("#accountSchedule").hide();
@@ -634,6 +647,7 @@ $scope.registryTransactionDateField = {
         }
         $scope.showOnlineMatchingModal = false;
         $("#accountTransactionList").hide();
+        $("#accountSummary").hide();
         $("#accountReports").hide();
         $("#accountSchedule").hide();
         $("#accountOnlineFunctions").show();

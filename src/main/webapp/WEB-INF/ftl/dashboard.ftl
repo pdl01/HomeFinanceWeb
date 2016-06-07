@@ -50,6 +50,7 @@
                     <div id="appMainTabsAccountName">{{selectedAccount.name}}</div>
 
                     <ul>
+                        <li class="tabItem" id="accountMenuItemSummary" ng-click="showSummaryTab()">Summary</li>
                         <li class="tabItem" id="accountMenuItemRegister" ng-click="showRegistryTab()">Register</li>
                         <li class="tabItem" id="accountMenuItemSchedule" ng-click="showScheduleTab()">Schedule</li>
                         <li class="tabItem" id="accountMenuItemReport" ng-click="showReportTab()" >Report</li>
@@ -57,6 +58,9 @@
                         <li class="tabItem" id=accountEditLink" ng-click="clickEditAccount()">Edit</li>
                         <li class="tabItem" id="accountNewTransaction" ng-click="showNewTransaction()">New Transaction</li>
                     </ul>
+                </div>
+                <div id="accountSummary">
+                    <@accountSummary pageTitle='dashboard' invokedFrom='registry'/>
                 </div>
                 <div id="accountTransactionList">
                     <@registryFilter pageTitle='dashboard' invokedFrom='registry'/>            
