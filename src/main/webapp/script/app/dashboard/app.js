@@ -72,6 +72,10 @@ hfwApp.controller('dashboardController', function ($scope,$interval, $http, Acco
     
     $scope.onlineSortType     = 'txnDate'; // set the default sort type
     $scope.onlineSortReverse  = false;  // set the default sort order
+
+    $scope.txnSortType     = 'txnDate'; // set the default sort type
+    $scope.txnSortReverse  = false;  // set the default sort order
+
     
     $scope.notifications = [];
     
