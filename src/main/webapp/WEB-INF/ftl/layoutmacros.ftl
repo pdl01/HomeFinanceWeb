@@ -53,6 +53,7 @@ $(document).ready(function(){
 </#macro>
 
 <#macro buildLinks pageTitle=''>
+        <div ng-controller="navController">
         <ul>
         <li><a href="/app/dashboard">Accounts</a></li><#if pageTitle=='dashboard'><@buildAccountMenu/></#if>
         <li><a href="/app/notifications">Notifications</a></li>
@@ -60,6 +61,7 @@ $(document).ready(function(){
         <li><a href="/app/reports">Reports</a></li>
         <li><a href="/app/settings">Settings</a></li>
         </ul>
+        </div>
 </#macro>
 
 <#macro buildAccountMenu>
@@ -74,7 +76,7 @@ $(document).ready(function(){
 
 <#macro buildAccountSection headerGroup='' headerGroupName='' >
         <li class="accountListHeader menu-indented"><a href="#" ng-click="toggleAccountGroupHide('${headerGroup}')">${headerGroupName}</a></li>
-        <li ng-hide="hideAccounts['${headerGroup}']" ng-repeat="x in ${headerGroup}_accounts" id="${headerGroup}Accounts" class="accountEntry menu-indented" ><a href="#" ng-click="clickGoButton(x)">{{ x.name}} {{ x.currentBalance | currency }}</a></li> 
+        <li ng-hide="hideAccounts['${headerGroup}']" ng-repeat="x in ${headerGroup}_accounts" id="${headerGroup}Accounts" class="accountEntry menu-indented" ><a href="#" ng-click="setAsCurrent(x)">{{ x.name}} {{ x.currentBalance | currency }}</a></li> 
 </#macro>
 
 <#macro buildBudgetMenu>

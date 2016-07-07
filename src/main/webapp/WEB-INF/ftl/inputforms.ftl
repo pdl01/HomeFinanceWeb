@@ -133,11 +133,11 @@ Month:<select name="selectScheduledMonth" ng-model="scheduledDateControl.month" 
                             <option value="12">12</option>
                         </select>
 <#if invokedFrom == 'registry'>
-                       <a href="" ng-click="getTransactionsForMonth(selectedAccount.id)" class="registryFilter">Go</a>
+                       <a href="" ng-click="getTransactionsForMonth(workingAccount.id)" class="registryFilter">Go</a>
 
 <#elseif invokedFrom == 'schedule'>
 
-                        <button ng-click="getScheduledTransactionsForMonth(selectedAccount.id)" class="registryFilter">Go</button>
+                        <button ng-click="getScheduledTransactionsForMonth(workingAccount.id)" class="registryFilter">Go</button>
 
 </#if> 
                     </div>
