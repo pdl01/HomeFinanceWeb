@@ -15,7 +15,7 @@ angular.module('HFWApp').controller('accountReportController', function ($rootSc
         //pull the full transactions for the set.
 
 
-        RegistryService.getRegistryForAccountForTxnSet($scope.selectedAccount.id, reportDataPoint.transactions).success(function (response) {
+        RegistryService.getRegistryForAccountForTxnSet($scope.workingAccount.id, reportDataPoint.transactions).success(function (response) {
             $scope.reportDataPointTxns = [];
             for (idx in response) {
                 var txn = response[idx];
@@ -59,7 +59,7 @@ angular.module('HFWApp').controller('accountReportController', function ($rootSc
 
     };
     $scope.doReport = function (x) {
-        console.log($scope.selectedAccount.id + ":" + $scope.reportControl.reportType + ":" + $scope.reportControl.reportPeriod);
+        console.log($scope.workingAccount.id + ":" + $scope.reportControl.reportType + ":" + $scope.reportControl.reportPeriod);
         //var plotData = [[['Income:Other',25],['Income:Net Pay',14],['c',7]]]
 
         if ($scope.reportControl.reportType == undefined) {
@@ -68,7 +68,7 @@ angular.module('HFWApp').controller('accountReportController', function ($rootSc
         if ($scope.reportControl.reportPeriod == undefined) {
             $scope.reportControl.reportPeriod = "currentMonth";
         }
-        ReportService.getReportForPeriodForAccount($scope.selectedAccount.id, $scope.reportControl.reportType, $scope.reportControl.reportPeriod).success(function (response) {
+        ReportService.getReportForPeriodForAccount($scope.workingAccount.id, $scope.reportControl.reportType, $scope.reportControl.reportPeriod).success(function (response) {
             //parse the data into jqplot data format
             var plotData = [];
             chartType = "pie";

@@ -1,9 +1,10 @@
 angular.module('HFWApp').controller('dashboardController', function ($rootScope,$scope, $interval, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService, ScheduledTransactionService, TransactionStatusLookupService, NotificationService, NameLookupService) {
     $scope.dashboardworkingAccount = {};
     $scope.tab = "summary";
-    
+    $scope.showTransactionModal = false;    
     $scope.setTab = function(x) {
       $scope.tab=x;  
+      console.log($scope.tab);
     };
     
     $scope.isTab = function(x) {
@@ -11,6 +12,14 @@ angular.module('HFWApp').controller('dashboardController', function ($rootScope,
     };
     $rootScope.$on('account-selected', function (event, data) {
         $scope.dashboardworkingAccount = data;
+    });
+
+    $rootScope.$on('transaction-operation-completed', function (event, data) {
+        $scope.showTransactionModal = false;
+    });
+
+    $rootScope.$on('transaction-operation-requested', function (event, data) {
+        $scope.showTransactionModal = true;
     });
     
     $scope.accountFormData = {};
@@ -24,7 +33,7 @@ angular.module('HFWApp').controller('dashboardController', function ($rootScope,
 
 //    $scope.selectedAccount = null;
     $scope.showAccountModal = false;
-    $scope.showTransactionModal = false;
+
     //$http.get("/HFW/services/api/v1/accounts/search/all")
     //.success(function(response) {$scope.accounts = response;});    
 
@@ -200,22 +209,6 @@ angular.module('HFWApp').controller('dashboardController', function ($rootScope,
     };
 
 
-    $scope.filterToCurrentDate = function () {
-        var retrievedDate = $scope.currentDate.split("-");
-
-        $scope.txnDateControl.year = retrievedDate[0];
-        $scope.txnDateControl.month = retrievedDate[1];
-        $scope.getTransactionsForMonth($scope.selectedAccount.id);
-
-    };
-    $scope.filterScheduledToCurrentDate = function () {
-        var retrievedDate = $scope.currentDate.split("-");
-
-        $scope.scheduledDateControl.year = retrievedDate[0];
-        $scope.scheduledDateControl.month = retrievedDate[1];
-        $scope.getScheduledTransactionsForMonth($scope.selectedAccount.id);
-
-    };
 
 
 
@@ -282,7 +275,19 @@ angular.module('HFWApp').controller('dashboardController', function ($rootScope,
         return TransactionStatusLookupService.getStatus(scheduledTxn.statusTxt);
     };
 
-
+    $scope.showNewTransaction = function (x) {
+        //$scope.registryTransactionFormData = {};
+        //$scope.registryTransactionFormData.txnDate = $scope.currentDate;
+        //$scope.registryTransactionFormData.statusTxt = 'x';
+        //$scope.registryTransactionFormCategorySplits = [];
+        //var obj = new Object();
+        //obj.category = "";
+        //obj.txnAmount = "";
+        //$scope.registryTransactionFormCategorySplits.push(obj);
+        //$scope.showTransactionModal = true;
+        $rootScope.$broadcast('transaction-operation-requested',{});
+        //$("#transactionDetailsForm").show();
+    };
 
 
 });

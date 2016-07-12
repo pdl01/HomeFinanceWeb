@@ -25,14 +25,6 @@
         <link rel="shortcut icon" href="favicon.ico" />
 
         <script src="/script/app/dashboard/app.js"></script>
-        <script src="/script/app/dashboard/dashboardcontroller.js"></script>
-        <script src="/script/app/dashboard/navcontroller.js"></script>
-        <script src="/script/app/dashboard/onlinecontroller.js"></script>
-        <script src="/script/app/dashboard/registrycontroller.js"></script>
-        <script src="/script/app/dashboard/reportcontroller.js"></script>
-        <script src="/script/app/dashboard/scheduledtransactioncontroller.js"></script>
-        <script src="/script/app/dashboard/summarycontroller.js"></script>
-        <script src="/script/app/dashboard/transactionformcontroller.js"></script>
         <script src="/script/app/services/accountservice.js"></script>
         <script src="/script/app/services/registryservice.js"></script>
         <script src="/script/app/services/reportservice.js"></script>
@@ -65,16 +57,16 @@
 
             <div id="appMain">
                 <div id="appMainTabs">
-                    <div id="appMainTabsAccountName">{{dashboardworkingAccount.name}}</div>
+                    <div id="appMainTabsAccountName">{{selectedAccount.name}}</div>
 
                     <ul>
-                        <li class="tabItem" id="accountMenuItemSummary"  ng-click="setTab('summary')">Summary</li>
-                        <li class="tabItem" id="accountMenuItemRegister" ng-click="setTab('registry')">Register</li>
-                        <li class="tabItem" id="accountMenuItemSchedule" ng-click="setTab('schedule')">Schedule</li>
-                        <li class="tabItem" id="accountMenuItemReport"   ng-click="setTab('report')" >Report</li>
-                        <li class="tabItem" id="accountMenuItemOnline"   ng-click="setTab('online')">Online</li>
-                        <li class="tabItem" id=accountEditLink"          ng-click="clickEditAccount()">Edit</li>
-                        <li class="tabItem" id="accountNewTransaction"   ng-click="showNewTransaction()">New Transaction</li>
+                        <li class="tabItem" id="accountMenuItemSummary" ng-click="setTab("summary"">Summary</li>
+                        <li class="tabItem" id="accountMenuItemRegister" ng-click="setTab("registry")">Register</li>
+                        <li class="tabItem" id="accountMenuItemSchedule" ng-click="setTab("schedule")">Schedule</li>
+                        <li class="tabItem" id="accountMenuItemReport" ng-click="setTab("report")" >Report</li>
+                        <li class="tabItem" id="accountMenuItemOnline" ng-click="setTab("online")">Online</li>
+                        <li class="tabItem" id=accountEditLink" ng-click="clickEditAccount()">Edit</li>
+                        <li class="tabItem" id="accountNewTransaction" ng-click="showNewTransaction()">New Transaction</li>
                     </ul>
                 </div>
                 <div id="accountSummary" ng-show="isTab('summary')" ng-controller="accountSummaryController">
@@ -83,7 +75,7 @@
                 <div id="accountTransactionList" ng-show="isTab('registry')" ng-controller="accountRegistryController">
                     <@registryFilter pageTitle='dashboard' invokedFrom='registry'/>            
                     <div>
-                        <a href="#" ng-click="txnSortType = 'txnDate'; txnSortReverse = ! NewtxnSortReverse">
+                        <a href="#" ng-click="txnSortType = 'txnDate'; txnSortReverse = ! txnSortReverse">
                             Date 
                             <span ng-show="txnSortType == 'txnDate' && !txnSortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="txnSortType == 'txnDate' && txnSortReverse" class="fa fa-caret-up"></span>
@@ -100,18 +92,20 @@
                         </a>
                     </div>
 
-                    <div ng-repeat="x in registryTransactions | orderBy:txnSortType:txnSortReverse" ng-click="showTransactionForm(x)" ng:class="{true:'list - group - item registryTransaction credit',false:'list - group - item registryTransaction'}[x.credit == true]">
+                    <div ng-repeat="x in registryTransactions| orderBy:txnSortType:txnSortReverse" ng-click="showTransactionForm(x)" ng:class="{true:'list - group - item registryTransaction credit',false:'list - group - item registryTransaction'}[x.credit == true]">
                         <span>{{ convertJSDateToTextDate(x.txnDate)}}</span>
                         <span>{{ x.payee}}</span>
                         <span>{{ x.txnAmount | currency }}</span>
                     </div>
-                        
+                    <modal title="Transaction Details" visible="showTransactionModal">
+                        <@transactionDetailsForm 'dashboard'/>
+                    </modal>
                 </div>
                 <div id="accountSchedule" ng-show="isTab('schedule')" ng-controller="accountScheduleController">
-                     <a href="#" ng-click="showNewScheduledTransactionForm()">New Scheduled Transaction</a>
+                    <a href="" ng-click="showNewScheduledTransactionForm()">New Scheduled Transaction</a>
                     Upcoming or Overdue 
                     <@registryFilter pageTitle='dashboard' invokedFrom='schedule'/>            
-                   
+
                     <div ng-repeat="x in scheduledtransactions" class="list-group-item scheduledTransaction">
                         <a href="" ng-click="enterScheduledTxn(x)">Enter</a>
                         <a href="" ng-click="skipScheduledTxn(x)">Skip</a>
@@ -125,9 +119,7 @@
                     <modal title="Scheduled Transaction Details" visible="showScheduledTransactionModal">
                         <@scheduledTransactionDetailsForm 'dashboard'/>
                     </modal>
-
                 </div>
-
                 <div id="accountReports" ng-show="isTab('report')" ng-controller="accountReportController">
                     <div id="reportControl">
                         <select name="reportType" id="reportType" ng-model="reportControl.reportType">
@@ -190,13 +182,13 @@
                 </div>
                 <div id="accountOnlineFunctions" ng-show="isTab('online')" ng-controller="accountOnlineController">
 
-                    <div>online Last Transaction Date:{{workingAccount.lastImportedTransactionDate}} 
-                        <div ng-if="workingAccount.webAddress != null"><a href="{{workingAccount.webAddress}}" target="_blank">Web Site</a></div>
+                    <div>online Last Transaction Date:{{selectedAccount.lastImportedTransactionDate}} 
+                        <div ng-if="selectedAccount.webAddress != null"><a href="{{selectedAccount.webAddress}}" target="_blank">Web Site</a></div>
                     </div>
                     <form enctype="multipart/form-data" id="onlineDataUploadForm">
                         Data:<br>
                         <button ng-click="selectFile()">Upload Your File</button>
-                        <input type="hidden" name="accountId" value="{{workingAccount.id}}">
+                        <input type="hidden" name="accountId" value="{{selectedAccount.id}}">
                         <input type="file" style="display:none" 
                                id="file" name='file' />
                         <button ng-click="addOnlineData()">Submit!</button>
@@ -231,7 +223,7 @@
                         </a>
                     </div>
                     <div id="pendingTransactionList">
-                        <div ng-repeat="x in pendingTransactions|  orderBy:onlineSortType:onlineSortReverse" ng-click="" ng-class="{true:'list - group - item registryTransaction credit',false:'list - group - item registryTransaction'}[x.credit == true]">
+                        <div ng-repeat="x in pendingRegistryTransactions| orderBy:onlineSortType:onlineSortReverse" ng-click="" ng-class="{true:'list - group - item registryTransaction credit',false:'list - group - item registryTransaction'}[x.credit == true]">
                             <a href="" ng-click="acceptPendingTransactionAsNew(x)">New</a>
                             <a href="" ng-click="dismissMatchForPending(x)">Dismiss</a>
                             <a href="" ng-click="showOnlineMatchingDialog(x)">Match</a>
@@ -279,12 +271,7 @@
                     <button ng-if="accountFormData.id != null" ng-click="clickDeleteAccount()">Delete Account</button>
                 </div>
             </modal>
-            
-            <modal title="Transaction Details" visible="showTransactionModal" >
-                <div ng-controller="transactionFormController">
-                <@transactionDetailsForm 'dashboard'/>
-                </div>
-            </modal>
+
 
 
 
@@ -301,7 +288,6 @@
                     <button ng-click="clickBudgetItemCancel()">Cancel</button>
                 </div>
             </modal>
-            <!--
             <modal title="Notification Details" visible="showNotificationsModal" >
                 <div id="notificationList">
                     <div ng-repeat="x in notifications| orderBy:createdOn" ng-click="" class="list-group-item notificationList">
@@ -313,7 +299,7 @@
                 </div>
 
             </modal>            
-            -->
+
         </div>
         <@showLayoutFooter 'dashboard'/>
 

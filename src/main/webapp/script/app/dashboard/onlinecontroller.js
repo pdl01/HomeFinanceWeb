@@ -2,7 +2,7 @@ angular.module('HFWApp').controller('accountOnlineController', function ($rootSc
     $scope.workingAccount = {};
     $scope.onlineData = {};
     $scope.uploadProgress = "";
-    $scope.pendingRegistryTransactions = [];
+    $scope.pendingTransactions = [];
     $scope.showOnlineMatchingModal = false;
     $scope.onlineTxnMatches = [];
 
@@ -16,8 +16,17 @@ angular.module('HFWApp').controller('accountOnlineController', function ($rootSc
     
     $rootScope.$on('account-selected', function (event, data) {
         $scope.workingAccount = data;
+        $scope.getPendingTransactions();
+
     });
 
+    $scope.getPendingTransactions = function() {
+        $scope.pendingRegistryTransactions = {};
+        RegistryService.getPendingTransactionsForAccount($scope.workingAccount.id).success(function (response) {
+            $scope.pendingRegistryTransactions = response;
+        });
+        
+    };
     $scope.selectFile = function () {
         $("#file").click();
     };
@@ -74,7 +83,7 @@ angular.module('HFWApp').controller('accountOnlineController', function ($rootSc
     $scope.addOnlineData = function () {
         console.log($scope.onlineData);
         console.log($('#file'));
-        RegistryService.uploadData($scope.selectedAccount.id, $('#file'));
+        RegistryService.uploadData($scope.workingAccount.id, $('#file'));
         /*RegistryService.uploadData($scope.selectedAccount.id,$('#file')).success(function(response) {
          $scope.onlineData = "";
          console.log("Successful");
@@ -82,13 +91,13 @@ angular.module('HFWApp').controller('accountOnlineController', function ($rootSc
          */
     };
     $scope.acceptAllOnlineTxns = function () {
-        if ($scope.selectedAccount == null) {
+        if ($scope.workingAccount == null) {
             alert("Please choose an account");
             return;
         }
-        RegistryService.acceptAllPendingTransactionAsNew($scope.selectedAccount.id).success(function (response) {
+        RegistryService.acceptAllPendingTransactionAsNew($scope.workingAccount.id).success(function (response) {
             //$scope.registryTransactions.push(response);
-            $scope.$emit('transactionSaved', $scope.selectedAccount.id);
+            $scope.$emit('transactionSaved', $scope.workingAccount.id);
             console.log(response);
         });
     };

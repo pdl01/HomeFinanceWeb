@@ -1,7 +1,7 @@
 angular.module('HFWApp').controller('accountScheduleController', function ($rootScope,$scope, $interval, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService, ScheduledTransactionService, TransactionStatusLookupService, NotificationService, NameLookupService) {
     $scope.workingAccount = {};
     $scope.scheduledtransactions = [];
-    $scope.scheduledTransactionFormData = {}
+    $scope.scheduledTransactionFormData = {};
     $scope.showScheduledTransactionModal = false;
     $scope.scheduledTransactionFormCategorySplits = [];
     $scope.scheduledDateControl = {};
@@ -11,7 +11,13 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
     
     
     $rootScope.$on('account-selected', function (event, data) {
-        $scope.workingAccount = data;
+        $scope.workingAccount = angular.copy(data);
+        $scope.filterScheduledToCurrentDate();
+        /*
+        $scope.scheduledDateControl.year = $scope.serverDateArray[0];
+        $scope.scheduledDateControl.month = $scope.serverDateArray[1];
+        $scope.getScheduledTransactionsForMonth($scope.workingAccount.id);
+        */
     });
     $scope.$watch('scheduledTransactionFormCategorySplits[0].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
@@ -25,7 +31,6 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
 
         }
     });
-
     $scope.$watch('scheduledTransactionFormCategorySplits[1].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -157,7 +162,6 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
                 if (value.category != '') {
                     $scope.scheduledTransactionFormCategorySplits.push(value);
                 }
-
             });
         });
         $scope.hideTxnRetrievedCategories = true;
@@ -168,6 +172,7 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
     $scope.getUpcomingSchedule = function (account) {
         $scope.scheduledtransactions = [];
         ScheduledTransactionService.getUpcomingScheduledTransactionsForAccount(account.id).success(function (response) {
+            
             for (idx in response) {
                 $scope.scheduledtransactions.push(response[idx]);
                 //console.log(txn.id);
@@ -245,6 +250,12 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
             });
 
         }
+
+    };
+    $scope.filterScheduledToCurrentDate = function () {
+        $scope.scheduledDateControl.year = $scope.serverDateArray[0];
+        $scope.scheduledDateControl.month = $scope.serverDateArray[1];
+        $scope.getScheduledTransactionsForMonth($scope.workingAccount.id);
 
     };
 

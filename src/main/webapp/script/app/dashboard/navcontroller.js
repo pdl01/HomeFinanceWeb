@@ -25,6 +25,13 @@ angular.module('HFWApp').controller('navController', function ($rootScope,$scope
     $scope.showNotificationsModal = false;
     $scope.selectednotification = null;
 
+    $rootScope.$on('transaction-operation-completed', function (event, data) {
+        //$scope.getTransactionsForMonth($scope.workingAccount.id);
+        if (data != undefined && data.primaryAccount != undefined){
+            $scope.refreshAccountValue(data.primaryAccount);
+        }
+    });
+
 
     $scope.setAsCurrent = function (x) {
         $scope.workingAccount = x;
@@ -98,7 +105,7 @@ angular.module('HFWApp').controller('navController', function ($rootScope,$scope
     $scope.getAccounts = function () {
         AccountService.getAccounts().success(function (response) {
             angular.forEach(response, function (value, key) {
-                console.log(value);
+                //console.log(value);
                 if (value.accountType == 'Checking') {
                     $scope.checking_accounts.push(value);
                 } else if (value.accountType == 'Savings') {
@@ -133,6 +140,14 @@ angular.module('HFWApp').controller('navController', function ($rootScope,$scope
         $scope.getAccounts();
     };
 
+    $scope.refreshAccountValues = function() {
+        
+    };
+
+    $scope.refreshAccountValue = function(accountId) {
+        
+    };
+    
     $scope.showNotifications = function () {
         NotificationService.getNotificationsByStatus("0").success(function (response) {
             console.log(response);

@@ -1,19 +1,19 @@
 <#macro transactionDetailsForm pageTitle=''>
-                Account:  {{selectedAccount.name}}<br>
-                <input type="hidden" ng-model="registryTransactionFormData.primaryAccount">
-                <input type="hidden" ng-model="registryTransactionFormData.id">
-                <div ng-if="selectedAccount.accountType == 'Checking'">Check #<input  ng-model="registryTransactionFormData.txnPersonalRefNumber"></div>
-                <!--<input type="text" ng-model="registryTransactionFormData.txnDate"><br>-->
+                Account:  {{workingAccount.name}}<br>
+                <input type="hidden" ng-model="workingTransaction.primaryAccount">
+                <input type="hidden" ng-model="workingTransaction.id">
+                <div ng-if="workingAccount.accountType == 'Checking'">Check #<input  ng-model="workingTransaction.txnPersonalRefNumber"></div>
+                <!--<input type="text" ng-model="workingTransaction.txnDate"><br>-->
                     <div class="date-input">
                     Date<div class="input-group">
-                    <input type="text" class="form-control " uib-datepicker-popup="yyyy-MM-dd" ng-model="registryTransactionFormData.txnDate" is-open="registryTransactionDateField.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                    <input type="text" class="form-control " uib-datepicker-popup="yyyy-MM-dd" ng-model="workingTransaction.txnDate" is-open="registryTransactionDateField.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="openRegistryTransactionDateField()"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
                     </div>
                     </div>
-                    Payee Name:<input typ="text" ng-model="registryTransactionFormData.payee"><br>
-                Transaction Amount:<input typ="text" size="5" ng-model="registryTransactionFormData.txnAmount"><input type="checkbox" value="true" ng-model="registryTransactionFormData.credit">Is Credit?<br>
+                    Payee Name:<input typ="text" ng-model="workingTransaction.payee"><br>
+                Transaction Amount:<input typ="text" size="5" ng-model="workingTransaction.txnAmount"><input type="checkbox" value="true" ng-model="workingTransaction.credit">Is Credit?<br>
 
                 Category <a ng-click="addSplit()">Add Split</a><br/>
                 <div id="categorySplits">
@@ -33,9 +33,9 @@
                             <li class="retrievedCategoryItem"><a class="retrievedCategoryItem" ng-click="selectRetrievedCategory(category)">{{category}}</a></li>
                         </ul>
                     </div>
-                    Status:<input type="radio" name="statusTxt" value="c" ng-model="registryTransactionFormData.statusTxt">Cleared
-                    <input type="radio" name="statusTxt" value="v" ng-model="registryTransactionFormData.statusTxt">Void
-                    <input type="radio" name="statusTxt" value="x" ng-model="registryTransactionFormData.statusTxt">None
+                    Status:<input type="radio" name="statusTxt" value="c" ng-model="workingTransaction.statusTxt">Cleared
+                    <input type="radio" name="statusTxt" value="v" ng-model="workingTransaction.statusTxt">Void
+                    <input type="radio" name="statusTxt" value="x" ng-model="workingTransaction.statusTxt">None
                     <br/>
                     <button ng-click="addRegistryTransaction()">Save</button>
                     <button ng-click="clickNewTransactionCancel()">Cancel</button>

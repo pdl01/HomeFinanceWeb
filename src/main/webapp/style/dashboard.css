@@ -126,13 +126,13 @@
 #accountReports{
     width:100%;
     overflow-y: scroll;
-    display:none;
+    /*display:none;*/
 }
 
 #accountOnlineFunctions{
     width:100%;
     /*overflow-y: scroll;*/
-    display:none;
+    /*display:none;*/
     
 }
 .settingsSection{
@@ -151,10 +151,11 @@ ul{margin-bottom:0px;}
 #appMainTabsAccountName {
     float:right;
 }
-
+/*
 #accountSchedule {
     display:none;
 }
+*/
 
 .date-input {
     width:50%;
