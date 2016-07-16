@@ -5,11 +5,21 @@ angular.module('HFWApp').controller('transactionFormController', function ($root
     
     $rootScope.$on('transaction-operation-requested',function(event,data) {
         $scope.workingTransaction = {};
+        $scope.registryTransactionFormCategorySplits = [];
         $scope.workingTransaction = angular.copy(data);
         var obj = new Object();
         obj.category = "";
         obj.txnAmount = "";
-        $scope.registryTransactionFormCategorySplits.push(obj);
+        //$scope.registryTransactionFormCategorySplits.push(obj);
+        angular.forEach($scope.workingTransaction.categorySplits, function (value, key) {
+            //this.push(key + ': ' + value);
+            if (value.category != '') {
+                $scope.registryTransactionFormCategorySplits.push(value);
+            }
+
+        });
+
+    
     });
 
     $rootScope.$on('account-selected', function (event, data) {
@@ -228,6 +238,35 @@ angular.module('HFWApp').controller('transactionFormController', function ($root
         $scope.showTransactionModal = true;
         //$("#transactionDetailsForm").show();
     };
+
+    $scope.getCategories = function (val) {
+        CategoryLookupService.lookup(val).success(function (response) {
+
+            if (response.length > 0) {
+                $scope.hideTxnRetrievedCategories = false;
+                $scope.retrievedCategories = response;
+            } else {
+                $scope.hideTxnRetrievedCategories = true;
+                $scope.retrievedCategories = [];
+            }
+
+        });
+    };
+
+    $scope.selectRetrievedCategory = function (val, element) {
+        console.log(val);
+        console.log($scope.categoryTypingIndex);
+        if ($scope.categoryTypingIndex != "-1") {
+            //$scope.budgetItemFormData.category = val;
+            $scope.registryTransactionFormCategorySplits[$scope.categoryTypingIndex].category = val;
+            $scope.retrievedCategories = [];
+            $scope.hideTxnRetrievedCategories = true;
+            $scope.categoryTypingIndex = -1
+        }
+        console.log($scope.categoryTypingIndex);
+
+    };
+
 
 });
 
