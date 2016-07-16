@@ -94,33 +94,6 @@ angular.module('HFWApp').controller('dashboardController', function ($rootScope,
     };
 
 
-    $scope.getCategories = function (val) {
-        CategoryLookupService.lookup(val).success(function (response) {
-
-            if (response.length > 0) {
-                $scope.hideTxnRetrievedCategories = false;
-                $scope.retrievedCategories = response;
-            } else {
-                $scope.hideTxnRetrievedCategories = true;
-                $scope.retrievedCategories = [];
-            }
-
-        });
-    };
-
-    $scope.selectRetrievedCategory = function (val, element) {
-        console.log(val);
-        console.log($scope.categoryTypingIndex);
-        if ($scope.categoryTypingIndex != "-1") {
-            //$scope.budgetItemFormData.category = val;
-            $scope.registryTransactionFormCategorySplits[$scope.categoryTypingIndex].category = val;
-            $scope.retrievedCategories = [];
-            $scope.hideTxnRetrievedCategories = true;
-            $scope.categoryTypingIndex = -1
-        }
-        console.log($scope.categoryTypingIndex);
-
-    };
 
 
 
