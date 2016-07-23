@@ -1,7 +1,9 @@
-var hfwApp = angular.module('HFWSettingsApp', []);
+angular.module('HFWSettingsApp', ['ui.bootstrap','SettingsServiceModule']);
+angular.module('HFWSettingsApp').controller('settingsController', function ($rootScope,$scope,SettingsService) {
+//var hfwApp = angular.module('HFWSettingsApp', []);
 
 
-hfwApp.controller('settingsController', function ($scope, $http, SettingsService) {
+//hfwApp.controller('settingsController', function ($scope, $http, SettingsService) {
     $scope.repositoryFormData = {};
     $scope.basicSecurityFormData = {};
     $scope.themeFormData = {};
@@ -108,8 +110,8 @@ hfwApp.controller('settingsController', function ($scope, $http, SettingsService
     $scope.init();
 
 });
-
-hfwApp.directive('modal', function () {
+/*
+angular.module('HFWSettingsApp').directive('modal', function () {
     return {
         template: '<div class="modal fade">' +
                 '<div class="modal-dialog">' +
@@ -151,4 +153,4 @@ hfwApp.directive('modal', function () {
     };
     
 });
-
+*/

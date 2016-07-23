@@ -1,4 +1,7 @@
-hfwApp.factory("SettingsService", function ($http) {
+angular.module('SettingsServiceModule',[]);
+
+angular.module('SettingsServiceModule').service("SettingsService", function ($http) {
+//hfwApp.factory("SettingsService", function ($http) {
     //var users = ["Peter", "Daniel", "Nina"]
     var SettingsService = {};
 
