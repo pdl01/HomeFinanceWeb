@@ -76,6 +76,9 @@
       <property name="accountManager" ref="accountManager"/>
       <property name="registerManager" ref="registerManager"/>       
   </bean>
+  <bean id="userManager" class="com.hf.hfw.manager.UserManagerImpl">
+        <property name="settingsManager" ref="settingsManager"/>
+  </bean>
   <!--
   <bean id="frameManager" class="com.keystone.manager.FrameManagerImpl">    
   	<property name="frameDAO" ref="frameDAO"/>

@@ -9,24 +9,31 @@
                 <meta name="_csrf_header" content="${_csrf.headerName}"/>      
 <title>Settings</title>
         <script src="/script/jquery-1.11.1.min.js"></script>
+        <script src="/script/angular/1.5/angular.min.js"></script>
+        <script src="/script/angular/1.5/angular-route.min.js"></script>
+        <script src="/script/angular/1.5/angular-animate.min.js"></script>
+<!--
         <script src="/script/angular/1.2.26/angular.min.js"></script>
         <script src="/script/angular/1.2.26/angular-route.min.js"></script>
+-->
         <script src="/script/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="/script/ui-bootstrap-tpls-1.1.2.min.js"></script>
         <link rel="stylesheet" href = "/style/bootstrap/3.2.0/bootstrap.min.css"/>
+
         <link rel="stylesheet" href = "/style/dashboard.css"/>
         <link rel="stylesheet" href = "/themes/${theme}/theme.css"/>
         <link rel="shortcut icon" href="favicon.ico" />
+        <script src="/script/app/settings/app.js"></script>
 
-
+        <script src="/script/app/settings/services.js"></script>
 
     </head>
 
-    <body>
-        <script src="/script/app/settings/app.js"></script>
-        <script src="/script/app/settings/services.js"></script>
+    <body ng-app="HFWSettingsApp">
+
         <@showLayoutHeader 'settings'/>
 
-        <div ng-app="HFWSettingsApp" ng-controller="settingsController" id="main">
+        <div ng-controller="settingsController" id="main">
 
             <@buildMenu 'settings'/>
 

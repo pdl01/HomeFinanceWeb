@@ -53,7 +53,7 @@ $(document).ready(function(){
 </#macro>
 
 <#macro buildLinks pageTitle=''>
-        <div ng-controller="navController">
+        <div <#if pageTitle=='dashboard'>ng-controller="navController"</#if>>
         <ul>
         <li><a href="/app/dashboard">Accounts</a></li><#if pageTitle=='dashboard'><@buildAccountMenu/></#if>
         <li><a href="/app/notifications">Notifications</a></li>
