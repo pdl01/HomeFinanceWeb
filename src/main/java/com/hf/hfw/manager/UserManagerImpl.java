@@ -32,20 +32,20 @@ public class UserManagerImpl implements UserDetailsService {
         settingsBean.getSettings();
         UserDetails userDetails;
 
-        String user1UserName = settingsBean.getSettings().get("user1.name");
-        String user2UserName = settingsBean.getSettings().get("user2.name");
-        String user3UserName = settingsBean.getSettings().get("user3.name");
+        String user1UserName = settingsBean.getSettings().get("user1name");
+        String user2UserName = settingsBean.getSettings().get("user2name");
+        String user3UserName = settingsBean.getSettings().get("user3name");
         String password = null;
         boolean userFound = false;
         if (userName.equals(user1UserName)) {
             userFound = true;
-            password = settingsBean.getSettings().get("user1.password");
+            password = settingsBean.getSettings().get("user1password");
         } else if (userName.equals(user2UserName)) {
             userFound = true;
-            password = settingsBean.getSettings().get("user2.password");
+            password = settingsBean.getSettings().get("user2password");
         } else if (userName.equals(user3UserName)) {
             userFound = true;
-            password = settingsBean.getSettings().get("user3.password");
+            password = settingsBean.getSettings().get("user3password");
         }
 
         if (userFound) {

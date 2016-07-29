@@ -130,11 +130,11 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
     $scope.clickScheduledTransactionCancel = function () {
         $scope.showScheduledTransactionModal = false;
     };
-
+    
     $scope.skipScheduledTxn = function (scheduledTxn) {
         //call the servie to skip
         ScheduledTransactionService.skipTransaction(scheduledTxn.id).success(function (response) {
-            alert("Skipped");
+        $scope.getScheduledTransactionsForMonth($scope.workingAccount.id);
             //update the txn to denote skipped status
         });
     };

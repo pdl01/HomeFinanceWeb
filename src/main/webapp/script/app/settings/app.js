@@ -8,12 +8,15 @@ angular.module('HFWSettingsApp').controller('settingsController', function ($roo
     $scope.basicSecurityFormData = {};
     $scope.themeFormData = {};
     $scope.categories = [];
-
+    $scope.users = [];
+    $scope.limitedSecurityUserData = {};
+    
     $scope.init = function () {
         $scope.getRepositoryConfig();
         $scope.getThemeConfig();
         $scope.getBasicSecurityConfig();
         $scope.getCategoryInformation();
+        $scope.getLimitedSecurityUsers();
     };
 
     $scope.getRepositoryConfig = function () {
@@ -64,6 +67,92 @@ angular.module('HFWSettingsApp').controller('settingsController', function ($roo
                 $scope.basicSecurityFormData.password = response.settings.password;
             }
         });        
+    };
+    $scope.getLimitedSecurityUsers = function() {
+        $scope.users = [];
+        SettingsService.getLimitedUserSecurityConfig().success(function (response) {
+            console.log(response);
+            $scope.limitedSecurityUserData = response.settings;
+            /*
+            var user={};
+            if (response.settings['user1.name'] != undefined){
+                user.username = response.settings['user1.name'];
+                user.password = response.settings['user1.password'];
+            } else {
+            
+                user.username="";
+                user.password="";
+            }
+
+            $scope.users.push(user);
+            
+            user={};
+            if (response.settings['user2.name'] != undefined){
+                user.username = response.settings['user2.name'];
+                user.password = response.settings['user2.password'];
+            } else {
+            
+                user.username="";
+                user.password="";
+            }
+            $scope.users.push(user);
+
+            user={};
+            if (response.settings['user3.name'] != undefined){
+                user.username = response.settings['user3.name'];
+                user.password = response.settings['user3.password'];
+            } else {
+            
+                user.username="";
+                user.password="";
+            }
+            $scope.users.push(user);
+            */
+        });        
+        
+    };
+    
+    $scope.saveLimitedUserSecurityConfig = function () {
+        console.log($scope.limitedSecurityUserData);
+        var userSecurityData = {};
+        userSecurityData.typeOfSetting = "limitedusersecurity";
+        userSecurityData.settings = $scope.limitedSecurityUserData;
+        SettingsService.saveLimitedUserSecurityConfig(userSecurityData).success(function (response) {
+            console.log(response);
+        });
+        
+        /*
+        //normalize the users
+        var tempUsers = [];
+        if ($scope.users[0] != undefined && $scope.users[0].username != '') {
+            tempUsers.push($scope.users[0]);
+        }
+        if ($scope.users[1] != undefined && $scope.users[1].username != '') {
+            tempUsers.push($scope.users[1]);
+        }
+        if ($scope.users[2] != undefined && $scope.users[2].username != '') {
+            tempUsers.push($scope.users[2]);
+        }
+        
+        
+        var userInfo = {};
+        if (tempUsers[0] != undefined) {
+            userInfo['user1.name'] = tempUsers[0].username;
+            userInfo['user1.password'] = tempUsers[0].password;
+        }
+        if (tempUsers[1] != undefined) {
+            userInfo['user2.name'] = tempUsers[1].username;
+            userInfo['user2.password'] = tempUsers[1].password;
+        }
+        if (tempUsers[2] != undefined) {
+            userInfo['user3.name'] = tempUsers[2].username;
+            userInfo['user3.password'] = tempUsers[2].password;
+        }
+        
+        
+        console.log(userInfo);
+        */
+       
     };
     
     $scope.saveRepositoryInformation = function () {

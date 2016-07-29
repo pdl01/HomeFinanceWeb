@@ -59,8 +59,8 @@ public class SettingsManagerImpl implements SettingsManager {
         SettingsBean settingsBean = new SettingsBean();
         settingsBean.setTypeOfSetting(TYPE_OF_SETTING_LIMITEDUSERSECURITY);
         HashMap<String, String> settings = new HashMap<String, String>();
-        settings.put("user1.name", "user1");
-        settings.put("user1.password", "admin");
+        settings.put("user1name", "user1");
+        settings.put("user1password", "admin");
         settingsBean.setSettings(settings);
         return settingsBean;
     }

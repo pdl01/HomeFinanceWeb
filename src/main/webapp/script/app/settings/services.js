@@ -52,6 +52,25 @@ angular.module('SettingsServiceModule').service("SettingsService", function ($ht
         })
     };
 
+    SettingsService.getLimitedUserSecurityConfig = function () {
+        return $http({
+            method: 'GET',
+            url: '/services/api/v1/settings/limitedusersecurity'
+        });
+    };
+
+    SettingsService.saveLimitedUserSecurityConfig = function (settingsData) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+
+        return $http({
+            method: 'POST',
+            url: '/services/api/v1/settings/limitedusersecurity',
+            data: JSON.stringify(settingsData), // pass in data as strings
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
+        })
+    };
+    
     SettingsService.getThemeConfig = function () {
         return $http({
             method: 'GET',

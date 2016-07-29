@@ -51,6 +51,8 @@ public class SettingsServiceImpl implements SettingsService {
             settingsBean = this.settingsManager.getThemeSetting();
         } else if ("basicsecurity".equals(typeOfSettings)) {
             settingsBean = this.settingsManager.getBasicSecuritySetting();
+        } else if ("limitedusersecurity".equals(typeOfSettings)) {
+            settingsBean = this.settingsManager.getLimitedSecurityUsers();
         }
         return settingsBean;
 
@@ -77,13 +79,14 @@ public class SettingsServiceImpl implements SettingsService {
             settingsBean.settings.put("password", settingsbean.getSettings().get("password"));
             this.settingsManager.saveBasicSecuritySettings(settingsbean);
         } else if ("limitedusersecurity".equals(typeOfSettings)){
-            SettingsBean settingsBean = this.settingsManager.getBasicSecuritySetting();
-            settingsBean.settings.put("user1.name", settingsbean.getSettings().get("user1.name"));
-            settingsBean.settings.put("user1.password", settingsbean.getSettings().get("user1.password"));
-            settingsBean.settings.put("user2.name", settingsbean.getSettings().get("user2.name"));
-            settingsBean.settings.put("user2.password", settingsbean.getSettings().get("user2.password"));
-            settingsBean.settings.put("user3.name", settingsbean.getSettings().get("user3.name"));
-            settingsBean.settings.put("user3.password", settingsbean.getSettings().get("user3.password"));
+            SettingsBean newsettingsBean = this.settingsManager.getLimitedSecurityUsers();
+            newsettingsBean.settings.put("user1name", settingsbean.getSettings().get("user1name"));
+            newsettingsBean.settings.put("user1password", settingsbean.getSettings().get("user1password"));
+            newsettingsBean.settings.put("user2name", settingsbean.getSettings().get("user2name"));
+            newsettingsBean.settings.put("user2password", settingsbean.getSettings().get("user2password"));
+            newsettingsBean.settings.put("user3name", settingsbean.getSettings().get("user3name"));
+            newsettingsBean.settings.put("user3password", settingsbean.getSettings().get("user3password"));
+            this.settingsManager.saveLimitedSecurityUsers(newsettingsBean);
         }
         return settingsbean;
     }
