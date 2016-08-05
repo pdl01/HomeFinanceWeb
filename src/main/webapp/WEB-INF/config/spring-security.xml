@@ -7,9 +7,14 @@
 	http://www.springframework.org/schema/security/spring-security-4.0.xsd">
  
 	<http auto-config="true">
+                    <intercept-url pattern="/app/login**" access="hasRole('ROLE_ANONYMOUS')"/>
 		<intercept-url pattern="/app**" access="hasRole('ROLE_USER')" />
-                		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
-
+                <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+               <form-login login-page="/app/login"
+                     username-parameter="username"
+                     password-parameter="password"
+                     default-target-url="/app/dashboard"
+                     authentication-failure-url="/Access_Denied" />
 	</http>
  
 	<authentication-manager>
