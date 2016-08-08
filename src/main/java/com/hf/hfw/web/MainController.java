@@ -2,6 +2,7 @@
 package com.hf.hfw.web;
 
 import com.hf.hfw.files.listeners.TransactionFileImportListener;
+import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
@@ -153,6 +154,8 @@ public class MainController {
     }
     @RequestMapping(value="/login", method = RequestMethod.GET)
     public String loginPage (HttpServletRequest request, HttpServletResponse response) {
+        
+        Enumeration<String> attributes = request.getAttributeNames();
         
         return "login";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
     }

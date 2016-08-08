@@ -38,6 +38,12 @@ vertical-align: text-top;
         </style>
 </head>
 <body>
+
+<#if Session.SPRING_SECURITY_LAST_EXCEPTION?? && Session.SPRING_SECURITY_LAST_EXCEPTION.message?has_content>
+    
+    The username or password were not correct. Please retry.
+</#if>
+
 <form method="POST" action="/login">
 <div id="loginForm">
     
@@ -50,3 +56,5 @@ vertical-align: text-top;
 </form>
 </body>
 </html>
+
+
