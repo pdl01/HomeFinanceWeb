@@ -48,7 +48,7 @@ vertical-align: text-top;
 <div id="loginForm">
     
     <div class="formLabel">Username:</div><div class="formInput"><input type="text" name="username"></div>
-    <div class="formLabel">Password:</div><div class="formInput"><input type="text" name="password"></div>
+    <div class="formLabel">Password:</div><div class="formInput"><input type="password" name="password"></div>
     <input type="hidden" name="${_csrf.parameterName}" 	value="${_csrf.token}" />
     <div class="formControls"><input type="submit" value="Login"></div>
 
