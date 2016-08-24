@@ -83,7 +83,7 @@
                 <div id="accountTransactionList" ng-show="isTab('registry')" ng-controller="accountRegistryController">
                     <@registryFilter pageTitle='dashboard' invokedFrom='registry'/>            
                     <div>
-                        <a href="#" ng-click="txnSortType = 'txnDate'; txnSortReverse = ! NewtxnSortReverse">
+                        <a href="#" ng-click="txnSortType = 'txnDate'; txnSortReverse = ! txnSortReverse">
                             Date 
                             <span ng-show="txnSortType == 'txnDate' && !txnSortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="txnSortType == 'txnDate' && txnSortReverse" class="fa fa-caret-up"></span>
