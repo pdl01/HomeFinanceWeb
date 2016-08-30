@@ -17,19 +17,51 @@
         <link rel="stylesheet" href = "/themes/${theme}/theme.css"/>
         <link rel="shortcut icon" href="favicon.ico" />
 
+        <script src="/script/app/notifications/app.js"></script>
+        <script src="/script/app/services/notificationservice.js"></script>
+
 
 
     </head>
 
     <body>
-        <script src="/script/app/notifications/app.js"></script>
-        <script src="/script/app/services.js"></script>
 
         <@showLayoutHeader 'notifications'/>
 
         <div ng-app="HFWNotificationsApp" ng-controller="notificationsController" id="main">
         <@buildMenu 'notifications'/>
             <div id="appMain">
+                
+                <div id="notificationList">
+                               
+                    <div>
+                        <a href="#" ng-click="txnSortType = 'createdOn'; txnSortReverse = ! txnSortReverse">
+                            Date 
+                            <span ng-show="txnSortType == 'createdOn' && !txnSortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="txnSortType == 'createdOn' && txnSortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                        <a href="#" ng-click="txnSortType = 'subject'; txnSortReverse = ! txnSortReverse">
+                            Notification 
+                            <span ng-show="txnSortType == 'subject' && !txnSortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="txnSortType == 'subject' && txnSortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                        <a href="#" ng-click="txnSortType = 'subject'; txnSortReverse = ! txnSortReverse">
+                            Message 
+                            <span ng-show="txnSortType == 'message' && !txnSortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="txnSortType == 'message' && txnSortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </div>
+
+                    <div ng-repeat="x in notifications | orderBy:txnSortType:txnSortReverse" ng-click="" ng:class="{true:'list - group - item notifications unread',false:'list - group - item notifications'}[x.status == 0]">
+                        <span>{{x.createdOn | date: 'yyyy-MM-dd'}}</span>
+                        <span>{{x.subject}}</span>
+                        <span>{{x.message}}</span>
+
+                    </div>
+                        
+                </div>
+
+
             </div>
         </div>
 

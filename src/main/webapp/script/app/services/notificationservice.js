@@ -1,6 +1,6 @@
 angular.module('NotificationServiceModule',[]);
 
-angular.module('NotificationServiceModule').service("NotificationService", function ($http) {
+angular.module('NotificationServiceModule').service('NotificationService', function ($http) {
     var NotificationService = {};
 
     NotificationService.getNotificationsByStatus = function (status) {
