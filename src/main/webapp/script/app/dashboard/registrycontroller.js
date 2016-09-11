@@ -4,6 +4,17 @@ angular.module('HFWApp').controller('accountRegistryController', function ($root
     $scope.txnDateControl = {};
     $scope.txnDateControl.year = "";
     $scope.txnDateControl.month = "";
+    $scope.txnDateControl.yearmonth = "2016-08";
+    $scope.txnDateControl.selectopened = false;
+    
+    $scope.registrymaxDate = new Date(2020, 5, 22);
+    $scope.registryminDate = new Date(2000, 5, 22);
+    $scope.registrydateOptions = {
+        formatYear: 'yyyy',
+        formatMonth: 'MM',
+        startingDay: 1
+    };
+
     
     $scope.txnSortType = 'txnDate'; // set the default sort type
     $scope.txnSortReverse = false;  // set the default sort order
@@ -19,7 +30,21 @@ angular.module('HFWApp').controller('accountRegistryController', function ($root
 
     $scope.showTransactionModal = false;
     
-
+    $scope.$watch('txnDateControl.yearmonth', function (newValue, oldValue) {
+        console.log(oldValue);
+        console.log(newValue);
+        var xDate = new Date(newValue);
+        $scope.txnDateControl.year =""+xDate.getFullYear();
+        console.log($scope.txnDateControl.year);
+        $scope.txnDateControl.month=xDate.getMonth()+1;
+        if ($scope.txnDateControl.month < 10) {
+            $scope.txnDateControl.month = "0"+$scope.txnDateControl.month;
+        }
+        console.log($scope.txnDateControl.month);
+        $scope.getTransactionsForMonth($scope.workingAccount.id);
+        
+    });
+    
     $rootScope.$on('account-selected', function (event, data) {
         $scope.workingAccount = angular.copy(data);
         $scope.filterToCurrentDate();
@@ -58,8 +83,15 @@ angular.module('HFWApp').controller('accountRegistryController', function ($root
          */
     };
 
+    $scope.filterFromCalendar = function () {
+        console.log($scope.txnDateControl);
+    }
+    $scope.openRegistryDateSelect = function() {
+        $scope.txnDateControl.selectopened = true;
+    };
     $scope.getTransactionsForMonth = function (accountId) {
         var dateToRetrieve = $scope.txnDateControl.year + "-" + $scope.txnDateControl.month;
+        
         console.log(accountId);
         $scope.registryTransactions = [];
         RegistryService.getRegistryForAccountForMonth(accountId, dateToRetrieve).success(function (response) {
@@ -82,7 +114,8 @@ angular.module('HFWApp').controller('accountRegistryController', function ($root
     $scope.filterToCurrentDate = function () {
         $scope.txnDateControl.year = $scope.serverDateArray[0];
         $scope.txnDateControl.month = $scope.serverDateArray[1];
-        $scope.getTransactionsForMonth($scope.workingAccount.id);
+        $scope.txnDateControl.yearmonth = $scope.serverDateArray[0]+"-"+$scope.serverDateArray[1];
+        //$scope.getTransactionsForMonth($scope.workingAccount.id);
     };
     $scope.showTransactionForm = function(x) {
         $rootScope.$broadcast('transaction-operation-requested',x);

@@ -7,8 +7,17 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
     $scope.scheduledDateControl = {};
     $scope.scheduledDateControl.year = "";
     $scope.scheduledDateControl.month = "";
+    $scope.scheduledDateControl.yearmonth = "";
+    $scope.scheduledDateControl.selectopened = false;
+
     $scope.payingScheduledTxnId = "";
-    
+    $scope.scheduledmaxDate = new Date(2020, 5, 22);
+    $scope.scheduledminDate = new Date(2000, 5, 22);
+    $scope.scheduleddateOptions = {
+        formatYear: 'yyyy',
+        formatMonth: 'MM',
+        startingDay: 1
+    };
     
     $rootScope.$on('account-selected', function (event, data) {
         $scope.workingAccount = angular.copy(data);
@@ -19,6 +28,23 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
         $scope.getScheduledTransactionsForMonth($scope.workingAccount.id);
         */
     });
+    
+    $scope.$watch('scheduledDateControl.yearmonth', function (newValue, oldValue) {
+        console.log(oldValue);
+        console.log(newValue);
+        var xDate = new Date(newValue);
+        $scope.scheduledDateControl.year =""+xDate.getFullYear();
+        console.log($scope.scheduledDateControl.year);
+        $scope.scheduledDateControl.month=xDate.getMonth()+1;
+        if ($scope.scheduledDateControl.month < 10) {
+            $scope.scheduledDateControl.month = "0"+$scope.scheduledDateControl.month;
+        }
+        console.log($scope.scheduledDateControl.month);
+        //$scope.getTransactionsForMonth($scope.workingAccount.id);
+        $scope.getScheduledTransactionsForMonth($scope.workingAccount.id);
+        
+    });
+    
     $scope.$watch('scheduledTransactionFormCategorySplits[0].category', function (oldValue, newValue) {
         //console.log(oldValue, newValue);
         //$scope.calcBudgetTotals();
@@ -91,8 +117,9 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
             $scope.scheduledTransactionFormData.payee = response.payee;
             $scope.scheduledTransactionFormData.originalTransactionId = response.originalTransactionId;
             $scope.scheduledTransactionFormData.frequency = response.frequency;
-            $scope.scheduledTransactionFormData.beginDate = response.beginDate;
-            $scope.scheduledTransactionFormData.endDate = response.endDate;
+            
+            $scope.scheduledTransactionFormData.beginDate = ScheduledTransactionService.convertTextDateToJSDate(response.beginDate);
+            $scope.scheduledTransactionFormData.endDate = ScheduledTransactionService.convertTextDateToJSDate(response.endDate);
             $scope.scheduledTransactionFormData.credit = response.credit;
             $scope.scheduledTransactionFormData.numberOfOccurrences = response.numberOfOccurrences;
             $scope.scheduledTransactionFormCategorySplits = [];
@@ -150,7 +177,8 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
             $scope.scheduledTransactionFormData.payee = response.payee;
             $scope.scheduledTransactionFormData.originalTransactionId = response.originalTransactionId;
             $scope.scheduledTransactionFormData.frequency = response.frequency;
-            $scope.scheduledTransactionFormData.beginDate = response.beginDate;
+            //$scope.scheduledTransactionFormData.beginDate = response.beginDate;
+            $scope.scheduledTransactionFormData.beginDate = ScheduledTransactionService.convertTextDateToJSDate(response.beginDate);            
             $scope.scheduledTransactionFormData.endDate = response.endDate;
             $scope.scheduledTransactionFormData.credit = response.credit;
 
@@ -181,6 +209,9 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
             //$scope.txnIndex = $scope.txnIndex + $scope.numberTxnsToRetrieve;
         });
 
+    };
+    $scope.openScheduledDateSelect = function() {
+        $scope.scheduledDateControl.selectopened = true;
     };
     $scope.getScheduledTransactionsForMonth = function (accountId) {
         var dateToRetrieve = $scope.scheduledDateControl.year + "-" + $scope.scheduledDateControl.month;
