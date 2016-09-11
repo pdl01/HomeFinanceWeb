@@ -21,9 +21,9 @@ angular.module('HFWApp').controller('accountOnlineController', function ($rootSc
     });
 
     $scope.getPendingTransactions = function() {
-        $scope.pendingRegistryTransactions = {};
+        $scope.pendingTransactions = [];
         RegistryService.getPendingTransactionsForAccount($scope.workingAccount.id).success(function (response) {
-            $scope.pendingRegistryTransactions = response;
+            $scope.pendingTransactions = response;
         });
         
     };
