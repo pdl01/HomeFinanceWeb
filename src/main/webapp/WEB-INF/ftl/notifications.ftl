@@ -53,7 +53,7 @@
                     </div>
 
                     <div ng-repeat="x in notifications | orderBy:txnSortType:txnSortReverse" ng-click="" ng:class="{true:'list - group - item notifications unread',false:'list - group - item notifications'}[x.status == 0]">
-                        <span>{{x.createdOn | date: 'yyyy-MM-dd'}}</span>
+                        <span>{{x.createdOn | date: 'yyyy-MM-dd HH:mm'}}</span>
                         <span>{{x.subject}}</span>
                         <span>{{x.message}}</span>
 
