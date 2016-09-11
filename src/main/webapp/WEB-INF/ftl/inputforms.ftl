@@ -77,8 +77,24 @@
                         <input type="radio" name="frequency" value="4" ng-model="scheduledTransactionFormData.frequency">Yearly
                         <input type="radio" name="frequency" value="0" ng-model="scheduledTransactionFormData.frequency">One Time
                         <br/>
-                        Begin Date:<input type="text" ng-model="scheduledTransactionFormData.beginDate"><br>
-                        End Date:<input type="text" ng-model="scheduledTransactionFormData.endDate"><br>
+                        <div class="date-input">
+                            Begin Date:
+                            <div class="input-group">
+                                <input type="text" class="form-control " uib-datepicker-popup="yyyy-MM-dd" ng-model="scheduledTransactionFormData.beginDate" is-open="scheduledTransactionDateField.beginopened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openScheduledTransactionDateField('begin')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <!--<input type="text" ng-model="scheduledTransactionFormData.beginDate">--><br>
+                        <div class="input-group">
+                        End Date:<div class="input-group">
+                        <input type="text" class="form-control " uib-datepicker-popup="yyyy-MM-dd" ng-model="scheduledTransactionFormData.endDate" is-open="scheduledTransactionDateField.endopened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openScheduledTransactionDateField('end')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div><!--<input type="text" ng-model="scheduledTransactionFormData.endDate">-->
+                        </div><br>
                         End After <input type="text" ng-model="scheduledTransactionFormData.numberOfOccurrences" size="3"> Occurrences:<br>
                     </div>
                     <br>
@@ -90,7 +106,9 @@
 <#macro registryFilter pageTitle='' invokedFrom=''>
 
 <#if invokedFrom == 'registry'>
-                          <div id="registryFilterControls"><a href="" ng-click="filterToCurrentDate()" class="registryFilter">Now</a>
+                          <div id="registryFilterControls">
+                            
+                        <a href="" ng-click="filterToCurrentDate()" class="registryFilter">Now</a>
                         Year:<select name="selectRegisterYear" ng-model="txnDateControl.year" class="registryFilter">
 
 <#elseif invokedFrom == 'schedule'>
@@ -132,12 +150,30 @@ Month:<select name="selectScheduledMonth" ng-model="scheduledDateControl.month" 
                             <option value="11">11</option>
                             <option value="12">12</option>
                         </select>
+
 <#if invokedFrom == 'registry'>
                        <a href="" ng-click="getTransactionsForMonth(workingAccount.id)" class="registryFilter">Go</a>
+
+                        <div class="date-input">
+                            <div class="input-group">
+                                <input type="text" class="form-control" uib-datepicker-popup="yyyy-MM" ng-model="txnDateControl.yearmonth" is-open="txnDateControl.selectopened" min-date="registryminDate" max-date="registrymaxDate" datepicker-options="registrydateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openRegistryDateSelect()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
 
 <#elseif invokedFrom == 'schedule'>
 
                         <button ng-click="getScheduledTransactionsForMonth(workingAccount.id)" class="registryFilter">Go</button>
+                        <div class="date-input">
+                            <div class="input-group">
+                                <input type="text" class="form-control" uib-datepicker-popup="yyyy-MM" ng-model="scheduledDateControl.yearmonth" is-open="scheduledDateControl.selectopened" min-date="scheduledminDate" max-date="scheduledmaxDate" datepicker-options="scheduleddateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openScheduledDateSelect()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
 
 </#if> 
                     </div>
