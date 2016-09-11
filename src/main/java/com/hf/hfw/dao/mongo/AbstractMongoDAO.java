@@ -1,10 +1,6 @@
 package com.hf.hfw.dao.mongo;
 
 import com.hf.hfw.application.DBFactory;
-import com.hf.hfw.exceptions.RepositoryNotInitializedException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 public abstract class AbstractMongoDAO {
