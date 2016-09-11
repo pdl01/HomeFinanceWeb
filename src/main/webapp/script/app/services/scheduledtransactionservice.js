@@ -73,6 +73,23 @@ angular.module('ScheduledTransactionServiceModule').service("ScheduledTransactio
         //    headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
         //});
     };
+    ScheduledTransactionService.convertTextDateToJSDate = function(date){
+        if (date == undefined || date == null || date == '') {
+            return date;
+        }
+//var txnDate = new Date (date+'T01:00:01Z');
+      //the format is year-mm-dd
+      var dt1   = parseInt(date.substring(8,10));
+      var mon1  = parseInt(date.substring(5,7));
+      var yr1   = parseInt(date.substring(0,5));
+      var date1 = new Date(yr1, mon1-1, dt1);
+      
+      //console.log(dt1+":"+mon1+":"+yr1);
+        //console.log("output:"+txnDate);
+      //txnDate = Date.parse(date);
+      //console.log("output1:"+txnDate);
+        return date1;
+    };
     
 
     return ScheduledTransactionService;
