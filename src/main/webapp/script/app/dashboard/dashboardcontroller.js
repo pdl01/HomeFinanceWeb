@@ -50,7 +50,14 @@ angular.module('HFWApp').controller('dashboardController', function ($rootScope,
     $scope.openRegistryTransactionDateField = function () {
         $scope.registryTransactionDateField.opened = true;
     };
-
+    $scope.openScheduledTransactionDateField = function (item) {
+        if (item == 'begin') {
+            $scope.scheduledTransactionDateField.beginopened = true;
+        } else if(item == 'end') {
+            $scope.scheduledTransactionDateField.endopened = true;
+        }
+        
+    };
     $scope.init = function () {
         $scope.getCurrentDate();
 //        $scope.getAccounts();
@@ -91,6 +98,10 @@ angular.module('HFWApp').controller('dashboardController', function ($rootScope,
     $scope.init();
     $scope.registryTransactionDateField = {
         opened: false
+    };
+    $scope.scheduledTransactionDateField = {
+        beginopened: false,
+        endopened:false
     };
 
 
