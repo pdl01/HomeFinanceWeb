@@ -109,13 +109,12 @@
                           <div id="registryFilterControls">
                             
                         <a href="" ng-click="filterToCurrentDate()" class="registryFilter">Now</a>
-                        Year:<select name="selectRegisterYear" ng-model="txnDateControl.year" class="registryFilter">
+
 
 <#elseif invokedFrom == 'schedule'>
               <div id="scheduledFilterControls"><button ng-click="filterScheduledToCurrentDate()" class="registryFilter">Now</button>
                         Year:<select name="selectScheduledYear" ng-model="scheduledDateControl.year" class="registryFilter">
       
-</#if> 
                             <option value="2020">2020</option>
                             <option value="2019">2019</option>
                             <option value="2018">2018</option>
@@ -130,11 +129,13 @@
                             <option value="2009">2009</option>
                             <option value="2008">2008</option>                             
                         </select>
+</#if> 
+
 <#if invokedFrom == 'registry'>
-                              Month:<select name="selectRegisterMonth" ng-model="txnDateControl.month" class="registryFilter">
+                              
 <#elseif invokedFrom == 'schedule'>
 Month:<select name="selectScheduledMonth" ng-model="scheduledDateControl.month" class="registryFilter">      
-</#if> 
+
 
                         
                             <option value="01">01</option>
@@ -150,13 +151,14 @@ Month:<select name="selectScheduledMonth" ng-model="scheduledDateControl.month" 
                             <option value="11">11</option>
                             <option value="12">12</option>
                         </select>
-
+</#if> 
 <#if invokedFrom == 'registry'>
                        <a href="" ng-click="getTransactionsForMonth(workingAccount.id)" class="registryFilter">Go</a>
-
+                       <a href="" ng-click="filterToPrevMonth(workingAccount.id)" class="registryFilter">Previous</a>
+                       <a href="" ng-click="filterToNextMonth(workingAccount.id)" class="registryFilter">Next</a>
                         <div class="date-input">
                             <div class="input-group">
-                                <input type="text" class="form-control" uib-datepicker-popup="yyyy-MM" ng-model="txnDateControl.yearmonth" is-open="txnDateControl.selectopened" min-date="registryminDate" max-date="registrymaxDate" datepicker-options="registrydateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <input type="text" class="form-control" uib-datepicker-popup="yyyy-MM" ng-model="txnDateControl.yearmonth" is-open="txnDateControl.selectopened" min-date="registryminDate" max-date="registrymaxDate" datepicker-options="registrydateOptions" date-disabled="disabled(date, mode)" datepicker-mode="'month'" ng-required="true" close-text="Close" />
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="openRegistryDateSelect()"><i class="glyphicon glyphicon-calendar"></i></button>
                                 </span>

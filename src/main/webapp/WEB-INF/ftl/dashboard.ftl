@@ -201,6 +201,7 @@
                                id="file" name='file' />
                         <button ng-click="addOnlineData()">Submit!</button>
                         <button ng-click="acceptAllOnlineTxns()">Accept All</button>
+                        <button ng-click="getPendingTransactions()">Refresh</button>
                     </form>
                     <div id="progress">{{uploadProgress}}</div>
                     <div>
