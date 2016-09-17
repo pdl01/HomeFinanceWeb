@@ -64,6 +64,11 @@ angular.module('HFWApp').controller('accountRegistryController', function ($root
         $scope.getTransactionsForMonth($scope.workingAccount.id);
     });
 
+    $rootScope.$on('scheduled-txn-entered', function (event, data) {
+        //$scope.showTransactionModal=true;
+        $rootScope.$broadcast('transaction-operation-requested',data);
+
+    });
 
   $scope.arrFromTransactions = Object.keys($scope.registryTransactions).map(function(key) {
     return $scope.registryTransactions[key];

@@ -1,4 +1,4 @@
-angular.module('HFWApp').controller('navController', function ($rootScope,$scope, $interval, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService, ScheduledTransactionService, TransactionStatusLookupService, NotificationService, NameLookupService) {
+angular.module('HFWApp').controller('navController', function ($rootScope, $scope, $interval, $http, AccountService, RegistryService, ReportService, CategoryLookupService, DateService, ScheduledTransactionService, TransactionStatusLookupService, NotificationService, NameLookupService) {
     $scope.workingAccount = {};
     $scope.checking_accounts = [];
     $scope.savings_accounts = [];
@@ -27,7 +27,7 @@ angular.module('HFWApp').controller('navController', function ($rootScope,$scope
 
     $rootScope.$on('transaction-operation-completed', function (event, data) {
         //$scope.getTransactionsForMonth($scope.workingAccount.id);
-        if (data != undefined && data.primaryAccount != undefined){
+        if (data != undefined && data.primaryAccount != undefined) {
             $scope.refreshAccountValue(data.primaryAccount);
         }
     });
@@ -37,8 +37,8 @@ angular.module('HFWApp').controller('navController', function ($rootScope,$scope
         $scope.workingAccount = x;
         $rootScope.$broadcast('account-selected', x);
     }
-    
-        $scope.addAccount = function () {
+
+    $scope.addAccount = function () {
 
         if ($scope.accountFormData.id == undefined) {  //doing add
             AccountService.saveAccount($scope.accountFormData).success(function (response) {
@@ -101,7 +101,7 @@ angular.module('HFWApp').controller('navController', function ($rootScope,$scope
 
         $scope.hideAccounts[accountType] = !$scope.hideAccounts[accountType];
     };
-    
+
     $scope.getAccounts = function () {
         AccountService.getAccounts().success(function (response) {
             angular.forEach(response, function (value, key) {
@@ -140,14 +140,14 @@ angular.module('HFWApp').controller('navController', function ($rootScope,$scope
         $scope.getAccounts();
     };
 
-    $scope.refreshAccountValues = function() {
-        
+    $scope.refreshAccountValues = function () {
+
     };
 
-    $scope.refreshAccountValue = function(accountId) {
-        
+    $scope.refreshAccountValue = function (accountId) {
+
     };
-    
+
     $scope.showNotifications = function () {
         NotificationService.getNotificationsByStatus("0").success(function (response) {
             console.log(response);
@@ -178,8 +178,8 @@ angular.module('HFWApp').controller('navController', function ($rootScope,$scope
 
     //TODO:rename this to click account
     $scope.clickGoButton = function (x) {
-        
-        
+
+
         console.log(x.id);
         $scope.selectedAccount = x;
         $scope.txnIndex = 0;
@@ -226,7 +226,7 @@ angular.module('HFWApp').controller('navController', function ($rootScope,$scope
 
         //$("#accountDetailsForm").hide();
     };
-    
+
     $scope.init = function () {
         //$scope.getCurrentDate();
         $scope.getAccounts();

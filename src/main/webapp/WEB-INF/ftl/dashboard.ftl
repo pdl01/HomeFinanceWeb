@@ -113,10 +113,11 @@
                     <@registryFilter pageTitle='dashboard' invokedFrom='schedule'/>            
                    
                     <div ng-repeat="x in scheduledtransactions" class="list-group-item scheduledTransaction">
-                        <a href="" ng-click="enterScheduledTxn(x)">Enter</a>
-                        <a href="" ng-click="skipScheduledTxn(x)">Skip</a>
-                        <a href="" ng-click="editOriginalScheduledTxn(x)">Edit Schedule</a>
-                        <a href="" ng-click="editScheduledTxn(x)">Edit This</a>
+                        <a href="javascript:void(0)" ng-click="enterScheduledTxn(x)">Enter</a>
+                        <a href="javascript:void(0)" ng-click="skipScheduledTxn(x)">Skip</a>
+                        <a href="javascript:void(0)" ng-click="markAsPaid(x)">Mark As Paid</a>
+                        <a href="javascript:void(0)" ng-click="editOriginalScheduledTxn(x)">Edit Schedule</a>
+                        <a href="javascript:void(0)" ng-click="editScheduledTxn(x)">Edit This</a>
                         <span>{{ x.scheduledDate}}</span>
                         <span>{{ x.payee}}</span>
                         <span>{{ x.txnAmount | currency }}</span>
