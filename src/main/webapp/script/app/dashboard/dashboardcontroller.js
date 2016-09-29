@@ -2,6 +2,7 @@ angular.module('HFWApp').controller('dashboardController', function ($rootScope,
     $scope.dashboardworkingAccount = {};
     $scope.tab = "summary";
     $scope.showTransactionModal = false;    
+    //$scope.showEditAccountModal = false;
     $scope.setTab = function(x) {
       $scope.tab=x;  
       console.log($scope.tab);
@@ -272,6 +273,9 @@ angular.module('HFWApp').controller('dashboardController', function ($rootScope,
         $rootScope.$broadcast('transaction-operation-requested',{});
         //$("#transactionDetailsForm").show();
     };
-
+    $scope.clickEditAccount = function() {
+        $rootScope.$broadcast('account-operation-requested',$scope.dashboardworkingAccount);
+        
+    };
 
 });
