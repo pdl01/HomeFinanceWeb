@@ -94,6 +94,34 @@ angular.module('SettingsServiceModule').service("SettingsService", function ($ht
             url: '/services/api/v1/category/all'
         });
     };
+    SettingsService.uploadData = function (data) {
+
+        var formData = new FormData($('#backupDataUploadForm')[0]);
+        console.log(formData);
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+//
+//TODO: convert this all to angular form
+        //$scope.uploadProgress="Uploading";
+        $.ajax({
+            url: '/servlet/fileUpload', //Server script to process data
+            type: 'POST',
+            //Ajax events
+
+            // Form data
+            data: formData,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            headers: {'X-CSRF-TOKEN': csrfHeaderValue},
+            success: function (returndata) {
+                //$scope.uploadProgress="Complete";
+                alert("Upload Complete");
+            },
+            contentType: false,
+            processData: false
+        });
+
+    };
 
 
     return SettingsService;

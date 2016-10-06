@@ -95,3 +95,4 @@ angular.module('HFWApp').controller('accountReportController', function ($rootSc
 
 
 });
+

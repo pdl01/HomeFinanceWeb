@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hf.hfw.files;
 
 import com.hf.hfw.manager.AccountManager;
@@ -10,25 +5,17 @@ import com.hf.hfw.manager.BudgetManager;
 import com.hf.hfw.manager.RegisterManager;
 import com.hf.hfw.manager.ScheduledTransactionManager;
 import com.hf.homefinanceshared.Account;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.cxf.helpers.FileUtils;
-import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -47,7 +34,11 @@ public class FileDownloadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.buildExport(req, resp); //To change body of generated methods, choose Tools | Templates.
+        String operation = req.getParameter("operation");
+        if ("exportsettings".equalsIgnoreCase(operation)) {
+            this.buildExport(req, resp); //To change body of generated methods, choose Tools | Templates.
+        } 
+
     }
     
     

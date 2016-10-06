@@ -76,6 +76,7 @@
                         <li class="tabItem" id=accountEditLink"          ng-click="clickEditAccount()">Edit</li>
                         <li class="tabItem" id="accountNewTransaction"   ng-click="showNewTransaction()">New Transaction</li>
                     </ul>
+                    
                 </div>
                 <div id="accountSummary" ng-show="isTab('summary')" ng-controller="accountSummaryController">
                     <@accountSummary pageTitle='dashboard' invokedFrom='registry'/>
@@ -198,6 +199,7 @@
                         Data:<br>
                         <button ng-click="selectFile()">Upload Your File</button>
                         <input type="hidden" name="accountId" value="{{workingAccount.id}}">
+                        <input type="hidden" name="operation" value="importonlinetxnfile">
                         <input type="file" style="display:none" 
                                id="file" name='file' />
                         <button ng-click="addOnlineData()">Submit!</button>
@@ -267,20 +269,6 @@
                 </div>
 
             </div>
-
-            <modal title="Account Details" visible="showAccountModal" >
-                <div>
-                    Account Name:<input typ="text" ng-model="accountFormData.name"><br>
-                    Account Number:<input typ="text" ng-model="accountFormData.accountNumber"><br>
-                    Opening Balance:<input typ="text" ng-model="accountFormData.startingBalance"><br>
-                    Account Type:<input type="text" ng-model="accountFormData.accountType"><br>
-                    Web Site:<input type="text" ng-model="accountFormData.webAddress"><br>
-                    <button ng-if="accountFormData.id == null" ng-click="addAccount()">Add the Account!</button>
-                    <button ng-if="accountFormData.id != null" ng-click="addAccount()">Save Account!</button>
-                    <button ng-click="clickNewAccountCancel()">Cancel</button>
-                    <button ng-if="accountFormData.id != null" ng-click="clickDeleteAccount()">Delete Account</button>
-                </div>
-            </modal>
             
             <modal title="Transaction Details" visible="showTransactionModal" >
                 <div ng-controller="transactionFormController">

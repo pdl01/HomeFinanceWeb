@@ -3,7 +3,7 @@
                 <input type="hidden" ng-model="workingTransaction.primaryAccount">
                 <input type="hidden" ng-model="workingTransaction.id">
                 <div ng-if="workingAccount.accountType == 'Checking'">Check #<input  ng-model="workingTransaction.txnPersonalRefNumber"></div>
-                <!--<input type="text" ng-model="workingTransaction.txnDate"><br>-->
+                <!--<input type="text" ng-model="workaccountEntryFormingTransaction.txnDate"><br>-->
                     <div class="date-input">
                     Date<div class="input-group">
                     <input type="text" class="form-control " uib-datepicker-popup="yyyy-MM-dd" ng-model="workingTransaction.txnDate" is-open="registryTransactionDateField.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />

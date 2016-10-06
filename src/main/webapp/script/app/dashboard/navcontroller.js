@@ -24,6 +24,7 @@ angular.module('HFWApp').controller('navController', function ($rootScope, $scop
     $scope.showNotificationsLink = false;
     $scope.showNotificationsModal = false;
     $scope.selectednotification = null;
+    $scope.showAccountModal = false;
 
     $rootScope.$on('transaction-operation-completed', function (event, data) {
         //$scope.getTransactionsForMonth($scope.workingAccount.id);
@@ -56,6 +57,7 @@ angular.module('HFWApp').controller('navController', function ($rootScope, $scop
                 } else {
                     $scope.other_accounts.push(value);
                 }
+                $rootScope.$broadcast('account-operation-completed',{});
 
                 console.log(response);
             });
@@ -76,6 +78,7 @@ angular.module('HFWApp').controller('navController', function ($rootScope, $scop
                 } else {
                     //$scope.other_accounts.push(value);
                 }
+                $rootScope.$broadcast('account-operation-completed',{});
 
                 console.log(response);
             });
@@ -191,36 +194,60 @@ angular.module('HFWApp').controller('navController', function ($rootScope, $scop
         this.showRegistryTab();
     };
 
-    $scope.clickEditAccount = function () {
+    //$scope.clickEditAccount = function () {
         //console.log(x.id);
+        /*
         if ($scope.selectedAccount == null) {
             alert("Please choose an account");
             return;
         }
+        */
         //$scope.selectedAccount = x;
+        /*
         $scope.accountFormData = $scope.selectedAccount;
         $scope.showAccountModal = true;
+        */
         //$scope.registryTransactionFormData.primaryAccount=x.id;
         //$scope.$emit('showRegisterTransactions', x);
         //this.getTransactionsForAccount(x.id);
-    };
+    //};
 
+    /*
     $scope.showNewAccount = function (x) {
         $scope.accountFormData = {};
         $scope.showAccountModal = true;
         //$("#accountDetailsForm").show();
     };
+    */
+    $scope.showNewAccount = function() {
+        $rootScope.$broadcast('account-operation-requested',{});
+    };
+    
+    $rootScope.$on('account-operation-requested', function (event, data) {
+        $scope.accountFormData = data;
+        $scope.showAccountModal = true;
+    });
+    
+    $scope.clickAccountCancel = function () {
+              $rootScope.$broadcast('account-operation-completed',{});
 
-    $scope.clickNewAccountCancel = function (x) {
-        $scope.showAccountModal = false;
         //$("#accountDetailsForm").hide();
     };
+    
+    $rootScope.$on('account-operation-completed', function (event, data) {
+
+        $scope.showAccountModal = false;
+    });
+    
+    
 
     $scope.clickDeleteAccount = function (x) {
         if ($scope.accountFormData.id != undefined) {
             AccountService.deleteAccount($scope.accountFormData.id).success(function (response) {
                 alert("Account Deleted");
-                $scope.showAccountModal = false;
+                $rootScope.$broadcast('account-operation-completed',{});
+
+                //$scope.showAccountModal = false;
             });
         }
 

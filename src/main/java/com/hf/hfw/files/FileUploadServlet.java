@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hf.hfw.files;
 
 import com.hf.hfw.accounts.events.AccountEvent;
@@ -42,6 +37,15 @@ public class FileUploadServlet extends HttpServlet {
      * handles file upload
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String operation = request.getParameter("operation");
+        if ("importbackup".equalsIgnoreCase(operation)) {
+            this.processSystemImport(request, response);
+        } else if ("importonlinetxnfile".equalsIgnoreCase(operation)) {
+            this.processAccountOnlineUpload(request, response);
+        }
+    }
+
+    protected void processAccountOnlineUpload(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
         WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 
         //save the file
@@ -90,10 +94,15 @@ public class FileUploadServlet extends HttpServlet {
         Account account = accountManager.getAccountById(accountId);
         this.fireAccountEvent(account, fullFilePath, AccountEvent.AccountEventType.UPLOADED_TRANSACTION_FILE);
         request.setAttribute("message", "Upload has been done successfully!");
-        getServletContext().getRequestDispatcher("/uploadresults.jsp").forward(
-                request, response);
+        getServletContext().getRequestDispatcher("/uploadresults.jsp").forward(request, response);        
     }
-
+    
+    protected void processSystemImport(HttpServletRequest request, HttpServletResponse response)   throws ServletException, IOException{
+        request.setAttribute("message", "Upload has been done successfully!");
+        getServletContext().getRequestDispatcher("/uploadresults.jsp").forward(request, response);        
+        
+    }
+    
     /**
      * Extracts file name from HTTP header content-disposition
      */

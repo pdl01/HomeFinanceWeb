@@ -62,6 +62,7 @@ $(document).ready(function(){
         <li><a href="/app/settings">Settings</a></li>
         <li><a href="/app/logout">Logout</a></li>
         </ul>
+            <@accountEntryForm/>
         </div>
 </#macro>
 

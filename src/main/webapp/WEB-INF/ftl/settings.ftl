@@ -1,3 +1,4 @@
+<#include "inputforms.ftl"/>
 <#include "layoutmacros.ftl"/>
 <!DOCTYPE html>
 <html>
@@ -80,10 +81,27 @@
             <div id="security_config" class="settingsSection">
             </div>
             <div id="version_config" class="settingsSection">
-                <div id="sectionVersion"></section>
+                <div id="sectionVersion"></div>
             </div>
             <div id="license_config" class="settingsSection">
             </div>
+            <div id="exportimport_config" class="settingsSection">
+                Import/Export<br>
+                <a href="/servlet/fileDownload?operation=exportsettings">Full System Export</a><br>
+                <a href="javascript:void(0)" ng-click="showImportForm()">Full System Import</a>
+                <div id="importForm" ng-show="importFormShown">
+                    <form enctype="multipart/form-data" id="backupDataUploadForm">
+                        Data:<br>
+                        <button ng-click="selectImportFile()">Select File</button>
+                        <input type="hidden" name="operation" value="importbackup">
+                        <input type="file" style="display:none" id="file" name='file' />
+                        <button ng-click="uploadBackupFile()">Upload</button>
+                        <button ng-click="cancelUploadBackupFile()">Cancel</button>
+                    </form>
+
+                </div>
+            </div>
+
 
         </div>
 </div>

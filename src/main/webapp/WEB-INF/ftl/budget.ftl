@@ -1,3 +1,5 @@
+<#include "inputforms.ftl"/>
+
 <#include "layoutmacros.ftl"/>
 <!DOCTYPE html>
 
