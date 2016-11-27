@@ -51,8 +51,8 @@ public class FileDownloadServlet extends HttpServlet {
         //get the options
         ExportOptions exportOptions = new ExportOptions();
         exportOptions.setIncludeAccounts(true);
-        exportOptions.setIncludeBudget(true);
-        exportOptions.setIncludeSchedule(true);
+        exportOptions.setIncludeBudget(false);
+        exportOptions.setIncludeSchedule(false);
         exportOptions.setIncludeTransactions(true);
 
         // obtains response's output stream
