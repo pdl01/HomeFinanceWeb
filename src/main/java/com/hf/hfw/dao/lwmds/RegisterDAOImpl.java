@@ -1,16 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hf.hfw.dao.lwmds;
 
 import com.hf.hfw.application.ApplicationState;
 import com.hf.hfw.dao.RegisterDAO;
-import com.hf.hfw.dao.lwmds.converter.NotificationConverter;
+import com.hf.hfw.dao.lwmds.converter.OnlineTransactionConverter;
 import com.hf.hfw.dao.lwmds.converter.TransactionConverter;
-import com.hf.hfw.notifications.Notification;
 import com.hf.homefinanceshared.Account;
+import com.hf.homefinanceshared.CategorySplit;
 import com.hf.homefinanceshared.OnlineTransaction;
 import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.lwdatastore.CollectionObject;
@@ -38,7 +33,7 @@ public class RegisterDAOImpl implements RegisterDAO {
     public List<RegisterTransaction> getTransactions(Account account) {
         ArrayList<RegisterTransaction> al = new ArrayList<RegisterTransaction>();
         try {
-            List<CollectionObject> cObjects = getDataStore().getByIndex("transactions", "accountId", account.getId());
+            List<CollectionObject> cObjects = getDataStore().getByIndex(ConfigBuilder.COLLECTION_TRANSACTIONS, "accountId", account.getId());
             if (cObjects != null && cObjects.size() > 0) {
                 TransactionConverter aConverter = new TransactionConverter();
                 for (CollectionObject collectionObject: cObjects) {
@@ -65,7 +60,7 @@ public class RegisterDAOImpl implements RegisterDAO {
         try {
             for (String category:categories) {
                 queryIndexes.put("category",category);
-                List<CollectionObject> cObjects = getDataStore().getByIndex("transactions", queryIndexes);
+                List<CollectionObject> cObjects = getDataStore().getByIndex(ConfigBuilder.COLLECTION_TRANSACTIONS, queryIndexes);
                 for (CollectionObject collectionObject: cObjects) {
                     txnSet.add(aConverter.convertFromCollectionObject(collectionObject));
                 }         
@@ -85,7 +80,7 @@ public class RegisterDAOImpl implements RegisterDAO {
     @Override
     public RegisterTransaction getTransactionById(String _id) {
         try {
-            CollectionObject cObject = getDataStore().getObject("transactions", _id);
+            CollectionObject cObject = getDataStore().getObject(ConfigBuilder.COLLECTION_TRANSACTIONS, _id);
             if (cObject != null) {
                 return (new TransactionConverter()).convertFromCollectionObject(cObject);
             }
@@ -103,7 +98,7 @@ public class RegisterDAOImpl implements RegisterDAO {
     @Override
     public void deleteTransaction(RegisterTransaction txn) {
         try {
-            getDataStore().removeObject("transactions", txn.getId());
+            getDataStore().removeObject(ConfigBuilder.COLLECTION_TRANSACTIONS, txn.getId());
         } catch (CollectionNotFoundException ex) {
             log.error("Collection Not Found",ex);
         }
@@ -112,21 +107,79 @@ public class RegisterDAOImpl implements RegisterDAO {
     @Override
     public RegisterTransaction updateTransaction(RegisterTransaction txn) {
      try {
-            getDataStore().putObject("transactions", new CollectionObject(txn), new TransactionConverter());
+            getDataStore().putObject(ConfigBuilder.COLLECTION_TRANSACTIONS, new CollectionObject(txn), new TransactionConverter());
         } catch (CollectionNotFoundException ex) {
             log.error("Collection Not Found",ex);
         }
         return txn;
     }
-
+    private boolean hasCategory(RegisterTransaction txn,String category) {
+        if (txn.getCategorySplits() != null && txn.getCategorySplits().length > 0) {
+            for (CategorySplit categorySplit: txn.getCategorySplits()) {
+                if (categorySplit.getCategory().equals(category)) {
+                    return true;
+                }
+            }
+        }
+            return false;
+        
+    }
     @Override
     public List<RegisterTransaction> getTransactionsByCategoriesStartsWithForDateStartWith(Account account, String category, String date) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean useMonth = false;
+        HashMap<String,String> queryIndexes = new HashMap<String,String>();
+        queryIndexes.put("accountId",account.getId());
+        
+        if (date.length() == 7) {
+            useMonth = true;
+        } 
+        if (useMonth) {
+            queryIndexes.put("month", date);
+        } else {
+            queryIndexes.put("year", date);
+        }
+        List<CollectionObject> cObjects;
+        try {
+            cObjects = getDataStore().getByIndex(ConfigBuilder.COLLECTION_TRANSACTIONS,queryIndexes);
+            ArrayList<RegisterTransaction> rt = new ArrayList<RegisterTransaction>();
+            TransactionConverter tc = new TransactionConverter();
+            for (CollectionObject collectionObject:cObjects) {
+                RegisterTransaction txn = tc.convertFromCollectionObject(collectionObject);
+                if (this.hasCategory(txn, category)) {
+                    rt.add(txn);    
+                }
+                
+            }
+            return rt;
+
+        
+        } catch (IndexNotFoundException ex) {
+            log.error("Index Not Found",ex);
+
+        } catch (CollectionNotFoundException ex) {
+            log.error("Collection Not Found",ex);
+
+        }
+        return null;
     }
 
     @Override
     public Set<String> getAllCategories() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<RegisterTransaction> txns = this.getAllTransactions();
+        TreeSet<String> categories = new TreeSet<>();
+        for (RegisterTransaction txn:txns) {
+            if (txn.getCategory() != null) {
+                categories.add(txn.getCategory());
+            }
+            if (txn.getCategorySplits().length > 0) {
+                for (CategorySplit split:txn.getCategorySplits()) {
+                    if (split.getCategory() != null) {
+                        categories.add(split.getCategory());
+                    }
+                }
+            }
+        }
+        return categories;
     }
 
     @Override
@@ -145,7 +198,7 @@ public class RegisterDAOImpl implements RegisterDAO {
         }
         List<CollectionObject> cObjects;
         try {
-            cObjects = getDataStore().getByIndex("transactions",queryIndexes);
+            cObjects = getDataStore().getByIndex(ConfigBuilder.COLLECTION_TRANSACTIONS,queryIndexes);
             ArrayList<RegisterTransaction> rt = new ArrayList<RegisterTransaction>();
             TransactionConverter tc = new TransactionConverter();
             for (CollectionObject collectionObject:cObjects) {
@@ -164,15 +217,40 @@ public class RegisterDAOImpl implements RegisterDAO {
         return null;
     }
 
+    private void addPendingTransaction(OnlineTransaction txn) {
+             try {
+            getDataStore().putObject(ConfigBuilder.COLLECTION_ONLINE_TRANSACTIONS, new CollectionObject(txn), new OnlineTransactionConverter());
+        } catch (CollectionNotFoundException ex) {
+            log.error("Collection Not Found",ex);
+        }
+        
+    }
+    
     @Override
     public void addPendingTransactions(List<OnlineTransaction> txns) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (OnlineTransaction txn:txns) {
+            this.addPendingTransaction(txn);
+        }
     }
 
     @Override
     public List<OnlineTransaction> getPendingTransactions(Account account) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        ArrayList<OnlineTransaction> al = new ArrayList<OnlineTransaction>();
+        try {
+            List<CollectionObject> cObjects = getDataStore().getByIndex(ConfigBuilder.COLLECTION_ONLINE_TRANSACTIONS, "accountId", account.getId());
+            if (cObjects != null && cObjects.size() > 0) {
+                OnlineTransactionConverter aConverter = new OnlineTransactionConverter();
+                for (CollectionObject collectionObject: cObjects) {
+                    al.add(aConverter.convertFromCollectionObject(collectionObject));
+                }
+            }
+            return al;
+        }catch (CollectionNotFoundException ex) {
+            log.error("Collection Not Found",ex);
+        } catch (IndexNotFoundException ex) {
+            log.error("Index Not Found",ex);
+        }
+        return null;    }
 
     @Override
     public List<RegisterTransaction> getAllTransactionsForDateStartWith(Account account, String date) {
@@ -190,7 +268,7 @@ public class RegisterDAOImpl implements RegisterDAO {
         }
         List<CollectionObject> cObjects;
         try {
-            cObjects = getDataStore().getByIndex("transactions",queryIndexes);
+            cObjects = getDataStore().getByIndex(ConfigBuilder.COLLECTION_TRANSACTIONS,queryIndexes);
             ArrayList<RegisterTransaction> rt = new ArrayList<RegisterTransaction>();
             TransactionConverter tc = new TransactionConverter();
             for (CollectionObject collectionObject:cObjects) {
@@ -211,13 +289,50 @@ public class RegisterDAOImpl implements RegisterDAO {
     }
 
     @Override
-    public OnlineTransaction getPendingTransactionById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public OnlineTransaction getPendingTransactionById(String _id) {
+        try {
+            CollectionObject cObject = getDataStore().getObject(ConfigBuilder.COLLECTION_ONLINE_TRANSACTIONS, _id);
+            if (cObject != null) {
+                return (new OnlineTransactionConverter()).convertFromCollectionObject(cObject);
+            }
+        } catch (CollectionNotFoundException ex) {
+            log.error("Collection Not Found",ex);
+        }
+        return null;     
     }
 
     @Override
     public List<RegisterTransaction> matchTransaction(OnlineTransaction pendingTransaction) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        HashMap<String,String> queryIndexes = new HashMap<String,String>();
+        queryIndexes.put("accountId",pendingTransaction.getPrimaryAccount());
+        queryIndexes.put("statusTxt", RegisterTransaction.STATUS_NONE);
+        
+
+
+        List<CollectionObject> cObjects;
+        try {
+            cObjects = getDataStore().getByIndex(ConfigBuilder.COLLECTION_TRANSACTIONS,queryIndexes);
+            ArrayList<RegisterTransaction> rt = new ArrayList<RegisterTransaction>();
+            TransactionConverter tc = new TransactionConverter();
+            for (CollectionObject collectionObject:cObjects) {
+                RegisterTransaction txn = tc.convertFromCollectionObject(collectionObject);
+                if (txn.getTxnAmount() == pendingTransaction.getTxnAmount()){
+                    rt.add(txn);    
+                }
+                
+  
+            }
+            return rt;
+
+        
+        } catch (IndexNotFoundException ex) {
+            log.error("Index Not Found",ex);
+
+        } catch (CollectionNotFoundException ex) {
+            log.error("Collection Not Found",ex);
+
+        }
+        return null;
     }
 
     @Override
@@ -232,8 +347,32 @@ public class RegisterDAOImpl implements RegisterDAO {
 
     @Override
     public Set<String> getAllNames() {
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<RegisterTransaction> txns = this.getAllTransactions();
+        TreeSet<String> names = new TreeSet<>();
+        for (RegisterTransaction txn:txns) {
+            names.add(txn.getPayee());
+        }
+        return names;
+    }
+
+    @Override
+    public List<RegisterTransaction> getAllTransactions() {
+        ArrayList<RegisterTransaction> al = new ArrayList<RegisterTransaction>();
+        try {
+            List<CollectionObject> cObjects = getDataStore().getObjects(ConfigBuilder.COLLECTION_TRANSACTIONS);
+            if (cObjects != null && cObjects.size() > 0) {
+                TransactionConverter aConverter = new TransactionConverter();
+                for (CollectionObject collectionObject: cObjects) {
+                    al.add(aConverter.convertFromCollectionObject(collectionObject));
+                }
+            }
+            return al;
+        }catch (CollectionNotFoundException ex) {
+            log.error("Collection Not Found",ex);
+        }
+        return null;    
+
+
     }
     
 }
