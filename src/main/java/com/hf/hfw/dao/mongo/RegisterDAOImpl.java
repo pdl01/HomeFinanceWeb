@@ -202,5 +202,10 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
 
     }
 
+    @Override
+    public List<RegisterTransaction> getAllTransactions() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
 }
