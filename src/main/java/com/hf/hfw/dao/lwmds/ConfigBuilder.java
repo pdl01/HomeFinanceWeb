@@ -25,6 +25,7 @@ public class ConfigBuilder {
     public final static String COLLECTION_ONLINE_TRANSACTIONS = "onlineTransactions";
     public final static String COLLECTION_SCHEDULED_TRANSACTIONS = "scheduledTransactions";
     public final static String COLLECTION_BUDGET = "budgets";
+    public final static String COLLECTION_NOTIFICATIONS = "notifications";
     
     private ConfigurationDirectoryService configurationDirectoryService;
     public void setConfigurationDirectoryService(ConfigurationDirectoryService configurationDirectoryService){

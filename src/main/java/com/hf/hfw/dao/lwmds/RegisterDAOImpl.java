@@ -17,18 +17,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 
 /**
  *
  * @author pldorrell
  */
-public class RegisterDAOImpl implements RegisterDAO {
+public class RegisterDAOImpl extends LWMDSDAO implements RegisterDAO {
     private static final Logger log = Logger.getLogger(RegisterDAOImpl.class);
-    private DataStore getDataStore() {
-        return ApplicationState.getApplicationState().getDbFactory().getLwDataStore();
-    }
+
     @Override
     public List<RegisterTransaction> getTransactions(Account account) {
         ArrayList<RegisterTransaction> al = new ArrayList<RegisterTransaction>();
@@ -199,10 +196,13 @@ public class RegisterDAOImpl implements RegisterDAO {
         List<CollectionObject> cObjects;
         try {
             cObjects = getDataStore().getByIndex(ConfigBuilder.COLLECTION_TRANSACTIONS,queryIndexes);
-            ArrayList<RegisterTransaction> rt = new ArrayList<RegisterTransaction>();
+            ArrayList<RegisterTransaction> rt = new ArrayList<>();
             TransactionConverter tc = new TransactionConverter();
             for (CollectionObject collectionObject:cObjects) {
-                rt.add(tc.convertFromCollectionObject(collectionObject));
+                RegisterTransaction transaction = tc.convertFromCollectionObject(collectionObject);
+                if (transaction.isCredit() == getCredit) {
+                    rt.add(transaction);
+                }                
             }
             return rt;
 

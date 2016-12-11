@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.hf.hfw.dao.lwmds;
 
 import com.hf.hfw.application.ApplicationState;
@@ -21,17 +17,15 @@ import org.apache.log4j.Logger;
  *
  * @author pldorrell
  */
-public class NotificationDAOImpl implements NotificationDAO {
+public class NotificationDAOImpl extends LWMDSDAO implements NotificationDAO {
     private static final Logger log = Logger.getLogger(AccountDAOImpl.class);
 
-    private DataStore getDataStore() {
-        return ApplicationState.getApplicationState().getDbFactory().getLwDataStore();
-    }
+
     @Override
     public List<Notification> getNotifications() {
         ArrayList<Notification> al = new ArrayList<Notification>();
         try {
-            List<CollectionObject> cObjects = getDataStore().getObjects("notifications");
+            List<CollectionObject> cObjects = getDataStore().getObjects(ConfigBuilder.COLLECTION_NOTIFICATIONS);
             if (cObjects != null && cObjects.size() > 0) {
                 NotificationConverter aConverter = new NotificationConverter();
                 for (CollectionObject collectionObject: cObjects) {
@@ -49,7 +43,7 @@ public class NotificationDAOImpl implements NotificationDAO {
     public List<Notification> getNotificationByStatus(short status) {
         ArrayList<Notification> al = new ArrayList<Notification>();
         try {
-            List<CollectionObject> cObjects = getDataStore().getByIndex("notifications", "status", status+"");
+            List<CollectionObject> cObjects = getDataStore().getByIndex(ConfigBuilder.COLLECTION_NOTIFICATIONS, "status", status+"");
             if (cObjects != null && cObjects.size() > 0) {
                 NotificationConverter aConverter = new NotificationConverter();
                 for (CollectionObject collectionObject: cObjects) {
@@ -68,7 +62,7 @@ public class NotificationDAOImpl implements NotificationDAO {
     @Override
     public Notification getById(String _id) {
         try {
-            CollectionObject cObject = getDataStore().getObject("notifications", _id);
+            CollectionObject cObject = getDataStore().getObject(ConfigBuilder.COLLECTION_NOTIFICATIONS, _id);
             if (cObject != null) {
                 return (new NotificationConverter()).convertFromCollectionObject(cObject);
             }
@@ -86,7 +80,7 @@ public class NotificationDAOImpl implements NotificationDAO {
     @Override
     public void deleteNotification(Notification notification) {
         try {
-            getDataStore().removeObject("notifications", notification.getId());
+            getDataStore().removeObject(ConfigBuilder.COLLECTION_NOTIFICATIONS, notification.getId());
         } catch (CollectionNotFoundException ex) {
             log.error("Collection Not Found",ex);
         }    
@@ -95,7 +89,7 @@ public class NotificationDAOImpl implements NotificationDAO {
     @Override
     public Notification saveNotification(Notification notification) {
         try {
-            getDataStore().putObject("notifications", new CollectionObject(notification), new NotificationConverter());
+            getDataStore().putObject(ConfigBuilder.COLLECTION_NOTIFICATIONS, new CollectionObject(notification), new NotificationConverter());
         } catch (CollectionNotFoundException ex) {
             log.error("Collection Not Found",ex);
         }

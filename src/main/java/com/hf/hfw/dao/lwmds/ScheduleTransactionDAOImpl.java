@@ -3,8 +3,6 @@ package com.hf.hfw.dao.lwmds;
 import com.hf.hfw.application.ApplicationState;
 import com.hf.hfw.dao.ScheduledTransactionDAO;
 import com.hf.hfw.dao.lwmds.converter.ScheduledTransactionConverter;
-import com.hf.hfw.dao.lwmds.converter.TransactionConverter;
-import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.homefinanceshared.ScheduledTransaction;
 import com.hf.lwdatastore.CollectionObject;
 import com.hf.lwdatastore.DataStore;
@@ -19,13 +17,9 @@ import org.apache.log4j.Logger;
  *
  * @author pldorrell
  */
-public class ScheduleTransactionDAOImpl implements ScheduledTransactionDAO {
+public class ScheduleTransactionDAOImpl extends LWMDSDAO implements ScheduledTransactionDAO {
 
     private static final Logger log = Logger.getLogger(RegisterDAOImpl.class);
-
-    private DataStore getDataStore() {
-        return ApplicationState.getApplicationState().getDbFactory().getLwDataStore();
-    }
 
     @Override
     public ScheduledTransaction getById(String _id) {
@@ -173,7 +167,7 @@ public class ScheduleTransactionDAOImpl implements ScheduledTransactionDAO {
 
     @Override
     public List<ScheduledTransaction> getUpcomingTransactionsByOriginalTxnId(String originalTransactionId) {
-        HashMap<String, String> queryIndexes = new HashMap<String, String>();
+        HashMap<String, String> queryIndexes = new HashMap<>();
         queryIndexes.put("originalTransactionId", originalTransactionId);
         queryIndexes.put("original", "false");
 
