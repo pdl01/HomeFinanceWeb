@@ -1,22 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.hf.hfw.dao.lwmds.converter;
 
 import com.hf.homefinanceshared.Budget;
 import com.hf.lwdatastore.CollectionObject;
 import com.hf.lwdatastore.CollectionObjectConverter;
 import com.hf.lwdatastore.exception.AttributeNotFoundException;
+import java.io.IOException;
 import java.util.Map;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  *
  * @author pldorrell
  */
-public class BudgetConverter implements CollectionObjectConverter<Budget>{
+public class BudgetConverter implements CollectionObjectConverter<Budget> {
+
+    private static final Logger log = Logger.getLogger(BudgetConverter.class);
 
     @Override
     public CollectionObject convertToCollectionObject(Budget k) {
@@ -25,22 +27,37 @@ public class BudgetConverter implements CollectionObjectConverter<Budget>{
 
     @Override
     public Budget convertFromCollectionObject(CollectionObject object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (Budget) object.getTarget();
     }
 
     @Override
     public String getValue(Budget k, String attribute) throws AttributeNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+            if (attribute.equalsIgnoreCase("id")) {
+                return k.getId();
+            } else {
+                throw new AttributeNotFoundException();
+            }       }
 
     @Override
     public Budget convertFromJSONNode(Map.Entry<String, JsonNode> jsonNode) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JsonFactory factory = new JsonFactory();
+        ObjectMapper mapper = new ObjectMapper(factory);
+        //JsonNode jsonNodex = mapper.valueToTree(jsonNode);
+        try {
+            Budget budget = mapper.treeToValue(jsonNode.getValue(), Budget.class);
+            return budget;
+        } catch (IOException ex) {
+            log.error(ex);
+
+        }
+
+        return null;
     }
 
     @Override
     public CollectionObject setId(CollectionObject collectionObject, String _id) {
-        ((Budget)collectionObject.getTarget()).setId(_id);
-        return collectionObject;    }
-    
+        ((Budget) collectionObject.getTarget()).setId(_id);
+        return collectionObject;
+    }
+
 }

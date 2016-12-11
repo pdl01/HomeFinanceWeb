@@ -1,22 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hf.hfw.dao.lwmds.converter;
 
+import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.homefinanceshared.ScheduledTransaction;
 import com.hf.lwdatastore.CollectionObject;
 import com.hf.lwdatastore.CollectionObjectConverter;
 import com.hf.lwdatastore.exception.AttributeNotFoundException;
+import java.io.IOException;
 import java.util.Map;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  *
  * @author pldorrell
  */
-public class ScheduledTransactionConverter implements CollectionObjectConverter<ScheduledTransaction>{
+public class ScheduledTransactionConverter implements CollectionObjectConverter<ScheduledTransaction> {
+
+    private static final Logger log = Logger.getLogger(ScheduledTransactionConverter.class);
 
     @Override
     public CollectionObject convertToCollectionObject(ScheduledTransaction k) {
@@ -25,22 +27,65 @@ public class ScheduledTransactionConverter implements CollectionObjectConverter<
 
     @Override
     public ScheduledTransaction convertFromCollectionObject(CollectionObject object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (ScheduledTransaction) object.getTarget();
     }
 
     @Override
     public String getValue(ScheduledTransaction k, String attribute) throws AttributeNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (attribute.equalsIgnoreCase("id")) {
+            return k.getId();
+        } else if (attribute.equalsIgnoreCase("accountId")) {
+            return k.getPrimaryAccount();
+        } else if (attribute.equalsIgnoreCase("year")) {
+            //return k.getTxnDate().substring(0,4);
+            if (k.isOriginal()) {
+                return k.getBeginDate().substring(0, 4);
+            } else {
+                return k.getScheduledDate().substring(0, 4);
+            }
+
+        } else if (attribute.equalsIgnoreCase("month")) {
+            if (k.isOriginal()) {
+                return k.getBeginDate().substring(0, 7);
+            } else {
+                return k.getScheduledDate().substring(0, 7);
+            }
+            //return k.getScheduledDate().substring(0, 7);
+            //return k.getTxnDate().substring(0,7);
+        } else if (attribute.equalsIgnoreCase("originalTransactionId")) {
+            return k.getOriginalTransactionId();
+        } else if (attribute.equalsIgnoreCase("original")) {
+            if (k.isOriginal()) {
+                return "true";
+            } else {
+                return "false";
+            }
+        } else {
+            throw new AttributeNotFoundException();
+        }
+
     }
 
     @Override
     public ScheduledTransaction convertFromJSONNode(Map.Entry<String, JsonNode> jsonNode) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JsonFactory factory = new JsonFactory();
+        ObjectMapper mapper = new ObjectMapper(factory);
+        //JsonNode jsonNodex = mapper.valueToTree(jsonNode);
+        try {
+            ScheduledTransaction txn = mapper.treeToValue(jsonNode.getValue(), ScheduledTransaction.class);
+            return txn;
+        } catch (IOException ex) {
+            log.error(ex);
+
+        }
+
+        return null;
+
     }
 
     @Override
     public CollectionObject setId(CollectionObject collectionObject, String _id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ((ScheduledTransaction) collectionObject.getTarget()).setId(_id);
+        return collectionObject;
     }
-    
 }
