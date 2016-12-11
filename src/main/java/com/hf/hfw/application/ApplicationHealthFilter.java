@@ -20,7 +20,7 @@ public class ApplicationHealthFilter extends OncePerRequestFilter{
         if (!ApplicationState.getApplicationState().isConfigured()) {
             response.sendError(503,"Repo is not configured");
         } else if (!ApplicationState.getApplicationState().isRepositoryRunning()){
-            response.sendError(503,"Repo is not running");
+            //response.sendError(503,"Repo is not running");
          //redirect to down page
         }
         filterChain.doFilter(request, response);

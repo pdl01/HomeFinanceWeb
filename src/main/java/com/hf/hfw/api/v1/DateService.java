@@ -20,10 +20,10 @@ public interface DateService {
     @GET
     @Produces({"application/json"})
     @Consumes({"application/json"})
-    @Path("/current/year")    
+    @Path("/current/year")
     public String getCurrentYear();
     
-        @GET
+    @GET
     @Produces({"application/json"})
     @Consumes({"application/json"})
     @Path("/current/month")    

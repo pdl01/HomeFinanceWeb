@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 package com.hf.hfw.dao;
 
 import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.OnlineTransaction;
 import com.hf.homefinanceshared.RegisterTransaction;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +13,7 @@ import java.util.Set;
  * @author phillip.dorrell
  */
 public interface RegisterDAO {
+    public List<RegisterTransaction> getAllTransactions();
     public List<RegisterTransaction> getTransactions(Account account);
     public List<RegisterTransaction> getTransactionsByCategories(Account account,List<String> categories);
 

@@ -1,6 +1,8 @@
 
 package com.hf.hfw.application;
 
+import com.hf.hfw.files.DataFileLoader;
+import com.hf.hfw.license.Version;
 import java.io.File;
 import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.BeansException;
@@ -18,13 +20,27 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
 
     private boolean configured = false;
     private boolean repositoryRunning = false;
+    private Version currentVersion;
     private static ApplicationContext ctx;
     private ConfigurationDirectoryService configurationDirectoryService;
     private ApplicationRepositoryConfig applicationRepositoryConfig;
     private DBFactory dbFactory;
+    private DataFileLoader dataFileLoader;
 
+    public DataFileLoader getDataFileLoader() {
+        return dataFileLoader;
+    }
+
+    public void setDataFileLoader(DataFileLoader dataFileLoader) {
+        this.dataFileLoader = dataFileLoader;
+    }
+    
     public ApplicationRepositoryConfig getApplicationRepositoryConfig() {
         return applicationRepositoryConfig;
+    }
+
+    public ConfigurationDirectoryService getConfigurationDirectoryService() {
+        return configurationDirectoryService;
     }
 
     public void setApplicationRepositoryConfig(ApplicationRepositoryConfig applicationRepositoryConfig) {
@@ -53,6 +69,14 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
 
     public void setConfigured(boolean configured) {
         this.configured = configured;
+    }
+
+    public Version getCurrentVersion() {
+        return currentVersion;
+    }
+
+    public void setCurrentVersion(Version currentVersion) {
+        this.currentVersion = currentVersion;
     }
 
     public void init() {
@@ -124,6 +148,9 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
 		//log.info("Exiting init");
         // this.setupData();
         
+        
+
+        
         //DBFactory dbFactory = new DBFactory();
         if (this.applicationRepositoryConfig.isValid()) {
             dbFactory.initializeRepository(this.applicationRepositoryConfig);
@@ -132,6 +159,8 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
             }
         }
 
+        this.dataFileLoader.performInitialLoad();
+        
     }
     /*
      protected void setupData(){

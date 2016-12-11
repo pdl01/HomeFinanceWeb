@@ -31,7 +31,16 @@ public abstract class BalanceListener {
     }
 
     protected void rebalanceAccount(Account _account) {
-        List<RegisterTransaction> txns = this.registerManager.getTransactions(_account);
+        List<RegisterTransaction> txns = null;
+        
+        try {
+            txns = this.registerManager.getTransactions(_account);
+        }catch (Exception e) {
+           
+        }
+        if (txns == null) {
+            return;
+        }
         double accountBalance = _account.getStartingBalance();
         for (RegisterTransaction txn : txns) {
             if (!txn.isVoid()) {

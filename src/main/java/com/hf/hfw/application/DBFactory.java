@@ -47,8 +47,30 @@ public class DBFactory {
         if (config == null) {
             return;
         }
-        
+        this.initLWDataStore(config);
+        return;
+        /*
         if ("mongo".equals(config.getType())) {
+            this.initMongo(config);
+        } else if ("hypersql".equals(config.getType())) {
+        } else if ("h2".equals(config.getType())) {
+            
+        } else if ("LWDataStore".equalsIgnoreCase(config.getType())){
+            this.initLWDataStore(config);            
+            //setup listener for shutdown
+        }
+        */
+        
+    }
+    private void initLWDataStore(ApplicationRepositoryConfig config) {
+            lwDataStoreFactory = new LWDataStoreFactory();
+            ConfigBuilder configBuilder = new ConfigBuilder();
+            configBuilder.setConfigurationDirectoryService(ApplicationState.getApplicationState().getConfigurationDirectoryService());
+            lwDataStoreFactory.init(configBuilder.getConfig());
+            lwDataStore = LWDataStoreFactory.getDataStore();
+        
+    }
+    private void initMongo(ApplicationRepositoryConfig config){
             MongoFactoryBean mongoFactoryBean = new MongoFactoryBean();
             mongoFactoryBean.setHost(config.getHost());
             mongoFactoryBean.setPort(Integer.parseInt(config.getPort()));
@@ -64,16 +86,6 @@ public class DBFactory {
                 log.fatal("Unknown host when connecting to mongo");
 
             }
-            
-        } else if ("hypersql".equals(config.getType())) {
-            
-        } else if ("LWDataStore".equalsIgnoreCase(config.getType())){
-            lwDataStoreFactory = new LWDataStoreFactory();
-            lwDataStoreFactory.init((new ConfigBuilder()).getConfig());
-            lwDataStore = LWDataStoreFactory.getDataStore();
-            
-            //setup listener for shutdown
-        }
         
     }
     public void shutdown(){
