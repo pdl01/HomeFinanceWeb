@@ -6,9 +6,15 @@
            http://www.springframework.org/schema/beans/spring-beans.xsd
 		   ">
     <import resource="springapp.xml"/>
-    <import resource="spring-datasources.xml"/>
+    <!--
+    <import resource="spring-datasources-mongo.xml"/>
     <import resource="spring-daos-mongo.xml"/>
-    <!-- <import resource="spring-daos-lwds.xml"/> -->
+    -->
+    <!--
+    <import resource="spring-datasources-h2.xml"/>
+    <import resource="spring-daos-h2.xml"/>
+    -->
+    <import resource="spring-daos-lwds.xml"/>
     <import resource="spring-rs.xml"/>
     <import resource="spring-services.xml"/>
     <import resource="spring-tasks.xml"/>

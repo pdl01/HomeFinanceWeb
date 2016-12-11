@@ -7,7 +7,7 @@
            http://www.springframework.org/schema/beans/spring-beans.xsd
 		   http://www.springframework.org/schema/data/mongo
       http://www.springframework.org/schema/data/mongo/spring-mongo-1.2.xsd"
-		   >
+		  profile="mongo">
 
 <!-- 
 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

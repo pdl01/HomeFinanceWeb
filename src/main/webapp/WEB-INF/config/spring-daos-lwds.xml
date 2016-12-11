@@ -2,21 +2,26 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans.xsd" profile="lwds">
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
+    <!--
     <bean id="accountDAO" class="com.hf.hfw.dao.lwmds.AccountDAOImpl">    
     </bean>
+    -->
      <bean id="registerDAO" class="com.hf.hfw.dao.lwmds.RegisterDAOImpl">    
     </bean>
+    
     <bean id="budgetDAO" class="com.hf.hfw.dao.lwmds.BudgetDAOImpl">    
     </bean>
+    <!--
     <bean id="repositoryBasedSettingDAO" class="com.hf.hfw.dao.lwmds.RepositoryBasedSettingDAOImpl">    
     </bean>
+    -->
     <bean id="scheduledTransactionDAO" class="com.hf.hfw.dao.lwmds.ScheduleTransactionDAOImpl">    
     </bean>
     <bean id="notificationDAO" class="com.hf.hfw.dao.lwmds.NotificationDAOImpl">
     </bean>
     <bean id="dailyBalanceDAO" class="com.hf.hfw.dao.lwmds.DailyBalanceDAOImpl">
     </bean>
+   
 </beans>

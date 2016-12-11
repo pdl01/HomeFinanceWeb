@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+		   http://www.springframework.org/schema/data/mongo
+      http://www.springframework.org/schema/data/mongo/spring-mongo-1.2.xsd"
+		  >
+
+<!-- 
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+    <property name="url" value="jdbc:mysql://127.0.0.1:3306/eoci"/>
+    <property name="username" value="eoci_sys"/>
+    <property name="password" value="eoci_sys"/>
+</bean>
+-->
+	<!--<mongo:mongo host="127.0.0.1" port="27017" />-->
+	<!--<mongo:db-factory dbname="hfw-web" />-->
+    <bean id="h2DataSourceFactory" class="com.hf.hfw.dao.h2.H2DataSourceFactory">
+    </bean>
+    
+    <bean id="dataSource" factory-bean="h2DataSourceFactory" factory-method="getDataSource">
+        
+    </bean>
+    <!--
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongo" ref="mongoConfigBean" />
+                <constructor-arg name="databaseName" value="hfw-web"/>
+                <constructor-arg name="userCredentials" ref="mongoCredentials"/>
+	</bean>
+
+        <bean id="mongoConfigBean" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+            <property name="host" value="127.0.0.1"/>
+            <property name="port" value="27017"/>
+  	</bean>
+
+        <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	<bean id="mongoCredentials"  class="org.springframework.data.authentication.UserCredentials">
+            <constructor-arg name="username" value="hfw-web" />
+            <constructor-arg name="password" value="hfw-web20140111" />
+        </bean>
+        -->
+</beans>

@@ -14,6 +14,7 @@
     <bean id="applicationState" class="com.hf.hfw.application.ApplicationState" init-method="init">
         <property name="configurationDirectoryService" ref="configurationDirectoryService"/>
         <property name="dbFactory" ref="dbFactory"/>
+        <property name="dataFileLoader" ref="dataFileLoader"/>
 
     </bean>
     <bean id="configurationDirectoryService" class="com.hf.hfw.application.ConfigurationDirectoryService">

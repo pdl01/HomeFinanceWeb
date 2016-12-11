@@ -19,6 +19,7 @@
             <ref bean="dateRestServicev1"/>
             <ref bean="scheduledTransactionRestServicev1"/>
             <ref bean="notificationRestServicev1"/>
+            <ref bean="versionRestServicev1"/>
             <!--
             <ref bean="officialBillRestServicev1" />
             <ref bean="electedOfficialRestServicev1" />
@@ -65,5 +66,8 @@
     </bean>
     <bean id="notificationRestServicev1" class="com.hf.hfw.api.v1.NotificationServiceImpl" >
         <property name="notificationManager" ref="notificationManager"/> 
+    </bean>
+    <bean id="versionRestServicev1" class="com.hf.hfw.api.v1.VersionServiceImpl">
+        <property name="licenseManager" ref="licenseManager"/>
     </bean>
 </beans>

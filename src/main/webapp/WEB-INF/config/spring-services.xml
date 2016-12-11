@@ -43,10 +43,10 @@
   	<property name="registerDAO" ref="registerDAO"/>
   </bean>
     <bean id="accountManager" class="com.hf.hfw.manager.AccountManagerImpl">    
-  	<property name="accountDAO" ref="accountDAO"/>
+  	<!--<property name="accountDAO" ref="accountDAO"/>-->
   </bean>
   <bean id="settingsManager" class="com.hf.hfw.manager.SettingsManagerImpl">
-      <property name="repositoryBasedSettingDAO" ref="repositoryBasedSettingDAO"/>
+      <!--<property name="repositoryBasedSettingDAO" ref="repositoryBasedSettingDAO"/>-->
   </bean>
   <bean id="budgetManager" class="com.hf.hfw.manager.BudgetManagerImpl">    
   	<property name="budgetDAO" ref="budgetDAO"/>
@@ -72,12 +72,15 @@
       <property name="notificationDAO" ref="notificationDAO"/>
   </bean>
   <bean id="dailyBalanceManager" class="com.hf.hfw.manager.DailyBalanceManagerImpl">
-      <property name="dailyBalanceDAO" ref="dailyBalanceDAO"/>
+      <!--<property name="dailyBalanceDAO" ref="dailyBalanceDAO"/>-->
       <property name="accountManager" ref="accountManager"/>
       <property name="registerManager" ref="registerManager"/>       
   </bean>
   <bean id="userManager" class="com.hf.hfw.manager.UserManagerImpl">
         <property name="settingsManager" ref="settingsManager"/>
+  </bean>
+  <bean id="licenseManager" class="com.hf.hfw.license.LicenseManagerImpl">
+      
   </bean>
   <!--
   <bean id="frameManager" class="com.keystone.manager.FrameManagerImpl">    
@@ -201,5 +204,24 @@
     <bean id="appHealthFilter" class="com.hf.hfw.application.ApplicationHealthFilter">
         
     </bean>
+    <bean id="dataFileLoader" class="com.hf.hfw.files.DataFileLoader">
+        <property name="settingsManager" ref="settingsManager"/>
+        <property name="accountManager" ref="accountManager"/>
+        <property name="budgetManager" ref="budgetManager"/>
+        <property name="registerManager" ref="registerManager"/>
+    </bean>
+    <bean id="accountPersistenceEventListener" class="com.hf.hfw.files.persistence.listeners.AccountListener">    
+        <property name="dataFileLoader" ref="dataFileLoader"/>
+    </bean>
+    <bean id="regisrtyPersistenceEventListener" class="com.hf.hfw.files.persistence.listeners.RegisterListener">    
+        <property name="dataFileLoader" ref="dataFileLoader"/>
+        <property name="accountManager" ref="accountManager"/>
+        
+    </bean>
+
+    <bean id="settingsPersistenceEventListener" class="com.hf.hfw.files.persistence.listeners.SettingsListener">    
+        <property name="dataFileLoader" ref="dataFileLoader"/>
+    </bean>
+    
 
 </beans>
