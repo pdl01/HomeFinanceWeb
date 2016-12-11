@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hf.hfw.manager;
 
 import com.hf.hfw.api.v1.settings.SettingsBean;
+import java.util.List;
 
 /**
  *
@@ -18,4 +14,7 @@ public interface SettingsManager {
     public void saveBasicSecuritySettings(SettingsBean bean);
     public SettingsBean getLimitedSecurityUsers();
     public void saveLimitedSecurityUsers(SettingsBean bean);
+    
+    public SettingsBean addSettingsBeanToSystem(SettingsBean settingsBean); 
+    public List<SettingsBean> getAllSettings();
 }

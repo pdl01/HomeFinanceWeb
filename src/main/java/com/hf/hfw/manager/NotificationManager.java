@@ -24,4 +24,5 @@ public interface NotificationManager {
 
     public Notification saveNotification(Notification notification);
     public Notification createNotification(String subject,String message);
+    public Notification addNotificationToSystem(Notification _notification);
 }

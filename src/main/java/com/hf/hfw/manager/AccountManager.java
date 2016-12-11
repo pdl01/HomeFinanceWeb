@@ -15,6 +15,7 @@ import java.util.List;
  * @author phillip.dorrell
  */
 public interface AccountManager {
+    public Account addAccountToSystem(Account _account);
     public Account getAccountById(String _id);
     public Account getAccountByName(String _id);
     public Account getAccountByExternalId(String _id);

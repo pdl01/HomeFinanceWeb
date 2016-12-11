@@ -1,14 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hf.hfw.manager;
 
 import com.hf.hfw.dao.BudgetDAO;
 import com.hf.homefinanceshared.Budget;
 import com.hf.homefinanceshared.BudgetCategory;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  *
@@ -16,6 +14,7 @@ import java.util.List;
  */
 public class BudgetManagerImpl implements BudgetManager {
 
+    protected Map<String, Budget> budgets;
     protected BudgetDAO budgetDAO;
 
     public BudgetDAO getBudgetDAO() {
@@ -39,6 +38,7 @@ public class BudgetManagerImpl implements BudgetManager {
 
     @Override
     public Budget createBudget(Budget budget) {
+        budget.setId(UUID.randomUUID().toString());
         return this.budgetDAO.saveBudget(budget);
     }
 
@@ -63,6 +63,15 @@ public class BudgetManagerImpl implements BudgetManager {
     @Override
     public Budget deleteBudgetItem(Budget budget, String type, BudgetCategory category) {
         return this.saveBudget(budget);
+    }
+
+    @Override
+    public Budget addBudgetToSystem(Budget _budget) {
+        if (this.budgets == null) {
+            this.budgets = new HashMap<>();
+        }
+        this.budgets.put(_budget.getId(), _budget);
+        return _budget;    
     }
 
 }

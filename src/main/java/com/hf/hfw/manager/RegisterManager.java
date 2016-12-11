@@ -11,6 +11,7 @@ import java.util.List;
  * @author phillip.dorrell
  */
 public interface RegisterManager {
+    public List<RegisterTransaction> getAllTransactions();
     public List<RegisterTransaction> getTransactions(Account account);
     public List<RegisterTransaction> getTransactions(Account account,int start, int number);
     public List<RegisterTransaction> getTransactionsByCategories(Account account,List<String> categories);
@@ -33,4 +34,5 @@ public interface RegisterManager {
 
     public List<RegisterTransaction> findTransaction(String searchTerm);
     public List<RegisterTransaction> findTransaction(Account account,String searchTerm);
+    public void addRegisterTransactionToSystem(RegisterTransaction txn);
 }

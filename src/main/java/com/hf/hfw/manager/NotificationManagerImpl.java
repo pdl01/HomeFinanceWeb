@@ -2,31 +2,48 @@ package com.hf.hfw.manager;
 
 import com.hf.hfw.dao.NotificationDAO;
 import com.hf.hfw.notifications.Notification;
+import com.hf.homefinanceshared.Account;
+import com.hf.homefinanceshared.Budget;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  *
  * @author pldorrell
  */
 public class NotificationManagerImpl implements NotificationManager {
-    
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
-    private NotificationDAO notificationDAO;
 
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
+    protected Map<String, Notification> notifications;
+
+    private NotificationDAO notificationDAO;
+    
     public void setNotificationDAO(NotificationDAO notificationDAO) {
         this.notificationDAO = notificationDAO;
     }
-
+    
     @Override
     public List<Notification> getNotifications() {
-        return this.notificationDAO.getNotifications();
+        //return this.notificationDAO.getNotifications();
+        ArrayList<Notification> localNotifications = new ArrayList<>();
+        if (this.notifications == null || this.notifications.isEmpty()) {
+            return localNotifications;
+        }
+        for (String key : this.notifications.keySet()) {
+            localNotifications.add(this.notifications.get(key));
+        }
+        return localNotifications;
     }
 
     @Override
     public Notification getById(String id) {
-        return this.notificationDAO.getById(id);
+        return this.notifications.get(id);
+
     }
 
     @Override
@@ -34,24 +51,43 @@ public class NotificationManagerImpl implements NotificationManager {
         Date createdDate = new Date();
         _notification.setCreatedOn(createdDate);
         _notification.setCreatedOnAsString(sdf.format(createdDate));
-        Notification notification = this.notificationDAO.saveNotification(_notification);
-        return notification;
+        _notification.setId(UUID.randomUUID().toString());
+        this.addNotificationToSystem(_notification);
+        //Notification notification = this.notificationDAO.saveNotification(_notification);
+        return _notification;
     }
 
     @Override
     public void deleteNotification(Notification notification) {
-        this.notificationDAO.deleteNotification(notification);
+        if (this.notifications == null || this.notifications.isEmpty()) {
+            return;
+        }
+        this.notifications.remove(notification.getId());
+        //this.notificationDAO.deleteNotification(notification);
     }
 
     @Override
     public Notification saveNotification(Notification _notification) {
-        Notification notification = this.notificationDAO.saveNotification(_notification);
-        return notification;
+        //Notification notification = this.notificationDAO.saveNotification(_notification);
+        this.addNotificationToSystem(_notification);
+
+        return _notification;
     }
 
     @Override
     public List<Notification> getNotificationByStatus(short status) {
-        return this.notificationDAO.getNotificationByStatus(status);
+        ArrayList<Notification> localNotifications = new ArrayList<>();
+        if (this.notifications == null || this.notifications.isEmpty()) {
+            return localNotifications;
+        }
+        for (String key : this.notifications.keySet()) {
+            Notification notification = this.getById(key);
+            if (notification != null && notification.getStatus() == status) {
+                localNotifications.add(this.notifications.get(key));
+
+            }
+        }
+        return localNotifications;
     }
 
     @Override
@@ -63,4 +99,12 @@ public class NotificationManagerImpl implements NotificationManager {
         return this.createNotification(notification);
     }
 
+    @Override
+    public Notification addNotificationToSystem(Notification _notification) {
+        if (this.notifications == null) {
+            this.notifications = new HashMap<>();
+        }
+        this.notifications.put(_notification.getId(), _notification);
+        return _notification;
+    }
 }

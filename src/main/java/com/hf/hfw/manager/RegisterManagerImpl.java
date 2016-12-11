@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hf.hfw.manager;
 
-import com.hf.hfw.accounts.events.AccountEvent;
 import com.hf.hfw.accounts.events.TransactionEvent;
 import com.hf.hfw.application.ApplicationState;
 import com.hf.hfw.comparator.RegisterTransactionDateAscendingComparator;
@@ -18,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
@@ -26,9 +21,11 @@ import org.springframework.context.ApplicationContext;
  * @author phillip.dorrell
  */
 public class RegisterManagerImpl implements RegisterManager {
-private static final Logger log = Logger.getLogger(RegisterManagerImpl.class);
+
+    private static final Logger log = Logger.getLogger(RegisterManagerImpl.class);
     private RegisterDAO registerDAO;
-private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat("YYYY-MM-d");
+    private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat("YYYY-MM-d");
+
     public RegisterDAO getRegisterDAO() {
         return registerDAO;
     }
@@ -48,59 +45,52 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
         return this.registerDAO.getTransactionById(_id);
 
     }
-    
-    public List<RegisterTransaction>  getSupportingTransactions(RegisterTransaction txn) {
-       return null; 
-    }
-    
-    public List<RegisterTransaction>  createSupportingTransactions(RegisterTransaction txn) {
-       return null; 
+
+    public List<RegisterTransaction> getSupportingTransactions(RegisterTransaction txn) {
+        return null;
     }
 
-    public boolean  validateSupportingTransactions(RegisterTransaction txn) {
+    public List<RegisterTransaction> createSupportingTransactions(RegisterTransaction txn) {
+        return null;
+    }
+
+    public boolean validateSupportingTransactions(RegisterTransaction txn) {
         //mark the transfers to create transactions in those accounts
         if (txn.getCategorySplits() != null) {
-            for (CategorySplit categorySplit: txn.getCategorySplits()) {
+            for (CategorySplit categorySplit : txn.getCategorySplits()) {
                 if (categorySplit.getCategory().startsWith(CategoryCacheManagerImpl.TRANSFER_FROM)) {
                     //determine the account being accessed
                     String accountName = categorySplit.getCategory().substring(CategoryCacheManagerImpl.TRANSFER_FROM.length());
                     log.debug(accountName);
-                    
+
                     //record a debit transaction in that account
                     //set the transfer transaction on the category split
-                    
                 } else if (categorySplit.getCategory().startsWith(CategoryCacheManagerImpl.TRANSFER_TO)) {
                     //determine the account being accessed
                     String accountName = categorySplit.getCategory().substring(CategoryCacheManagerImpl.TRANSFER_FROM.length());
                     log.debug(accountName);
-                    
-                    
+
                     //record a credit transaction in that account
                     //set the transfer transaction on the account
                     //set the transfer transaction on the category split
                 }
-                    
+
             }
         }
         return false;
     }
-    
-    
-    
-    
+
     @Override
     public RegisterTransaction createTransaction(RegisterTransaction txn) {
 
-        RegisterTransaction rtnTxn =  this.saveTransaction(txn);
+        RegisterTransaction rtnTxn = this.saveTransaction(txn);
         if (rtnTxn.getId() != null) {
             //perform actions on the other transactions
         }
         return rtnTxn;
-        
+
     }
 
-    
-    
     @Override
     public void deleteTransaction(RegisterTransaction txn) {
         //mark as void the supporting txn for the category splits
@@ -111,10 +101,10 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
     public RegisterTransaction updateTransaction(RegisterTransaction txn) {
         return this.saveTransaction(txn);
     }
-    
+
     /*
     * This is a change new change
-    */
+     */
     protected RegisterTransaction saveTransaction(RegisterTransaction _txn) {
         _txn.setLastModifiedDate(new Date());
         //created
@@ -126,10 +116,11 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
             if (_txn.getStatusTxt() == null || "".equals(_txn.getStatusTxt())) {
                 _txn.setStatusTxt("p");
             }
+            _txn.setId(UUID.randomUUID().toString());
             RegisterTransaction txn = this.registerDAO.createTransaction(_txn);
             this.fireTransactionEvent(txn, TransactionEvent.TransactionEventType.ADDED);
             return txn;
-        //update
+            //update
         } else {
             if (_txn.getTxnDate() == null || "".equals(_txn.getTxnDate())) {
                 _txn.setTxnDate(transactionDateFormatter.format(new Date()));
@@ -156,11 +147,11 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
         log.debug("Exiting getTransactionsByCategories");
         return txns;
     }
-    
+
     @Override
-    public List<RegisterTransaction> getTransactionsByCategoriesStartsWithForDateStartWith(Account account, String category,String date){
+    public List<RegisterTransaction> getTransactionsByCategoriesStartsWithForDateStartWith(Account account, String category, String date) {
         log.debug("Entering getTransactionsByCategoriesStartsWithForDateStartWith");
-        List<RegisterTransaction> txns = this.registerDAO.getTransactionsByCategoriesStartsWithForDateStartWith(account, category,date);
+        List<RegisterTransaction> txns = this.registerDAO.getTransactionsByCategoriesStartsWithForDateStartWith(account, category, date);
         txns.sort(new RegisterTransactionDateAscendingComparator());
         log.debug("Exiting getTransactionsByCategoriesStartsWithForDateStartWith");
         return txns;
@@ -205,7 +196,7 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
         txns.sort(new RegisterTransactionDateAscendingComparator());
         log.debug("Exiting getAllTransactionsForDateStartWith");
         return txns;
-   }
+    }
 
     @Override
     public OnlineTransaction getPendingTransactionById(String id) {
@@ -221,7 +212,7 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
     public void matchTransaction(OnlineTransaction pendingTransaction, RegisterTransaction enteredTransaction) {
         pendingTransaction.setStatusTxt(RegisterTransaction.STATUS_ACCEPTED);
         this.addPendingTransactions(pendingTransaction);
-        
+
         enteredTransaction.setStatusTxt(RegisterTransaction.STATUS_CLEARED);
         this.saveTransaction(enteredTransaction);
     }
@@ -231,10 +222,20 @@ private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat(
         return this.registerDAO.findTransaction(searchTerm);
     }
 
-    @Override 
+    @Override
     public List<RegisterTransaction> findTransaction(Account account, String searchTerm) {
         return this.registerDAO.findTransaction(account, searchTerm);
     }
-            
+
+    @Override
+    public void addRegisterTransactionToSystem(RegisterTransaction txn) {
+        this.registerDAO.createTransaction(txn);
+      
+    }
+
+    @Override
+    public List<RegisterTransaction> getAllTransactions() {
+        return this.registerDAO.getAllTransactions();
+    }
 
 }

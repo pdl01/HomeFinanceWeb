@@ -14,7 +14,8 @@ import java.util.List;
  * @author pldorrell
  */
 public interface BudgetManager {
-        public List<Budget> getBudgets();
+    public Budget addBudgetToSystem(Budget budget);
+    public List<Budget> getBudgets();
     public Budget getById(String id);
     public Budget createBudget(Budget budget);
     public void deleteBudget(Budget budget);
