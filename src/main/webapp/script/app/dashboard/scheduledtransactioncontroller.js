@@ -262,7 +262,7 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
         console.log($scope.scheduledTransactionFormData);
         //get the splits and turn it into a better list
         var newCategories = [];
-        $scope.scheduledTransactionFormData.primaryAccount = $scope.selectedAccount.id;
+        $scope.scheduledTransactionFormData.primaryAccount = $scope.workingAccount.id;
         for (var i = 0; i < 10; i++) {
             if ($scope.scheduledTransactionFormCategorySplits[i] != undefined) {
                 var categorySplit = new Object();
@@ -284,13 +284,13 @@ angular.module('HFWApp').controller('accountScheduleController', function ($root
             ScheduledTransactionService.saveTransaction($scope.scheduledTransactionFormData).success(function (response) {
                 //$scope.registryTransactions.push(response);
                 $scope.showTransactionModal = false;
-                $scope.$emit('transactionSaved', $scope.selectedAccount.id);
+                $scope.$emit('transactionSaved', $scope.workingAccount.id);
                 console.log(response);
             });
         } else {
             ScheduledTransactionService.saveTransaction($scope.scheduledTransactionFormData).success(function (response) {
                 //$scope.showTransactionModal = false;
-                $scope.$emit('scheduledTransactionSaved', $scope.selectedAccount.id);
+                $scope.$emit('scheduledTransactionSaved', $scope.workingAccount.id);
                 console.log(response);
             });
 

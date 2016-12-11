@@ -1,4 +1,4 @@
-var hfwApp = angular.module('HFWBudgetApp', []);
+var hfwApp = angular.module('HFWBudgetApp', ['BudgetServiceModule','CategoryLookupServiceModule']);
 
 
 
