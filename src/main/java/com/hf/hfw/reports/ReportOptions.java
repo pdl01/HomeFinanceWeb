@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hf.hfw.reports;
 
 import java.text.SimpleDateFormat;
@@ -15,8 +10,8 @@ import java.util.List;
  * @author pldorrell
  */
 public class ReportOptions {
-    public static final SimpleDateFormat sdf_year_month = new SimpleDateFormat("yyyy-MM-");
-    public static final SimpleDateFormat sdf_year = new SimpleDateFormat("yyyy-");
+    public static final SimpleDateFormat sdf_year_month = new SimpleDateFormat("yyyy-MM");
+    public static final SimpleDateFormat sdf_year = new SimpleDateFormat("yyyy");
 
     
     public static final String REPORT_PERIOD_CURRENT_MONTH = "currentMonth";
