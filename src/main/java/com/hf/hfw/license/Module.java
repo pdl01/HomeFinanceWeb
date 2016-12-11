@@ -7,5 +7,22 @@ package com.hf.hfw.license;
  */
 public class Module {
     protected String name;
-    protected Version vesion;
+    protected Version version;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Version getVersion() {
+        return version;
+    }
+
+    public void setVersion(Version version) {
+        this.version = version;
+    }
+    
 }
