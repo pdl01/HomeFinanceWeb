@@ -24,11 +24,12 @@
     </head>
     <body>
   <script src="/script/app/budget/app.js"></script>
-        <script src="/script/app/services.js"></script>
+        <script src="/script/app/services/budgetservice.js"></script>
+        <script src="/script/app/services/categorylookupservice.js"></script>
         <@showLayoutHeader 'dashboard'/>
 
         
-        <div ng-app="HFWBudgetApp" ng-controller="budgetController" id="budgetMain">
+        <div ng-app="HFWBudgetApp" ng-controller="budgetController" id="budgetMain" ng-cloak>
 
             <@buildMenu 'budget'/>
             <div id="appMain">

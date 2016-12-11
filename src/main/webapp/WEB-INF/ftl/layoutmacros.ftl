@@ -60,6 +60,7 @@ $(document).ready(function(){
         <li><a href="/app/budget">Budget</a></li><#if pageTitle=='budget'><@buildBudgetMenu/></#if>
         <li><a href="/app/reports">Reports</a></li>
         <li><a href="/app/settings">Settings</a></li>
+        <li><a href="/app/version">Version</a></li>        
         <li><a href="/app/logout">Logout</a></li>
         </ul>
             <@accountEntryForm/>

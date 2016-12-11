@@ -49,7 +49,7 @@
 
     </head>
 
-    <body ng-app="HFWApp">
+    <body ng-app="HFWApp" ng-cloak>
 
 
 
