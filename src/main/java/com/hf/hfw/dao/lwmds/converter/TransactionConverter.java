@@ -68,6 +68,7 @@ public class TransactionConverter implements CollectionObjectConverter<RegisterT
     @Override
     public CollectionObject setId(CollectionObject collectionObject, String _id) {
        ((RegisterTransaction)collectionObject.getTarget()).setId(_id);
-        return collectionObject;    }
+        return collectionObject;    
+    }
     
 }

@@ -142,6 +142,18 @@ public class MainController {
         model.setViewName("mobile/transaction");
         return model;
     }
+
+    @RequestMapping(value = {"/uploadresults"}, method = RequestMethod.POST)
+    public String uploadResults(@ModelAttribute("model") ModelMap model,HttpServletRequest request) {
+        log.debug("Entering uploadResults");
+        //ModelAndView model = new ModelAndView();
+        model.addAttribute("title", "Spring Security Hello World");
+        model.addAttribute("message", "This is welcome page!");
+        model.addAttribute("theme",request.getAttribute("theme"));
+        //model.setViewName("dashboard");
+        log.debug("Exiting uploadResults");
+        return "uploadResults";
+    }
     
     @RequestMapping(value = {"/fileops**"}, method = RequestMethod.GET)
     public String fileOps(@ModelAttribute("model") ModelMap model,HttpServletRequest request) {
@@ -154,6 +166,7 @@ public class MainController {
         log.debug("Exiting fileOps");
         return "fileops";
     }
+    
     @RequestMapping(value="/logout", method = RequestMethod.GET)
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

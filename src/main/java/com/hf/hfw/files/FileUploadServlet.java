@@ -66,24 +66,29 @@ public class FileUploadServlet extends HttpServlet {
         }
         String accountId=null;
         String fullFilePath=null; 
+        String finalFilePath = null;
         for (Part part : request.getParts()) {
             if (part.getName().equals("accountId")) {
                 Scanner scanner = new Scanner(part.getInputStream());
                 accountId = scanner.nextLine();
-            } else {
+            
+            } else if (part.getName().equals("file")) {
                 String fileName = extractFileName(part);
                 System.out.println("fileName From Post:"+fileName);
                 fileName = UUID.randomUUID().toString() + "-" + fileName.replaceAll(" ", "");
-                fullFilePath = savePath + File.separator + fileName;
+                fullFilePath = configurationDirectoryService.getTempFileStorageDirectory() + File.separator + fileName;
+                finalFilePath = configurationDirectoryService.getFileStorageDirectory()+File.separator+fileName;
+                System.out.println("full fileName to write:"+fullFilePath);
                 //write to the temp dir
-                part.write(fileName);
+                part.write(fullFilePath);
                 
                 
                 //move from the temp dir to the file dir
                 //File file=new File(fullFilePath);
                 //Files.move(null, null, options)
-                Path moveFrom = FileSystems.getDefault().getPath(configurationDirectoryService.getTempFileStorageDirectory()+File.separator+fileName);
-                Path moveTo = FileSystems.getDefault().getPath(configurationDirectoryService.getFileStorageDirectory()+File.separator+fileName);
+                //Path moveFrom = FileSystems.getDefault().getPath(configurationDirectoryService.getTempFileStorageDirectory()+File.separator+fileName);
+                Path moveFrom = FileSystems.getDefault().getPath(fullFilePath);
+                Path moveTo = FileSystems.getDefault().getPath(finalFilePath);
                 Files.move(moveFrom, moveTo, StandardCopyOption.ATOMIC_MOVE);
             }   
 
@@ -92,14 +97,14 @@ public class FileUploadServlet extends HttpServlet {
         //TODO kickoff the event to say the file is written
         AccountManager accountManager = context.getBean("accountManager",AccountManager.class);
         Account account = accountManager.getAccountById(accountId);
-        this.fireAccountEvent(account, fullFilePath, AccountEvent.AccountEventType.UPLOADED_TRANSACTION_FILE);
+        this.fireAccountEvent(account, finalFilePath, AccountEvent.AccountEventType.UPLOADED_TRANSACTION_FILE);
         request.setAttribute("message", "Upload has been done successfully!");
-        getServletContext().getRequestDispatcher("/uploadresults.jsp").forward(request, response);        
+        getServletContext().getRequestDispatcher("/app/uploadresults").forward(request, response);        
     }
     
     protected void processSystemImport(HttpServletRequest request, HttpServletResponse response)   throws ServletException, IOException{
         request.setAttribute("message", "Upload has been done successfully!");
-        getServletContext().getRequestDispatcher("/uploadresults.jsp").forward(request, response);        
+        getServletContext().getRequestDispatcher("/app/uploadresults").forward(request, response);        
         
     }
     
@@ -110,6 +115,7 @@ public class FileUploadServlet extends HttpServlet {
         String contentDisp = part.getHeader("content-disposition");
         String[] items = contentDisp.split(";");
         for (String s : items) {
+            System.out.println(s);
             if (s.trim().startsWith("filename")) {
                 return s.substring(s.indexOf("=") + 2, s.length() - 1);
             }
