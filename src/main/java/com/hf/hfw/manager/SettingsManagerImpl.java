@@ -34,8 +34,8 @@ public class SettingsManagerImpl implements SettingsManager {
     public SettingsBean getThemeSetting() {
         SettingsBean settingsBean = null;
         try {
-            //settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_THEME);
-            settingsBean = this.settings.get(TYPE_OF_SETTING_THEME);
+            settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_THEME);
+            //settingsBean = this.settings.get(TYPE_OF_SETTING_THEME);
         } catch (Exception e) {
             log.error("Unable to get theme. Setting to default", e);
         }
@@ -78,8 +78,9 @@ public class SettingsManagerImpl implements SettingsManager {
     @Override
     public void saveThemeSettings(SettingsBean bean) {
         bean.setId(TYPE_OF_SETTING_THEME);
-        this.addSettingsBeanToSystem(bean);
-        fireSettingsEvent(bean, SettingsEvent.SettingsEventType.MODIFIED);
+        this.repositoryBasedSettingDAO.saveSetting(TYPE_OF_SETTING_THEME, bean);
+        //this.addSettingsBeanToSystem(bean);
+        //fireSettingsEvent(bean, SettingsEvent.SettingsEventType.MODIFIED);
 
     }
 
@@ -87,8 +88,8 @@ public class SettingsManagerImpl implements SettingsManager {
     public SettingsBean getBasicSecuritySetting() {
         SettingsBean settingsBean = null;
         try {
-            settingsBean = this.settings.get(TYPE_OF_SETTING_BASICSECURITY);
-            //settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_BASICSECURITY);
+            //settingsBean = this.settings.get(TYPE_OF_SETTING_BASICSECURITY);
+            settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_BASICSECURITY);
         } catch (Exception e) {
             log.error("Unable to get security setting. Using basic.", e);
         }
@@ -103,8 +104,9 @@ public class SettingsManagerImpl implements SettingsManager {
     public void saveBasicSecuritySettings(SettingsBean bean) {
         //this.repositoryBasedSettingDAO.saveSetting(TYPE_OF_SETTING_BASICSECURITY, bean);
         bean.setId(TYPE_OF_SETTING_BASICSECURITY);
-        this.addSettingsBeanToSystem(bean);
-        fireSettingsEvent(bean, SettingsEvent.SettingsEventType.MODIFIED);
+        this.repositoryBasedSettingDAO.saveSetting(TYPE_OF_SETTING_BASICSECURITY, bean);
+        //this.addSettingsBeanToSystem(bean);
+        //fireSettingsEvent(bean, SettingsEvent.SettingsEventType.MODIFIED);
 
     }
 
@@ -112,8 +114,8 @@ public class SettingsManagerImpl implements SettingsManager {
     public SettingsBean getLimitedSecurityUsers() {
         SettingsBean settingsBean = null;
         try {
-            //settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_LIMITEDUSERSECURITY);
-            settingsBean = this.settings.get(TYPE_OF_SETTING_LIMITEDUSERSECURITY);
+            settingsBean = this.repositoryBasedSettingDAO.getSetting(TYPE_OF_SETTING_LIMITEDUSERSECURITY);
+            //settingsBean = this.settings.get(TYPE_OF_SETTING_LIMITEDUSERSECURITY);
         } catch (Exception e) {
             log.error("Unable to get users from settings", e);
         }
@@ -127,10 +129,11 @@ public class SettingsManagerImpl implements SettingsManager {
     @Override
     public void saveLimitedSecurityUsers(SettingsBean bean) {
         //this.repositoryBasedSettingDAO.saveSetting(TYPE_OF_SETTING_LIMITEDUSERSECURITY, bean);
-        log.info(bean.getId());
+        //log.info(bean.getId());
         bean.setId(TYPE_OF_SETTING_LIMITEDUSERSECURITY);
-        this.addSettingsBeanToSystem(bean);
-        fireSettingsEvent(bean, SettingsEvent.SettingsEventType.MODIFIED);
+        this.repositoryBasedSettingDAO.saveSetting(TYPE_OF_SETTING_LIMITEDUSERSECURITY, bean);
+        //this.addSettingsBeanToSystem(bean);
+        //fireSettingsEvent(bean, SettingsEvent.SettingsEventType.MODIFIED);
 
     }
 
@@ -151,15 +154,11 @@ public class SettingsManagerImpl implements SettingsManager {
 
     @Override
     public List<SettingsBean> getAllSettings() {
-        ArrayList<SettingsBean> localSettings = new ArrayList<>();
-        if (this.settings == null || this.settings.isEmpty()) {
-            return localSettings;
-        }
-        for (String key : this.settings.keySet()) {
-            localSettings.add(this.settings.get(key));
-        }
-        return localSettings;
-
+        ArrayList<SettingsBean> allSettings = new ArrayList<>();
+        allSettings.add(this.getBasicSecuritySetting());
+        allSettings.add(this.getLimitedSecurityUsers());
+        allSettings.add(this.getThemeSetting());
+        return allSettings; 
     }
 
 }

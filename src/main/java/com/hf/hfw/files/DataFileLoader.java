@@ -59,21 +59,22 @@ public class DataFileLoader {
     }
 
     public void performInitialLoad() {
-        this.loadSettingsFile();
-        this.loadAccountsFile();
-        this.loadBudgetsFile();
+        //this.loadSettingsFile();
+        //this.loadAccountsFile();
+        //this.loadBudgetsFile();
 //        this.loadRegistryFiles();
     }
 
     public void performSave() {
-        this.saveSettingsFile();
-        this.saveAccountsFile();
-        this.saveBudgetsFile();
+        //this.saveSettingsFile();
+        //this.saveAccountsFile();
+        //this.saveBudgetsFile();
 //        this.saveRegistryFiles();
 
     }
 
     public void loadAccountsFile() {
+        /*
         ConfigurationDirectoryService cds = ApplicationState.getApplicationState().getConfigurationDirectoryService();
 
         File accountFile = new File(cds.getDataStorageDirectory() + File.separator + "accounts.data");
@@ -88,6 +89,7 @@ public class DataFileLoader {
             }
 
         }
+        */
     }
 
     public void loadBudgetsFile() {
@@ -108,6 +110,7 @@ public class DataFileLoader {
     }
 
     public void loadSettingsFile() {
+        /*
         ConfigurationDirectoryService cds = ApplicationState.getApplicationState().getConfigurationDirectoryService();
 
         File settingsFile = new File(cds.getDataStorageDirectory() + File.separator + "settings.data");
@@ -122,9 +125,11 @@ public class DataFileLoader {
             }
 
         }
+        */
     }
 
     public void saveSettingsFile() {
+        /*
         ConfigurationDirectoryService cds = ApplicationState.getApplicationState().getConfigurationDirectoryService();
 
         File settingsFile = new File(cds.getDataStorageDirectory() + File.separator + "settings.data");
@@ -133,9 +138,11 @@ public class DataFileLoader {
         settingsDataFile.setVersion(ApplicationState.getApplicationState().getCurrentVersion());
         settingsDataFile.setObjectData(this.settingsManager.getAllSettings());
         settingsDataFile.writeToFile(settingsFile, SettingsBean.class);
+        */
     }
 
     public void saveAccountsFile() {
+        /*
         ConfigurationDirectoryService cds = ApplicationState.getApplicationState().getConfigurationDirectoryService();
 
         File accountsFile = new File(cds.getDataStorageDirectory() + File.separator + "accounts.data");
@@ -144,7 +151,8 @@ public class DataFileLoader {
         accountsDataFile.setVersion(ApplicationState.getApplicationState().getCurrentVersion());
         accountsDataFile.setObjectData(this.accountManager.getAccounts());
         accountsDataFile.writeToFile(accountsFile, Account.class);
-    }
+        */
+}
 
     public void saveBudgetsFile() {
         ConfigurationDirectoryService cds = ApplicationState.getApplicationState().getConfigurationDirectoryService();

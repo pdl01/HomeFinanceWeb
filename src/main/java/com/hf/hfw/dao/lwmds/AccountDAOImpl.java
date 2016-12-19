@@ -81,6 +81,7 @@ public class AccountDAOImpl extends LWMDSDAO implements AccountDAO{
     public void deleteAccount(Account account) {
         try {
             getDataStore().removeObject(ConfigBuilder.COLLECTION_ACCOUNTS, account.getId());
+            //TODO: delete all transactions in that account
         } catch (CollectionNotFoundException ex) {
             log.error("Collection Not Found",ex);
         }

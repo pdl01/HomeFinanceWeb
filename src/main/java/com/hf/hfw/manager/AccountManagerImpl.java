@@ -1,5 +1,3 @@
-
-
 package com.hf.hfw.manager;
 
 import com.hf.hfw.accounts.events.AccountEvent;
@@ -12,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -19,9 +18,11 @@ import org.springframework.context.ApplicationContext;
  * @author phillip.dorrell
  */
 public class AccountManagerImpl implements AccountManager {
-    private Map<String,Account> accounts;
-    private Map<String,String> accountNameMap;
-    private Map<String,String> accountExternalIdMap;
+    private static final Logger log = Logger.getLogger(AccountManagerImpl.class);
+
+    //private Map<String,Account> accounts;
+    //private Map<String,String> accountNameMap;
+    //private Map<String,String> accountExternalIdMap;
     
     private AccountDAO accountDAO;
     
@@ -36,13 +37,13 @@ public class AccountManagerImpl implements AccountManager {
     
     @Override
     public Account getAccountById(String accountId) {
+        log.debug("accountId");
         if (accountId == null) {
             return null;
         }
-        if (this.accounts == null) {
-            return null;
-        }
-        return this.accounts.get(accountId);
+        Account account = this.accountDAO.getAccountById(accountId);
+        return account;
+        
     }
 
     @Override
@@ -50,12 +51,8 @@ public class AccountManagerImpl implements AccountManager {
         if (_id == null ) {
             return null;
         }
-    
-        if (this.accountNameMap == null) {
-            return null;
-        }
-        String accountId = this.accountNameMap.get(_id);
-        return this.getAccountById(accountId);
+        Account account = this.accountDAO.getAccountByName(_id);
+        return account;
     }
 
     @Override
@@ -63,11 +60,9 @@ public class AccountManagerImpl implements AccountManager {
         if (_id == null) {
             return null;
         }
-        if (this.accountExternalIdMap == null) {
-            return null;
-        }
-        String accountId = this.accountExternalIdMap.get(_id);
-        return this.getAccountById(accountId);
+        Account account = this.getAccountByExternalId(_id);
+        return account;
+
     }
 
     @Override
@@ -83,7 +78,7 @@ public class AccountManagerImpl implements AccountManager {
         this.fireAccountEvent(account, AccountEvent.AccountEventType.DELETING);
         this.accountDAO.deleteAccount(account);
         //TODO: delete all register transactions or let a handler take care of it
-        this.fireAccountEvent(account, AccountEvent.AccountEventType.DELETING);
+        this.fireAccountEvent(account, AccountEvent.AccountEventType.DELETED);
     }
 
     @Override
@@ -95,10 +90,11 @@ public class AccountManagerImpl implements AccountManager {
         if (_account.getId() == null) { 
             _account.setId(UUID.randomUUID().toString());
             _account.setCreatedDate(new Date());
-            //Account account = this.accountDAO.createAccount(_account);
-            this.addAccountToSystem(_account);
+            Account account = this.accountDAO.createAccount(_account);
+            
+            //this.addAccountToSystem(_account);
             this.fireAccountEvent(_account, AccountEvent.AccountEventType.ADDED);
-            return _account;
+            return account;
         } else {
             Account oldAccount = this.getAccountById(_account.getId());
             boolean updatedStartingBalance = false;
@@ -106,26 +102,21 @@ public class AccountManagerImpl implements AccountManager {
                 updatedStartingBalance = true;
 
             }
-            //Account account = this.accountDAO.updateAccount(_account);
-            this.addAccountToSystem(_account);
+            Account account = this.accountDAO.updateAccount(_account);
+            //this.addAccountToSystem(_account);
 
-            this.fireAccountEvent(_account, AccountEvent.AccountEventType.MODIFIED);
+            this.fireAccountEvent(account, AccountEvent.AccountEventType.MODIFIED);
             if (updatedStartingBalance) {
-                this.fireAccountEvent(_account, AccountEvent.AccountEventType.UPDATED_STARTING_BALANCE);
+                this.fireAccountEvent(account, AccountEvent.AccountEventType.UPDATED_STARTING_BALANCE);
             }
-            return _account;
+            return account;
         }        
     }
 
     @Override
     public List<Account> getAccounts() {
-        ArrayList<Account> localAccounts = new ArrayList<>();
-        if (this.accounts == null || this.accounts.isEmpty()) {
-            return localAccounts;
-        }
-         for (String key: this.accounts.keySet()) {
-             localAccounts.add(this.accounts.get(key));
-         }
+        
+        List<Account> localAccounts = this.accountDAO.getAccounts();
         return localAccounts;
     }
      protected void fireAccountEvent(Account _account,AccountEvent.AccountEventType _type) {
@@ -149,6 +140,7 @@ public class AccountManagerImpl implements AccountManager {
 
     @Override
     public synchronized Account addAccountToSystem(Account _account) {
+        /*
         if (this.accounts == null) {
             this.accounts = new HashMap<>();
         }
@@ -162,5 +154,7 @@ public class AccountManagerImpl implements AccountManager {
         this.accountNameMap.put(_account.getName(),_account.getId());
         this.accountExternalIdMap.put(_account.getExternalId(),_account.getId());
         return _account;
+        */
+        return null;
     }
 }

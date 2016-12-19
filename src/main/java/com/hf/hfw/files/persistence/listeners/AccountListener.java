@@ -21,7 +21,7 @@ public class AccountListener implements ApplicationListener<AccountEvent>{
         if (e.getType() == AccountEvent.AccountEventType.ADDED ||
             e.getType() == AccountEvent.AccountEventType.MODIFIED ||
             e.getType() == AccountEvent.AccountEventType.DELETED) {
-            this.dataFileLoader.saveAccountsFile();    
+            //this.dataFileLoader.saveAccountsFile();    
         }
         
     }

@@ -43,10 +43,10 @@
   	<property name="registerDAO" ref="registerDAO"/>
   </bean>
     <bean id="accountManager" class="com.hf.hfw.manager.AccountManagerImpl">    
-  	<!--<property name="accountDAO" ref="accountDAO"/>-->
+  	<property name="accountDAO" ref="accountDAO"/>
   </bean>
   <bean id="settingsManager" class="com.hf.hfw.manager.SettingsManagerImpl">
-      <!--<property name="repositoryBasedSettingDAO" ref="repositoryBasedSettingDAO"/>-->
+      <property name="repositoryBasedSettingDAO" ref="repositoryBasedSettingDAO"/>
   </bean>
   <bean id="budgetManager" class="com.hf.hfw.manager.BudgetManagerImpl">    
   	<property name="budgetDAO" ref="budgetDAO"/>

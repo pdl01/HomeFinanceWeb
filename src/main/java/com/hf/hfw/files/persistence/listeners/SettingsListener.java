@@ -24,7 +24,7 @@ public class SettingsListener implements ApplicationListener<SettingsEvent>{
     @Override
     public void onApplicationEvent(SettingsEvent e) {
         if (e.getType() == SettingsEvent.SettingsEventType.MODIFIED) {
-            this.dataFileLoader.saveSettingsFile();    
+            //this.dataFileLoader.saveSettingsFile();    
         }
         
     }

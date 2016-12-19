@@ -26,6 +26,7 @@ public class ConfigBuilder {
     public final static String COLLECTION_SCHEDULED_TRANSACTIONS = "scheduledTransactions";
     public final static String COLLECTION_BUDGET = "budgets";
     public final static String COLLECTION_NOTIFICATIONS = "notifications";
+    public final static String COLLECTION_SETTINGS = "settings";
     
     private ConfigurationDirectoryService configurationDirectoryService;
     public void setConfigurationDirectoryService(ConfigurationDirectoryService configurationDirectoryService){
@@ -55,8 +56,7 @@ public class ConfigBuilder {
         collectionDescriptionImpl.setIdAttribute("id");
         collectionDescriptionImpl.addIndexedAttribute("accountNumber");
         collectionDescriptionImpl.addIndexedAttribute("name");
-        //collectionDescriptionImpl.addIndexedAttribute("externalId");
-        
+        collectionDescriptionImpl.addIndexedAttribute("externalId");
         collectionDescriptionImpl.addIndexedAttribute("accountType");
         
         collectionDescriptionImpl.setConverter(new AccountConverter());
@@ -120,7 +120,7 @@ public class ConfigBuilder {
     private CollectionDescription buildSettingsCD() {
         CollectionDescriptionImpl collectionDescriptionImpl = new CollectionDescriptionImpl();
         collectionDescriptionImpl = new CollectionDescriptionImpl();
-        collectionDescriptionImpl.setName("settings");
+        collectionDescriptionImpl.setName(COLLECTION_SETTINGS);
         collectionDescriptionImpl.setIdAttribute("id");        
         collectionDescriptionImpl.addIndexedAttribute("typeOfSetting");
         collectionDescriptionImpl.setConverter(new SettingsConverter());
@@ -129,11 +129,11 @@ public class ConfigBuilder {
     private CollectionDescription buildNotificationCD() {
         CollectionDescriptionImpl collectionDescriptionImpl = new CollectionDescriptionImpl();
         collectionDescriptionImpl = new CollectionDescriptionImpl();
-        collectionDescriptionImpl.setName("notifications");
+        collectionDescriptionImpl.setName(COLLECTION_NOTIFICATIONS);
         collectionDescriptionImpl.setIdAttribute("id");        
         collectionDescriptionImpl.addIndexedAttribute("status");
         collectionDescriptionImpl.setConverter(new NotificationConverter());
         return collectionDescriptionImpl;
     }
-
+    
 }

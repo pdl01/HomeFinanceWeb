@@ -31,12 +31,18 @@ public class SettingsConverter implements CollectionObjectConverter<SettingsBean
 
     @Override
     public SettingsBean convertFromCollectionObject(CollectionObject object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (SettingsBean) object.getTarget();
     }
 
     @Override
     public String getValue(SettingsBean k, String attribute) throws AttributeNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (attribute.equalsIgnoreCase("id")) {
+            return k.getId();
+        } else if (attribute.equalsIgnoreCase("typeOfSetting")) {
+            return k.getTypeOfSetting();
+        } else {
+            throw new AttributeNotFoundException();
+        }
     }
 
     @Override
