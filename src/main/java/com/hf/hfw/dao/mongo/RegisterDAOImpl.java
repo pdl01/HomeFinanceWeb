@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.hf.hfw.dao.mongo;
 
 import com.hf.homefinanceshared.Account;
@@ -23,6 +19,7 @@ import org.springframework.data.mongodb.core.query.Query;
  * @author phillip.dorrell
  */
 public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
+    private static String COLLECTION_NAME_ONLINETXNS="onlineData";
     private static final Logger log = Logger.getLogger(RegisterDAOImpl.class);
 
     @Override
@@ -140,7 +137,7 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
     @Override
     public void addPendingTransactions( List<OnlineTransaction> txns) {
         for (OnlineTransaction txn: txns) {
-            this.getMongoTemplate().save(txn, "onlineData");    
+            this.getMongoTemplate().save(txn, COLLECTION_NAME_ONLINETXNS);    
         }
         
     }
@@ -151,13 +148,13 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
         searchTransactionsQuery.addCriteria(Criteria.where("statusTxt").is(RegisterTransaction.STATUS_IMPORTED));
         searchTransactionsQuery.with(new Sort(Sort.Direction.ASC,"txnDate"));
 
-        return this.getMongoTemplate().find(searchTransactionsQuery, OnlineTransaction.class, "onlineData");
+        return this.getMongoTemplate().find(searchTransactionsQuery, OnlineTransaction.class, COLLECTION_NAME_ONLINETXNS);
     }
 
     @Override
     public OnlineTransaction getPendingTransactionById(String _id) {
         Query searchTransactionQuery = new Query(Criteria.where("id").is(_id));
-        return this.getMongoTemplate().findOne(searchTransactionQuery, OnlineTransaction.class,"onlineData");
+        return this.getMongoTemplate().findOne(searchTransactionQuery, OnlineTransaction.class,COLLECTION_NAME_ONLINETXNS);
     }
 
     @Override
@@ -205,6 +202,11 @@ public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
     @Override
     public List<RegisterTransaction> getAllTransactions() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void deleteOnlineTransaction(OnlineTransaction txn) {
+        this.getMongoTemplate().remove(txn,COLLECTION_NAME_ONLINETXNS);
     }
 
     

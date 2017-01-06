@@ -156,6 +156,11 @@ public class RegisterDAOImpl extends H2DAO implements RegisterDAO {
         return txns;
     }
 
+    @Override
+    public void deleteOnlineTransaction(OnlineTransaction onlineTransaction) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     class RegisterTransactionRowMapper implements org.springframework.jdbc.core.RowMapper<RegisterTransaction> {
 
         @Override

@@ -26,6 +26,8 @@ public interface RegisterDAO {
     public List<RegisterTransaction> getTransactionsForDateStartWith(Account account, String date, boolean getCredit);
     public void addPendingTransactions(List<OnlineTransaction> txns);
     public List<OnlineTransaction> getPendingTransactions(Account account);
+    public void deleteOnlineTransaction(OnlineTransaction onlineTransaction);
+
     public List<RegisterTransaction> getAllTransactionsForDateStartWith(Account account, String date);
     public OnlineTransaction getPendingTransactionById(String id);
     public List<RegisterTransaction> matchTransaction(OnlineTransaction pendingTransaction);

@@ -3,6 +3,7 @@ package com.hf.hfw.api.v1.settings;
 import com.hf.hfw.application.ApplicationRepositoryConfig;
 import com.hf.hfw.application.ApplicationState;
 import com.hf.hfw.application.ConfigurationDirectoryService;
+import com.hf.hfw.manager.EmailManager;
 import com.hf.hfw.manager.SettingsManager;
 import java.util.HashMap;
 import javax.ws.rs.Path;
@@ -16,9 +17,14 @@ public class SettingsServiceImpl implements SettingsService {
 
     private ConfigurationDirectoryService configurationDirectoryService;
     private SettingsManager settingsManager;
+    private EmailManager emailManager;
 
     public SettingsManager getSettingsManager() {
         return settingsManager;
+    }
+
+    public void setEmailManager(EmailManager emailManager) {
+        this.emailManager = emailManager;
     }
 
     public void setSettingsManager(SettingsManager settingsManager) {
@@ -53,6 +59,8 @@ public class SettingsServiceImpl implements SettingsService {
             settingsBean = this.settingsManager.getBasicSecuritySetting();
         } else if ("limitedusersecurity".equals(typeOfSettings)) {
             settingsBean = this.settingsManager.getLimitedSecurityUsers();
+        } else if ("email".equals(typeOfSettings)) {
+            settingsBean = this.settingsManager.getEmailServerSettings();
         }
         return settingsBean;
 
@@ -78,17 +86,46 @@ public class SettingsServiceImpl implements SettingsService {
             settingsBean.settings.put("enabled", settingsbean.getSettings().get("enabled"));
             settingsBean.settings.put("password", settingsbean.getSettings().get("password"));
             this.settingsManager.saveBasicSecuritySettings(settingsbean);
-        } else if ("limitedusersecurity".equals(typeOfSettings)){
+        } else if ("limitedusersecurity".equals(typeOfSettings)) {
             SettingsBean newsettingsBean = this.settingsManager.getLimitedSecurityUsers();
             newsettingsBean.settings.put("user1name", settingsbean.getSettings().get("user1name"));
             newsettingsBean.settings.put("user1password", settingsbean.getSettings().get("user1password"));
+            newsettingsBean.settings.put("user1email", settingsbean.getSettings().get("user1email"));
             newsettingsBean.settings.put("user2name", settingsbean.getSettings().get("user2name"));
             newsettingsBean.settings.put("user2password", settingsbean.getSettings().get("user2password"));
+            newsettingsBean.settings.put("user2email", settingsbean.getSettings().get("user2email"));
             newsettingsBean.settings.put("user3name", settingsbean.getSettings().get("user3name"));
             newsettingsBean.settings.put("user3password", settingsbean.getSettings().get("user3password"));
+            newsettingsBean.settings.put("user3email", settingsbean.getSettings().get("user3email"));
             this.settingsManager.saveLimitedSecurityUsers(newsettingsBean);
+        } else if ("email".equals(typeOfSettings)) {
+            SettingsBean newSettingsBean = this.settingsManager.getEmailServerSettings();
+            newSettingsBean.settings.put(EmailManager.SETTING_NAME_SMTP_SERVER, settingsbean.getSettings().get(EmailManager.SETTING_NAME_SMTP_SERVER));
+            newSettingsBean.settings.put(EmailManager.SETTING_NAME_SMTP_PORT, settingsbean.getSettings().get(EmailManager.SETTING_NAME_SMTP_PORT));
+            newSettingsBean.settings.put(EmailManager.SETTING_NAME_SMTP_AUTHENTICATION_REQ, settingsbean.getSettings().get(EmailManager.SETTING_NAME_SMTP_AUTHENTICATION_REQ));
+            newSettingsBean.settings.put(EmailManager.SETTING_NAME_SMTP_SECURITY, settingsbean.getSettings().get(EmailManager.SETTING_NAME_SMTP_SECURITY));
+            newSettingsBean.settings.put(EmailManager.SETTING_NAME_SMTP_USERNAME, settingsbean.getSettings().get(EmailManager.SETTING_NAME_SMTP_USERNAME));
+            newSettingsBean.settings.put(EmailManager.SETTING_NAME_SMTP_PASSWORD, settingsbean.getSettings().get(EmailManager.SETTING_NAME_SMTP_PASSWORD));
+            newSettingsBean.settings.put(EmailManager.SETTING_NAME_SMTP_FROM_EMAIL, settingsbean.getSettings().get(EmailManager.SETTING_NAME_SMTP_FROM_EMAIL));
+            this.settingsManager.saveEmailServerSettings(newSettingsBean);
         }
         return settingsbean;
+    }
+
+    @Override
+    public String validateEmailSettings(SettingsBean settingsBean) {
+        boolean validSettings = this.emailManager.validateEmailSettings(settingsBean);
+        if (validSettings) {
+            return "VALID_SETTINGS";
+        } else {
+            return "INVALID_SETTINGS";
+        }
+    }
+
+    @Override
+    public String sendTestEmail(String email) {
+        String emailResponse = this.emailManager.sendTestEmail(email);
+        return emailResponse;
     }
 
 }

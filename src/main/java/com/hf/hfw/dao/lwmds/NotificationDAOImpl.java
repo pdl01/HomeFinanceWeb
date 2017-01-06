@@ -1,12 +1,10 @@
 
 package com.hf.hfw.dao.lwmds;
 
-import com.hf.hfw.application.ApplicationState;
 import com.hf.hfw.dao.NotificationDAO;
 import com.hf.hfw.dao.lwmds.converter.NotificationConverter;
 import com.hf.hfw.notifications.Notification;
 import com.hf.lwdatastore.CollectionObject;
-import com.hf.lwdatastore.DataStore;
 import com.hf.lwdatastore.exception.CollectionNotFoundException;
 import com.hf.lwdatastore.exception.IndexNotFoundException;
 import java.util.ArrayList;
@@ -18,7 +16,7 @@ import org.apache.log4j.Logger;
  * @author pldorrell
  */
 public class NotificationDAOImpl extends LWMDSDAO implements NotificationDAO {
-    private static final Logger log = Logger.getLogger(AccountDAOImpl.class);
+    private static final Logger log = Logger.getLogger(NotificationDAOImpl.class);
 
 
     @Override

@@ -30,7 +30,7 @@ public interface RegisterManager {
     public OnlineTransaction getPendingTransactionById(String id);
     public List<RegisterTransaction> matchTransaction(OnlineTransaction pendingTransaction);
     public void matchTransaction(OnlineTransaction pendingTransaction,RegisterTransaction enteredTransaction);
-
+    public void deleteOnlineTransaction(OnlineTransaction onlineTransaction);
 
     public List<RegisterTransaction> findTransaction(String searchTerm);
     public List<RegisterTransaction> findTransaction(Account account,String searchTerm);

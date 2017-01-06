@@ -274,7 +274,13 @@ public class RegisterServiceImpl implements RegisterService {
     public void acceptAllPendingTransactionAsNew(String accountId) {
         List<OnlineTransaction> pendingTransactions = this.getPendingTransactions(accountId);
         for (OnlineTransaction pendingTransaction:pendingTransactions) {
-            this.acceptPendingTransactionAsNew(pendingTransaction.getId());
+            if (pendingTransaction.getStatusTxt() == RegisterTransaction.STATUS_ACCEPTED ||
+                pendingTransaction.getStatusTxt() == RegisterTransaction.STATUS_DISMISSED) {
+                //do nothing
+            } else {
+                this.acceptPendingTransactionAsNew(pendingTransaction.getId());    
+            }
+            
         }
     }
 

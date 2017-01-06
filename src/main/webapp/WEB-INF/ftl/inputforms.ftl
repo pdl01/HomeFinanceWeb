@@ -185,6 +185,12 @@ Month:<select name="selectScheduledMonth" ng-model="scheduledDateControl.month" 
     <div id="sectionCurrentBalance">Current Balance</div>
     <div id="sectionLastUpdated">Last Updated</div>
     <div id="sectionFutureBalance">Upcoming Balances</div>
+    
+    
+    <div id="onlineSummary">
+        Pending Credits:<br>
+        Pending Debits:<br>
+    </div>
 </#macro>
 
 

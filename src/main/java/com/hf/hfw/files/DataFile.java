@@ -1,15 +1,12 @@
 package com.hf.hfw.files;
 
 import com.hf.hfw.license.Version;
-import com.hf.lwdatastore.CollectionObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;

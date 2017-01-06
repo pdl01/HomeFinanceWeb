@@ -1,7 +1,5 @@
 package com.hf.hfw.files;
 
-import com.hf.hfw.accounts.tasks.AccountBalanceNotifierTask;
-import com.hf.hfw.api.v1.settings.SettingsBean;
 import com.hf.hfw.application.ApplicationState;
 import com.hf.hfw.application.ConfigurationDirectoryService;
 import com.hf.hfw.manager.AccountManager;
@@ -12,7 +10,6 @@ import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.Budget;
 import com.hf.homefinanceshared.RegisterTransaction;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.util.List;
 import org.apache.log4j.Logger;

@@ -36,10 +36,43 @@
         <!-- repeat every 50 seconds -->
         <property name="repeatInterval" value="50000" />
     </bean>
+    
+    <bean id="deleteProcessedOnlineTransactionsTask" class="com.hf.hfw.accounts.tasks.DeleteProcessedOnlineTransactionsTask">
+        <property name="registerManager" ref="registerManager"/>
+        <property name="accountManager" ref="accountManager"/>
+    </bean>
+    <bean id="deleteProcessedOnlineTransactionsTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="deleteProcessedOnlineTransactionsTask" />
+        <property name="targetMethod" value="runAsTask" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="deleteProcessedOnlineTransactionsTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="deleteProcessedOnlineTransactionsTaskJob" />
+        <!-- run every minute http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger-->
+        <property name="cronExpression" value="0 0/10 * * * ?" />
+    </bean>    
+    
+    <bean id="dailySummaryEmailTask" class="com.hf.hfw.accounts.tasks.DailySummaryTask">
+        <property name="accountManager" ref="accountManager"/>
+        <property name="scheduledTransactionManager" ref="scheduledTransactionManager"/>
+        <property name="emailManager" ref="emailManager"/>
+        <property name="settingsManager" ref="settingsManager"/>
+    </bean>
+    <bean id="dailySummaryEmailTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="dailySummaryEmailTask" />
+        <property name="targetMethod" value="runAsTask" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="dailySummaryEmailTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="dailySummaryEmailTaskJob" />
+        <!-- run every 10 minute http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger-->
+        <property name="cronExpression" value="0 0 6 * * ?" />
+    </bean>    
+
 
     <bean id="onlineTransactionPotentialMatchesTask" class="com.hf.hfw.accounts.tasks.OnlineTransactionPotentialMatchesTask">
-    <property name="accountManager" ref="accountManager"/>
-    <property name="registerManager" ref="registerManager"/>
+        <property name="accountManager" ref="accountManager"/>
+        <property name="registerManager" ref="registerManager"/>
     </bean>
        
              
@@ -48,12 +81,18 @@
             <list>
                 <ref bean="accountDailyBalanceRecalculationTaskJob" />
                 <ref bean="accountBalanceNotifierTaskJob" />
+                <ref bean="deleteProcessedOnlineTransactionsTaskJob"/>
+                <ref bean="dailySummaryEmailTaskJob"/>
+
             </list>
         </property>
         <property name="triggers">
             <list>
                 <ref bean="accountDailyBalanceRecalculationTaskTrigger" />
                 <ref bean="accountBalanceNotifierTaskTrigger" />
+                <ref bean="deleteProcessedOnlineTransactionsTaskTrigger" />
+                <ref bean="dailySummaryEmailTaskTrigger" />
+
             </list>
         </property>
     </bean>

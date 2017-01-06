@@ -94,6 +94,47 @@ angular.module('SettingsServiceModule').service("SettingsService", function ($ht
             url: '/services/api/v1/category/all'
         });
     };
+    SettingsService.getEmailConfig = function() {
+        return $http({
+            method: 'GET',
+            url: '/services/api/v1/settings/email'
+        });
+        
+    };
+    SettingsService.validateEmailConfig = function(settingsData) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+        
+        return $http({
+            method: 'POST',
+            url: '/services/api/v1/settings/email/validate',
+            data: JSON.stringify(settingsData), // pass in data as strings            
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
+
+        });        
+    };
+    SettingsService.saveEmailConfig = function(settingsData) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");   
+        return $http({
+            method: 'POST',
+            url: '/services/api/v1/settings/email',
+            data: JSON.stringify(settingsData), // pass in data as strings
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
+        });
+    
+    };
+    SettingsService.sendTestEmail = function(data) {
+        var csrfHeaderName = $("meta[name='_csrf_header']").attr("content");
+        var csrfHeaderValue = $("meta[name='_csrf']").attr("content");
+        
+        return $http({
+            method: 'POST',
+            url: '/services/api/v1/settings/email/test/'+data,
+            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfHeaderValue}  // set the headers so angular passing info as form data (not request payload)
+
+        });
+    };
     SettingsService.uploadData = function (data) {
 
         var formData = new FormData($('#backupDataUploadForm')[0]);

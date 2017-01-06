@@ -2,14 +2,9 @@ package com.hf.hfw.manager;
 
 import com.hf.hfw.dao.NotificationDAO;
 import com.hf.hfw.notifications.Notification;
-import com.hf.homefinanceshared.Account;
-import com.hf.homefinanceshared.Budget;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -19,7 +14,7 @@ import java.util.UUID;
 public class NotificationManagerImpl implements NotificationManager {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
-    protected Map<String, Notification> notifications;
+    //protected Map<String, Notification> notifications;
 
     private NotificationDAO notificationDAO;
     
@@ -29,7 +24,8 @@ public class NotificationManagerImpl implements NotificationManager {
     
     @Override
     public List<Notification> getNotifications() {
-        //return this.notificationDAO.getNotifications();
+        return this.notificationDAO.getNotifications();
+        /*
         ArrayList<Notification> localNotifications = new ArrayList<>();
         if (this.notifications == null || this.notifications.isEmpty()) {
             return localNotifications;
@@ -38,11 +34,13 @@ public class NotificationManagerImpl implements NotificationManager {
             localNotifications.add(this.notifications.get(key));
         }
         return localNotifications;
+        */
     }
 
     @Override
     public Notification getById(String id) {
-        return this.notifications.get(id);
+        return this.notificationDAO.getById(id);
+        //return this.notifications.get(id);
 
     }
 
@@ -52,30 +50,35 @@ public class NotificationManagerImpl implements NotificationManager {
         _notification.setCreatedOn(createdDate);
         _notification.setCreatedOnAsString(sdf.format(createdDate));
         _notification.setId(UUID.randomUUID().toString());
-        this.addNotificationToSystem(_notification);
-        //Notification notification = this.notificationDAO.saveNotification(_notification);
-        return _notification;
+        //this.addNotificationToSystem(_notification);
+        Notification notification = this.notificationDAO.saveNotification(_notification);
+        return notification;
     }
 
     @Override
     public void deleteNotification(Notification notification) {
+        /*
         if (this.notifications == null || this.notifications.isEmpty()) {
             return;
         }
         this.notifications.remove(notification.getId());
-        //this.notificationDAO.deleteNotification(notification);
+        */
+        this.notificationDAO.deleteNotification(notification);
     }
 
     @Override
     public Notification saveNotification(Notification _notification) {
-        //Notification notification = this.notificationDAO.saveNotification(_notification);
+        Notification notification = this.notificationDAO.saveNotification(_notification);
+        /*
         this.addNotificationToSystem(_notification);
-
-        return _notification;
+        */
+        return notification;
     }
 
     @Override
     public List<Notification> getNotificationByStatus(short status) {
+        return this.notificationDAO.getNotificationByStatus(status);
+        /*
         ArrayList<Notification> localNotifications = new ArrayList<>();
         if (this.notifications == null || this.notifications.isEmpty()) {
             return localNotifications;
@@ -88,6 +91,7 @@ public class NotificationManagerImpl implements NotificationManager {
             }
         }
         return localNotifications;
+        */
     }
 
     @Override
@@ -101,10 +105,13 @@ public class NotificationManagerImpl implements NotificationManager {
 
     @Override
     public Notification addNotificationToSystem(Notification _notification) {
+        return null;
+        /*
         if (this.notifications == null) {
             this.notifications = new HashMap<>();
         }
         this.notifications.put(_notification.getId(), _notification);
         return _notification;
+        */
     }
 }

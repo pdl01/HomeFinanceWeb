@@ -10,6 +10,9 @@ angular.module('HFWSettingsApp').controller('settingsController', function ($roo
     $scope.categories = [];
     $scope.users = [];
     $scope.limitedSecurityUserData = {};
+    $scope.emailConfigurationData = {};
+    $scope.testEmailAddress = {};
+    $scope.testEmailAddress.emailAddress="user@local";
     $scope.importFormShown = false;
     
     $scope.init = function () {
@@ -18,6 +21,7 @@ angular.module('HFWSettingsApp').controller('settingsController', function ($roo
         $scope.getBasicSecurityConfig();
         $scope.getCategoryInformation();
         $scope.getLimitedSecurityUsers();
+        $scope.getEmailConfig();
     };
 
     $scope.getRepositoryConfig = function () {
@@ -196,6 +200,43 @@ angular.module('HFWSettingsApp').controller('settingsController', function ($roo
             console.log(response);
         });
     };
+    
+    $scope.getEmailConfig = function() {
+        SettingsService.getEmailConfig().success(function (response) {
+            console.log(response);
+            //console.log(response.settings.host);
+            if (response.settings) {
+                $scope.emailConfigurationData = response.settings;
+            }
+        });        
+    
+    };
+    
+    $scope.saveEmailConfig = function() {
+        var emailConfigData = {};
+        emailConfigData.typeOfSetting = "email";
+        emailConfigData.settings = $scope.emailConfigurationData;
+        SettingsService.saveEmailConfig(emailConfigData).success(function(response) {
+            console.log(response);
+        });
+    };
+    
+    $scope.validateEmailConfig = function() {
+        var emailConfigData = {};
+        emailConfigData.typeOfSetting = "email";
+        emailConfigData.settings = $scope.emailConfigurationData;
+        SettingsService.validateEmailConfig(emailConfigData).success(function(response) {
+            console.log(response);
+        });        
+    };
+    
+    $scope.sendTestEmail = function() {
+        //var testEmailData = {};
+        $scope.testEmailAddress.emailAddress;
+        SettingsService.sendTestEmail($scope.testEmailAddress.emailAddress).success(function(response) {
+            console.log(response);
+        });
+    }
     
     $scope.showImportForm = function() {
         $scope.importFormShown = true;

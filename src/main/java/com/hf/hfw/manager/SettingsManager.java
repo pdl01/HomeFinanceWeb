@@ -14,6 +14,12 @@ public interface SettingsManager {
     public void saveBasicSecuritySettings(SettingsBean bean);
     public SettingsBean getLimitedSecurityUsers();
     public void saveLimitedSecurityUsers(SettingsBean bean);
+    public SettingsBean getEmailServerSettings();
+    public void saveEmailServerSettings(SettingsBean bean);
+    
+    public void saveGeneralProperties(SettingsBean bean);
+    public SettingsBean getGeneralProperties();
+    public SettingsBean addGeneralProperty(String property,String value);
     
     public SettingsBean addSettingsBeanToSystem(SettingsBean settingsBean); 
     public List<SettingsBean> getAllSettings();

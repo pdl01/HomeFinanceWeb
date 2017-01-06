@@ -59,7 +59,9 @@
     <bean id="scheduledTransactionManager" class="com.hf.hfw.manager.ScheduledTransactionManagerImpl">    
   	<property name="scheduledTransactionDAO" ref="scheduledTransactionDAO"/>
   </bean>
-
+  <bean id="emailManager" class="com.hf.hfw.manager.EmailManagerImpl">
+      <property name="settingsManager" ref="settingsManager"/>
+  </bean>
   <bean id="categoryCacheManagerImpl" class="com.hf.hfw.manager.CategoryCacheManagerImpl">    
   	<property name="registerDAO" ref="registerDAO"/>
         <property name="accountManager" ref="accountManager"/>

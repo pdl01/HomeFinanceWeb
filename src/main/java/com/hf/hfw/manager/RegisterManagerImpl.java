@@ -238,4 +238,9 @@ public class RegisterManagerImpl implements RegisterManager {
         return this.registerDAO.getAllTransactions();
     }
 
+    @Override
+    public void deleteOnlineTransaction(OnlineTransaction onlineTransaction) {
+        this.registerDAO.deleteOnlineTransaction(onlineTransaction);
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.hf.hfw.dao.lwmds;
 
-import com.hf.hfw.application.ApplicationState;
 import com.hf.hfw.dao.RegisterDAO;
 import com.hf.hfw.dao.lwmds.converter.OnlineTransactionConverter;
 import com.hf.hfw.dao.lwmds.converter.TransactionConverter;
@@ -9,7 +8,6 @@ import com.hf.homefinanceshared.CategorySplit;
 import com.hf.homefinanceshared.OnlineTransaction;
 import com.hf.homefinanceshared.RegisterTransaction;
 import com.hf.lwdatastore.CollectionObject;
-import com.hf.lwdatastore.DataStore;
 import com.hf.lwdatastore.exception.CollectionNotFoundException;
 import com.hf.lwdatastore.exception.IndexNotFoundException;
 import java.util.ArrayList;
@@ -372,6 +370,16 @@ public class RegisterDAOImpl extends LWMDSDAO implements RegisterDAO {
         }
         return null;    
 
+
+    }
+
+    @Override
+    public void deleteOnlineTransaction(OnlineTransaction txn) {
+        try {
+            getDataStore().removeObject(ConfigBuilder.COLLECTION_ONLINE_TRANSACTIONS, txn.getId());
+        } catch (CollectionNotFoundException ex) {
+            log.error("Collection Not Found",ex);
+        }
 
     }
     

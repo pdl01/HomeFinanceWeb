@@ -66,9 +66,9 @@
                     <button ng-click="saveBasicSecurityInformation()">Save</button>
                 </div>
                 <div id="limited_user_config" class="settingsSection">
-                    <div class="list-group-item limitedSecurityUser">User: <input type="text" ng-model="limitedSecurityUserData['user1name']"> Password: <input type="text" ng-model="limitedSecurityUserData['user1password']"></div>
-                    <div class="list-group-item limitedSecurityUser">User: <input type="text" ng-model="limitedSecurityUserData['user2name']"> Password: <input type="text" ng-model="limitedSecurityUserData['user2password']"></div>
-                    <div class="list-group-item limitedSecurityUser">User: <input type="text" ng-model="limitedSecurityUserData['user3name']"> Password: <input type="text" ng-model="limitedSecurityUserData['user3password']"></div>
+                    <div class="list-group-item limitedSecurityUser">User: <input type="text" ng-model="limitedSecurityUserData['user1name']"> Password: <input type="text" ng-model="limitedSecurityUserData['user1password']"> Email:<input type="text" ng-model="limitedSecurityUserData['user1email']"></div>
+                    <div class="list-group-item limitedSecurityUser">User: <input type="text" ng-model="limitedSecurityUserData['user2name']"> Password: <input type="text" ng-model="limitedSecurityUserData['user2password']"> Email:<input type="text" ng-model="limitedSecurityUserData['user2email']"></div>
+                    <div class="list-group-item limitedSecurityUser">User: <input type="text" ng-model="limitedSecurityUserData['user3name']"> Password: <input type="text" ng-model="limitedSecurityUserData['user3password']"> Email:<input type="text" ng-model="limitedSecurityUserData['user3email']"></div>
 
 
                     <button ng-click="saveLimitedUserSecurityConfig()">Save</button>
@@ -84,6 +84,22 @@
                     <div id="sectionVersion"></div>
                 </div>
                 <div id="license_config" class="settingsSection">
+                </div>
+                <div id="email_config" class="settingsSection">
+                    Email Configuration<br>
+                    Email Server<input type="text" ng-model="emailConfigurationData.SMTPserver"><br>
+                    Email Port<input type="text" ng-model="emailConfigurationData.SMTPPort"><br>
+                    From Email Address<input type="text" ng-model="emailConfigurationData.SMTPEmailFrom"><br>
+                    Requires Authentication<input type="text" ng-model="emailConfigurationData.SMTPRequiresAuth"><br>
+                    Username<input type="text" ng-model="emailConfigurationData.SMTPUsername"><br>
+                    Password<input type="text" ng-model="emailConfigurationData.SMTPPassword"><br>   
+                    Security:<input type="text" ng-model="emailConfigurationData.SMTPSecurity"><br>
+                    <button ng-click="validateEmailConfig()">Validate</button><button ng-click="saveEmailConfig()">Save</button>
+                </div>
+                <div id="testEmail" class="settingsSection">
+                    Test Email<br>
+                    Address:<input type="text" ng-model="testEmailAddress.emailAddress"><br>
+                    <button ng-click="sendTestEmail()">Send</button>
                 </div>
                 <div id="exportimport_config" class="settingsSection">
                     Import/Export<br>
