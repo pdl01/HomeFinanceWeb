@@ -65,23 +65,23 @@
 
             <div id="appMain">
                 <div id="appMainTabs">
-                    <div id="appMainTabsAccountName">{{dashboardworkingAccount.name}}</div>
+                    <div id="appMainTabsAccountName"><a href="" ng-click="clickEditAccount()">{{dashboardworkingAccount.name}}</a></div>
 
-                    <ul>
-                        <li class="tabItem" id="accountMenuItemSummary"  ng-click="setTab('summary')">Summary</li>
-                        <li class="tabItem" id="accountMenuItemRegister" ng-click="setTab('registry')">Register</li>
-                        <li class="tabItem" id="accountMenuItemSchedule" ng-click="setTab('schedule')">Schedule</li>
-                        <li class="tabItem" id="accountMenuItemReport"   ng-click="setTab('report')" >Report</li>
-                        <li class="tabItem" id="accountMenuItemOnline"   ng-click="setTab('online')">Online</li>
-                        <li class="tabItem" id=accountEditLink"          ng-click="clickEditAccount()">Edit</li>
+                    <ul class="tabRow">
+                        <li class="tabItem" ng-class="{true:'activeTab',false:'inactiveTab'}[isTab('summary') == true]" id="accountMenuItemSummary"  ng-click="setTab('summary')">Summary</li>
+                        <li class="tabItem" ng-class="{true:'activeTab',false:'inactiveTab'}[isTab('registry') == true]" id="accountMenuItemRegister" ng-click="setTab('registry')">Register</li>
+                        <li class="tabItem" ng-class="{true:'activeTab',false:'inactiveTab'}[isTab('schedule') == true]" id="accountMenuItemSchedule" ng-click="setTab('schedule')">Schedule</li>
+                        <li class="tabItem" ng-class="{true:'activeTab',false:'inactiveTab'}[isTab('report') == true]" id="accountMenuItemReport"   ng-click="setTab('report')" >Report</li>
+                        <li class="tabItem" ng-class="{true:'activeTab',false:'inactiveTab'}[isTab('online') == true]" id="accountMenuItemOnline"   ng-click="setTab('online')">Online</li>
+                        <!--<li class="tabItem" id=accountEditLink"          ng-click="clickEditAccount()">Edit</li>-->
                         <li class="tabItem" id="accountNewTransaction"   ng-click="showNewTransaction()">New Transaction</li>
                     </ul>
                     
                 </div>
-                <div id="accountSummary" ng-show="isTab('summary')" ng-controller="accountSummaryController">
+                <div id="accountSummary" class="dashboardSection" ng-show="isTab('summary')" ng-controller="accountSummaryController">
                     <@accountSummary pageTitle='dashboard' invokedFrom='registry'/>
                 </div>
-                <div id="accountTransactionList" ng-show="isTab('registry')" ng-controller="accountRegistryController">
+                <div id="accountTransactionList" class="dashboardSection" ng-show="isTab('registry')" ng-controller="accountRegistryController">
                     <@registryFilter pageTitle='dashboard' invokedFrom='registry'/>            
                     <div>
                         <a href="#" ng-click="txnSortType = 'txnDate'; txnSortReverse = ! txnSortReverse">
@@ -108,7 +108,7 @@
                     </div>
                         
                 </div>
-                <div id="accountSchedule" ng-show="isTab('schedule')" ng-controller="accountScheduleController">
+                <div id="accountSchedule" class="dashboardSection" ng-show="isTab('schedule')" ng-controller="accountScheduleController">
                      <a href="#" ng-click="showNewScheduledTransactionForm()">New Scheduled Transaction</a>
                     Upcoming or Overdue 
                     <@registryFilter pageTitle='dashboard' invokedFrom='schedule'/>            
@@ -130,7 +130,7 @@
 
                 </div>
 
-                <div id="accountReports" ng-show="isTab('report')" ng-controller="accountReportController">
+                <div id="accountReports" class="dashboardSection" ng-show="isTab('report')" ng-controller="accountReportController">
                     <div id="reportControl">
                         <select name="reportType" id="reportType" ng-model="reportControl.reportType">
 
@@ -190,7 +190,7 @@
 
                     </div>
                 </div>
-                <div id="accountOnlineFunctions" ng-show="isTab('online')" ng-controller="accountOnlineController">
+                <div id="accountOnlineFunctions" class="dashboardSection" ng-show="isTab('online')" ng-controller="accountOnlineController">
 
                     <div>online Last Transaction Date:{{workingAccount.lastImportedTransactionDate}} 
                         <div ng-if="workingAccount.webAddress != null"><a href="{{workingAccount.webAddress}}" target="_blank">Web Site</a></div>
