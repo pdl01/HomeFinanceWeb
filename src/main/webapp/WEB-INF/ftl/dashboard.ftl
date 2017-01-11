@@ -84,17 +84,17 @@
                 <div id="accountTransactionList" class="dashboardSection" ng-show="isTab('registry')" ng-controller="accountRegistryController">
                     <@registryFilter pageTitle='dashboard' invokedFrom='registry'/>            
                     <div>
-                        <a href="#" ng-click="txnSortType = 'txnDate'; txnSortReverse = ! txnSortReverse">
+                        <a class="registryColumn header txnDate" href="#" ng-click="txnSortType = 'txnDate'; txnSortReverse = ! txnSortReverse">
                             Date 
                             <span ng-show="txnSortType == 'txnDate' && !txnSortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="txnSortType == 'txnDate' && txnSortReverse" class="fa fa-caret-up"></span>
                         </a>
-                        <a href="#" ng-click="txnSortType = 'payee'; txnSortReverse = ! txnSortReverse">
+                        <a class="registryColumn header txnPayee" href="#" ng-click="txnSortType = 'payee'; txnSortReverse = ! txnSortReverse">
                             Payee 
                             <span ng-show="txnSortType == 'payee' && !txnSortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="txnSortType == 'payee' && txnSortReverse" class="fa fa-caret-up"></span>
                         </a>
-                        <a href="#" ng-click="txnSortType = 'txnAmount'; txnSortReverse = ! txnSortReverse">
+                        <a class="registryColumn header txnAmt" href="#" ng-click="txnSortType = 'txnAmount'; txnSortReverse = ! txnSortReverse">
                             Amount 
                             <span ng-show="txnSortType == 'txnAmount' && !txnSortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="txnSortType == 'txnAmount' && txnSortReverse" class="fa fa-caret-up"></span>
@@ -102,9 +102,9 @@
                     </div>
 
                     <div ng-repeat="x in registryTransactions | orderBy:txnSortType:txnSortReverse" ng-click="showTransactionForm(x)" ng:class="{true:'list - group - item registryTransaction credit',false:'list - group - item registryTransaction'}[x.credit == true]">
-                        <span>{{ convertJSDateToTextDate(x.txnDate)}}</span>
-                        <span>{{ x.payee}}</span>
-                        <span>{{ x.txnAmount | currency }}</span>
+                        <span class="registryColumn detail txnDate">{{ convertJSDateToTextDate(x.txnDate)}}</span>
+                        <span class="registryColumn detail txnPayee">{{ x.payee}}</span>
+                        <span class="registryColumn detail txnAmt">{{ x.txnAmount | currency }}</span>
                     </div>
                         
                 </div>

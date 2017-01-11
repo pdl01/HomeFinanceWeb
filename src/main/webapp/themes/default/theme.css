@@ -162,10 +162,32 @@ a.markAsRead {
     .dashboardSection {
         border: 1px solid #AAA;
         border-top:none;
-          
-        border-bottom-left-radius: 6px;
-        border-bottom-right-radius: 6px;   
+        /*border-bottom-left-radius: 6px;*/
+        /*border-bottom-right-radius: 6px;*/
         padding:10px;
+        box-shadow: 10px 10px 5px #888888;
+    }
+    
+    .registryColumn {
+        display:inline-block;
+    }
+    .detail {
+        /*
+        border-style:solid;
+        border-width: 1px;
+        border-color:black;
+        */
+    } 
+    .txnDate{
+        width:150px;
+    }
+    .txnPayee {
+        width:300px;
+    }
+    .txnAmt {
+        width:100px;
+        text-align: right;
+            
     }
 
 }
@@ -228,7 +250,7 @@ nav#appNav {
     margin-top: 20px;
     width:200px;
     float: left;
-
+    box-shadow: 10px 10px 5px #888888;
 }
 
 
