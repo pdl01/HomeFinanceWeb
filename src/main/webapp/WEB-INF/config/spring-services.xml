@@ -215,12 +215,7 @@
     <bean id="accountPersistenceEventListener" class="com.hf.hfw.files.persistence.listeners.AccountListener">    
         <property name="dataFileLoader" ref="dataFileLoader"/>
     </bean>
-    <bean id="regisrtyPersistenceEventListener" class="com.hf.hfw.files.persistence.listeners.RegisterListener">    
-        <property name="dataFileLoader" ref="dataFileLoader"/>
-        <property name="accountManager" ref="accountManager"/>
-        
-    </bean>
-
+    
     <bean id="settingsPersistenceEventListener" class="com.hf.hfw.files.persistence.listeners.SettingsListener">    
         <property name="dataFileLoader" ref="dataFileLoader"/>
     </bean>
