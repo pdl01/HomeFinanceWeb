@@ -65,9 +65,10 @@
 
             <div id="appMain">
                 <div id="appMainTabs">
-                    <div id="appMainTabsAccountName"><a href="" ng-click="clickEditAccount()">{{dashboardworkingAccount.name}}</a></div>
+                    <div id="appMainTabsAccountName">{{dashboardworkingAccount.name}}</div>
 
                     <ul class="tabRow">
+                        
                         <li class="tabItem" ng-class="{true:'activeTab',false:'inactiveTab'}[isTab('summary') == true]" id="accountMenuItemSummary"  ng-click="setTab('summary')">Summary</li>
                         <li class="tabItem" ng-class="{true:'activeTab',false:'inactiveTab'}[isTab('registry') == true]" id="accountMenuItemRegister" ng-click="setTab('registry')">Register</li>
                         <li class="tabItem" ng-class="{true:'activeTab',false:'inactiveTab'}[isTab('schedule') == true]" id="accountMenuItemSchedule" ng-click="setTab('schedule')">Schedule</li>
@@ -75,6 +76,7 @@
                         <li class="tabItem" ng-class="{true:'activeTab',false:'inactiveTab'}[isTab('online') == true]" id="accountMenuItemOnline"   ng-click="setTab('online')">Online</li>
                         <!--<li class="tabItem" id=accountEditLink"          ng-click="clickEditAccount()">Edit</li>-->
                         <li class="tabItem" id="accountNewTransaction"   ng-click="showNewTransaction()">New Transaction</li>
+                        <li class="tabItem" ng-click="clickEditAccount()">Account</li>
                     </ul>
                     
                 </div>

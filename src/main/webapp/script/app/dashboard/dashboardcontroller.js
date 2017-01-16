@@ -274,8 +274,8 @@ angular.module('HFWApp').controller('dashboardController', function ($rootScope,
         //$("#transactionDetailsForm").show();
     };
     $scope.clickEditAccount = function() {
-        $rootScope.$broadcast('account-operation-requested',$scope.dashboardworkingAccount);
-        
+        console.log("clicked Edit");
+        $rootScope.$broadcast('account-operation-requested',$scope.dashboardworkingAccount);        
     };
 
 });
