@@ -23,6 +23,9 @@
 <#macro showLayoutFooter pageTitle=''>
     <div id="pageFooter"></div>
 </#macro>
+<#macro buildHeader pageTitle = ''>
+
+</#macro>
 
 <#macro buildMenu pageTitle=''>
             
@@ -55,7 +58,7 @@ $(document).ready(function(){
 <#macro buildLinks pageTitle=''>
         <div <#if pageTitle=='dashboard'>ng-controller="navController"</#if>>
         <ul>
-        <li><a href="/app/dashboard">Accounts</a></li><#if pageTitle=='dashboard'><@buildAccountMenu/></#if>
+        <li><a href="/app/dashboard">Accounts</a></li><#if pageTitle=='dashboard'><@buildAccountMenuv1/></#if>
         <li><a href="/app/notifications">Notifications</a></li>
         <li><a href="/app/budget">Budget</a></li><#if pageTitle=='budget'><@buildBudgetMenu/></#if>
         <li><a href="/app/reports">Reports</a></li>
@@ -67,19 +70,37 @@ $(document).ready(function(){
         </div>
 </#macro>
 
-<#macro buildAccountMenu>
+<#macro buildAccountMenuv1>
     <li><a class="newAccount menu-indented" ng-click="showNewAccount()">New Account</a></li>
-    <@buildAccountSection 'checking' 'Checking'/>
-    <@buildAccountSection 'savings' 'Savings'/>
-    <@buildAccountSection 'creditcard' 'Credit Card'/>
-    <@buildAccountSection 'investment' 'Investment'/>
-    <@buildAccountSection 'retirement' 'Retirement'/>
-    <@buildAccountSection 'other' 'Other'/>
+    <@buildAccountSectionv1 'checking' 'Checking'/>
+    <@buildAccountSectionv1 'savings' 'Savings'/>
+    <@buildAccountSectionv1 'creditcard' 'Credit Card'/>
+    <@buildAccountSectionv1 'investment' 'Investment'/>
+    <@buildAccountSectionv1 'retirement' 'Retirement'/>
+    <@buildAccountSectionv1 'other' 'Other'/>
 </#macro>
 
-<#macro buildAccountSection headerGroup='' headerGroupName='' >
+<#macro buildAccountSectionv1 headerGroup='' headerGroupName='' >
         <li class="accountListHeader menu-indented"><a href="#" ng-click="toggleAccountGroupHide('${headerGroup}')">${headerGroupName}</a></li>
         <li ng-hide="hideAccounts['${headerGroup}']" ng-repeat="x in ${headerGroup}_accounts" id="${headerGroup}Accounts" class="accountEntry menu-indented" ><a href="#" ng-click="setAsCurrent(x)">{{ x.name}} {{ x.currentBalance | currency }}</a></li> 
+</#macro>
+
+<#macro buildAccountNavList>
+<ul>
+        <@buildAccountSectionv2 'checking' 'Checking'/>
+        <@buildAccountSectionv2 'savings' 'Savings'/>
+        <@buildAccountSectionv2 'creditcard' 'Credit Card'/>
+        <@buildAccountSectionv2 'investment' 'Investment'/>
+        <@buildAccountSectionv2 'retirement' 'Retirement'/>
+        <@buildAccountSectionv2 'other' 'Other'/>    
+</ul>
+</#macro>
+
+<#macro buildAccountSectionv2 headerGroup='' headerGroupName='' >
+    
+        <li class="accountListHeader menu-indented"><a href="#" ng-click="toggleAccountGroupHide('${headerGroup}')">${headerGroupName}</a></li>
+        <li ng-hide="hideAccounts['${headerGroup}']" ng-repeat="x in ${headerGroup}_accounts" id="${headerGroup}Accounts" class="accountEntry menu-indented" ><a href="#" ng-click="setAsCurrent(x)">{{ x.name}} {{ x.currentBalance | currency }}</a></li>     
+
 </#macro>
 
 <#macro buildBudgetMenu>
