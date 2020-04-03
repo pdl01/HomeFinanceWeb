@@ -17,14 +17,15 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author pldorrell
  */
 public class DailyBalanceReportGenerator implements ReportGenerator{
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(DailyBalanceReportGenerator.class);
+    private static final Logger log = LogManager.getLogger(DailyBalanceReportGenerator.class);
 
     public static final String REPORT_TYPE = "DailyBalance";
     private AccountManager accountManager;

@@ -8,8 +8,8 @@ import com.hf.lwdatastore.CollectionObjectConverter;
 import com.hf.lwdatastore.exception.AttributeNotFoundException;
 import java.io.IOException;
 import java.util.Map;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -19,7 +19,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @author pldorrell
  */
 public class AccountConverter implements CollectionObjectConverter<Account>{
-    private static final Logger log = Logger.getLogger(AccountConverter.class);
+    private static final Logger log = LogManager.getLogger(AccountConverter.class);
 
     @Override
     public CollectionObject convertToCollectionObject(Account k) {

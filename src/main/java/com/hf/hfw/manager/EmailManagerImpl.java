@@ -10,15 +10,15 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  *
  * @author pldor
  */
 public class EmailManagerImpl implements EmailManager {
 
-    private static final Logger log = Logger.getLogger(SettingsManagerImpl.class);
+    private static final Logger log = LogManager.getLogger(SettingsManagerImpl.class);
 
     private SettingsManager settingsManager;
 

@@ -18,7 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationListener;
 
 /**
@@ -29,7 +30,7 @@ public class TransactionFileImportListener implements ApplicationListener<Accoun
 
     private static final SimpleDateFormat output_format = new SimpleDateFormat("yyyy-MM-dd");
 
-    private static final Logger log = Logger.getLogger(TransactionFileImportListener.class);
+    private static final Logger log = LogManager.getLogger(TransactionFileImportListener.class);
     private RegisterManager registerManager;
     private AccountManager accountManager;
     private OnlineTransactionPotentialMatchesTask onlineTransactionPotentialMatchesTask;

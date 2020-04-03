@@ -7,7 +7,8 @@ import com.hf.lwdatastore.CollectionObjectConverter;
 import com.hf.lwdatastore.exception.AttributeNotFoundException;
 import java.io.IOException;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -17,7 +18,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @author pldorrell
  */
 public class OnlineTransactionConverter implements CollectionObjectConverter<OnlineTransaction>{
-private static final Logger log = Logger.getLogger(OnlineTransactionConverter.class);
+private static final Logger log = LogManager.getLogger(OnlineTransactionConverter.class);
     @Override
     public CollectionObject convertToCollectionObject(OnlineTransaction k) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

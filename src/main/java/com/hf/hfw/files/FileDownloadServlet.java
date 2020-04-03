@@ -18,14 +18,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  *
  * @author pldorrell
  */
 @WebServlet(name = "FileDownloadServlet", urlPatterns = {"/filedownload"})
 public class FileDownloadServlet extends HttpServlet {
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(FileDownloadServlet.class);
+    private static final Logger log = LogManager.getLogger(FileDownloadServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

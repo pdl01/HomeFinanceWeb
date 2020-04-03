@@ -11,7 +11,8 @@ import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.OnlineTransaction;
 import com.hf.homefinanceshared.RegisterTransaction;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -19,7 +20,7 @@ import org.apache.log4j.Logger;
  */
 public class DeleteProcessedOnlineTransactionsTask {
 
-    private static final Logger log = Logger.getLogger(DeleteProcessedOnlineTransactionsTask.class);
+    private static final Logger log = LogManager.getLogger(DeleteProcessedOnlineTransactionsTask.class);
 
     private RegisterManager registerManager;
     private AccountManager accountManager;

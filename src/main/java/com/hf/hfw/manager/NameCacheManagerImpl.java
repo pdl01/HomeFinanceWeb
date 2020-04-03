@@ -9,14 +9,14 @@ import com.hf.hfw.dao.RegisterDAO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  *
  * @author pldorrell
  */
 public class NameCacheManagerImpl {
-    private static final Logger log = Logger.getLogger(NameCacheManagerImpl.class);
+    private static final Logger log = LogManager.getLogger(NameCacheManagerImpl.class);
 
     private RegisterDAO registerDAO;
     private Set<String> names;

@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -22,7 +23,7 @@ import org.springframework.context.ApplicationContext;
  */
 public class RegisterManagerImpl implements RegisterManager {
 
-    private static final Logger log = Logger.getLogger(RegisterManagerImpl.class);
+    private static final Logger log = LogManager.getLogger(RegisterManagerImpl.class);
     private RegisterDAO registerDAO;
     private static SimpleDateFormat transactionDateFormatter = new SimpleDateFormat("YYYY-MM-d");
 

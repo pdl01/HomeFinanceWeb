@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  *
  * @author pldorrell
@@ -16,7 +16,7 @@ public class CategoryCacheManagerImpl {
     public static String TRANSFER_FROM = "Transfer:From:";
     public static String TRANSFER_TO = "Transfer:To:";
     
-    private static final Logger log = Logger.getLogger(CategoryCacheManagerImpl.class);
+    private static final Logger log = LogManager.getLogger(CategoryCacheManagerImpl.class);
 
     private RegisterDAO registerDAO;
     private AccountManager accountManager;

@@ -12,15 +12,15 @@ import com.hf.homefinanceshared.RegisterTransaction;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.List;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  *
  * @author pldor
  */
 public class DataFileLoader {
 
-    private static final Logger log = Logger.getLogger(DataFileLoader.class);
+    private static final Logger log = LogManager.getLogger(DataFileLoader.class);
 
     protected AccountManager accountManager;
     protected BudgetManager budgetManager;

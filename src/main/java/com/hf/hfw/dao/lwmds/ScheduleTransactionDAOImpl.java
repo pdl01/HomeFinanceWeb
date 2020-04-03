@@ -11,15 +11,15 @@ import com.hf.lwdatastore.exception.IndexNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  *
  * @author pldorrell
  */
 public class ScheduleTransactionDAOImpl extends LWMDSDAO implements ScheduledTransactionDAO {
 
-    private static final Logger log = Logger.getLogger(RegisterDAOImpl.class);
+    private static final Logger log = LogManager.getLogger(RegisterDAOImpl.class);
 
     @Override
     public ScheduledTransaction getById(String _id) {

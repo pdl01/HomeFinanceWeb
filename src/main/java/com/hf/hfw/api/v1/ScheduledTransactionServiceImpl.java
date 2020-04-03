@@ -6,6 +6,8 @@ import com.hf.homefinanceshared.Account;
 import com.hf.homefinanceshared.ScheduledTransaction;
 import java.util.List;
 import javax.ws.rs.Path;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -14,7 +16,7 @@ import javax.ws.rs.Path;
 @Path("/schedule")
 public class ScheduledTransactionServiceImpl implements ScheduledTransactionService {
 
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(ScheduledTransactionServiceImpl.class);
+    private static final Logger log = LogManager.getLogger(ScheduledTransactionServiceImpl.class);
     private ScheduledTransactionManager scheduledTransactionManager;
     private AccountManager accountManager;
 

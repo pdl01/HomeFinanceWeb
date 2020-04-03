@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -17,7 +18,7 @@ import org.springframework.context.ApplicationContext;
  */
 public class SettingsManagerImpl implements SettingsManager {
 
-    private static final Logger log = Logger.getLogger(SettingsManagerImpl.class);
+    private static final Logger log = LogManager.getLogger(SettingsManagerImpl.class);
     public static final String TYPE_OF_SETTING_BASICSECURITY = "basicSecurity";
     public static final String TYPE_OF_SETTING_THEME = "theme";
     public static final String TYPE_OF_SETTING_LIMITEDUSERSECURITY = "limitedUserSecurity";

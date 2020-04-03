@@ -9,7 +9,8 @@ import com.hf.homefinanceshared.OnlineTransaction;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,7 +21,7 @@ import org.springframework.data.mongodb.core.query.Query;
  */
 public class RegisterDAOImpl extends AbstractMongoDAO implements RegisterDAO {
     private static String COLLECTION_NAME_ONLINETXNS="onlineData";
-    private static final Logger log = Logger.getLogger(RegisterDAOImpl.class);
+    private static final Logger log = LogManager.getLogger(RegisterDAOImpl.class);
 
     @Override
     public List<RegisterTransaction> getTransactions(Account account) {

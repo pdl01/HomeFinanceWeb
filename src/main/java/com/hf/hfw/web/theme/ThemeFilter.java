@@ -9,14 +9,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.OncePerRequestFilter;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  *
  * @author pldorrell
  */
 public class ThemeFilter extends OncePerRequestFilter {
 
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(ThemeFilter.class);
+    private static final Logger log = LogManager.getLogger(ThemeFilter.class);
     private SettingsManager settingsManager;
 
     public void setSettingsManager(SettingsManager settingsManager) {

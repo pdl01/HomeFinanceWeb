@@ -10,7 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -18,7 +19,7 @@ import org.springframework.context.ApplicationContext;
  * @author phillip.dorrell
  */
 public class AccountManagerImpl implements AccountManager {
-    private static final Logger log = Logger.getLogger(AccountManagerImpl.class);
+    private static final Logger log = LogManager.getLogger(AccountManagerImpl.class);
 
     //private Map<String,Account> accounts;
     //private Map<String,String> accountNameMap;

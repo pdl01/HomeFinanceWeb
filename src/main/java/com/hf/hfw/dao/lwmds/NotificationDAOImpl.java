@@ -9,14 +9,14 @@ import com.hf.lwdatastore.exception.CollectionNotFoundException;
 import com.hf.lwdatastore.exception.IndexNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  *
  * @author pldorrell
  */
 public class NotificationDAOImpl extends LWMDSDAO implements NotificationDAO {
-    private static final Logger log = Logger.getLogger(NotificationDAOImpl.class);
+    private static final Logger log = LogManager.getLogger(NotificationDAOImpl.class);
 
 
     @Override

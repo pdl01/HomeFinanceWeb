@@ -7,7 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
@@ -18,7 +19,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @author pldor
  */
 public class DataFile<T> implements Serializable {
-    private static final Logger log = Logger.getLogger(DataFile.class);
+    private static final Logger log = LogManager.getLogger(DataFile.class);
 
     protected String descriptor;
     protected Version version;

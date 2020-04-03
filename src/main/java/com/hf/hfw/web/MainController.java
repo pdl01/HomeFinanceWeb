@@ -5,7 +5,6 @@ import com.hf.hfw.files.listeners.TransactionFileImportListener;
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -16,7 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -25,7 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class MainController {
-    private static final Logger log = Logger.getLogger(MainController.class);
+    private static final Logger log = LogManager.getLogger(MainController.class);
 
     @RequestMapping(value = {"/", "/dashboard**"}, method = RequestMethod.GET)
     public String dashBoard(@ModelAttribute("model") ModelMap model,HttpServletRequest request) {

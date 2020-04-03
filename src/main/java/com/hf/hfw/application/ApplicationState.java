@@ -4,7 +4,7 @@ package com.hf.hfw.application;
 import com.hf.hfw.files.DataFileLoader;
 import com.hf.hfw.license.Version;
 import java.io.File;
-import org.apache.log4j.PropertyConfigurator;
+//import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -144,7 +144,7 @@ public class ApplicationState implements InitializingBean, ApplicationContextAwa
         
         System.out.println("Setting up log4j with config path:"+this.configurationDirectoryService.getLoggingConfigFile());
         
-        PropertyConfigurator.configure(this.configurationDirectoryService.getLoggingConfigFile());
+        //PropertyConfigurator.configure(this.configurationDirectoryService.getLoggingConfigFile());
 		//log.info("Exiting init");
         // this.setupData();
         

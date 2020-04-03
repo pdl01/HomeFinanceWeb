@@ -11,14 +11,15 @@ import com.hf.homefinanceshared.ScheduledTransaction;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author pldor
  */
 public class DailySummaryTask {
-    private static final Logger log = Logger.getLogger(DailySummaryTask.class);
+    private static final Logger log = LogManager.getLogger(DailySummaryTask.class);
     private static final SimpleDateFormat transactionDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
     private AccountManager accountManager;

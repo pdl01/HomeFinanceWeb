@@ -6,7 +6,8 @@ import com.hf.lwdatastore.DataStore;
 import com.hf.lwdatastore.LWDataStoreFactory;
 import com.mongodb.Mongo;
 import java.net.UnknownHostException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.core.MongoFactoryBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,7 +17,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
  * @author pldorrell
  */
 public class DBFactory {
-    private static final Logger log = Logger.getLogger(DBFactoryShutdownListener.class);
+    private static final Logger log = LogManager.getLogger(DBFactoryShutdownListener.class);
     private boolean valid = false;
     private MongoTemplate template;
     protected LWDataStoreFactory lwDataStoreFactory;

@@ -8,7 +8,8 @@ import com.hf.homefinanceshared.OnlineTransaction;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Path;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -16,7 +17,7 @@ import org.apache.log4j.Logger;
  */
 @Path("/register")
 public class RegisterServiceImpl implements RegisterService {
-    private static final Logger log = Logger.getLogger(RegisterServiceImpl.class);
+    private static final Logger log = LogManager.getLogger(RegisterServiceImpl.class);
 
     protected RegisterManager registerManager;
 

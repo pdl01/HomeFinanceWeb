@@ -5,10 +5,9 @@
  */
 package com.hf.hfw.dao.h2;
 
-import com.hf.hfw.accounts.tasks.AccountBalanceNotifierTask;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 //import org.h2.tools.Server;
 
 /**
@@ -18,7 +17,7 @@ import java.util.logging.Logger;
 public class H2Server {
     private boolean started;
     //private static Server server;
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(H2Server.class);
+    private static final Logger log = LogManager.getLogger(H2Server.class);
 /*
     public Server getServer() {
         if (H2Server.server != null) {

@@ -2,7 +2,7 @@ package com.hf.hfw.application;
 
 import java.io.File;
 import java.io.IOException;
-import org.apache.log4j.PropertyConfigurator;
+//import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.FileCopyUtils;
 
@@ -30,7 +30,7 @@ public class ConfigurationDirectoryService {
             e.printStackTrace();
         }
         System.out.println("Setting up log4j with config path:" + this.getLoggingConfigFile());
-        PropertyConfigurator.configure(this.getLoggingConfigFile());
+       // PropertyConfigurator.configure(this.getLoggingConfigFile());
         System.out.println("Finished Setting up log4j");
 
     }

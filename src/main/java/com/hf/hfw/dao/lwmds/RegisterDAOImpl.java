@@ -15,14 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  *
  * @author pldorrell
  */
 public class RegisterDAOImpl extends LWMDSDAO implements RegisterDAO {
-    private static final Logger log = Logger.getLogger(RegisterDAOImpl.class);
+    private static final Logger log = LogManager.getLogger(RegisterDAOImpl.class);
 
     @Override
     public List<RegisterTransaction> getTransactions(Account account) {
